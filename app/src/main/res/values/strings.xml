@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Popular Movies</string>
+    <string name="grid_text">Popular Movies Gridview Placeholder </string>
 </resources>
