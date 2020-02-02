@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private void displayMovies(){
 
         String JSON = MoviesAPIService.getMoviesJSON( "popularity.desc");
+
     }
 
 

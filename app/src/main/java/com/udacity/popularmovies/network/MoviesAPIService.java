@@ -17,6 +17,7 @@ public class MoviesAPIService {
 
         // TODO: Use sorting variable to choose between most popular & top rated
 
+        // Create URI for the movie list
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("https")
                 .authority("api.themoviedb.org")
@@ -24,16 +25,19 @@ public class MoviesAPIService {
                 .appendPath("discover")
                 .appendPath("movie")
                 .appendQueryParameter("api_key", APIKEY)
-                .appendQueryParameter("sort_by", "popularity.desc");
+                .appendQueryParameter("sort_by", sortOrder);
 
         String URL = builder.build().toString();
+
+
+        // TODO: CALL METHOD TO GET API RESPONSE & CALL IT IN HERE. PASS THE URI
 
 
         //TODO: CLEAN UP LOG
         String TAG = "MoviesAPIService";
         Log.d(TAG,URL);
         System.out.println(URL);
-        
+
         return json;
     }
 }
