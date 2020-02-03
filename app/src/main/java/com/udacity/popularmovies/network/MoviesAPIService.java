@@ -17,6 +17,8 @@ public class MoviesAPIService {
 
         // TODO: Use sorting variable to choose between most popular & top rated
 
+        // TODO: ADD ERROR HANDLING FOR URI BUILDER
+
         // Create URI for the movie list
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("https")
@@ -37,6 +39,7 @@ public class MoviesAPIService {
         String TAG = "MoviesAPIService";
         Log.d(TAG,URL);
         System.out.println(URL);
+
 
         return json;
     }
