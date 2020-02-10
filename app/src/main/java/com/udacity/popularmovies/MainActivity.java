@@ -34,7 +34,9 @@ public class MainActivity extends AppCompatActivity {
 /*        String key = getString(R.string.movie_db_api_key);
         textView.setText(key);*/
 
-        initImageBitmaps();
+        initMovieData();
+
+        
 
 
     }
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void initImageBitmaps(){
+    private void initMovieData(){
         movieList.add(new Movie ("title 1", "https://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg", "1", "1", "1"));
         movieList.add(new Movie ("title 2", "https://image.tmdb.org/t/p/w185//z7FCF54Jvzv9Anxyf82QeqFXXOO.jpg", "2", "2", "2"));
         movieList.add(new Movie ("title 2", "https://image.tmdb.org/t/p/w185/7GsM4mtM0worCtIVeiQt28HieeN.jpg", "2", "2", "2"));
