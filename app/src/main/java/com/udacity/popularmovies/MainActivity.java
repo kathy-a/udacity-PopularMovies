@@ -6,8 +6,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import com.udacity.popularmovies.model.Movie;
-import com.udacity.popularmovies.network.MoviesAPIService;
+import com.udacity.popularmovies.network.MovieService;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,15 +37,14 @@ public class MainActivity extends AppCompatActivity {
 
         initMovieData();
 
-        
+
 
 
     }
 
     private void displayMovies(){
 
-        String JSON = MoviesAPIService.getMoviesJSON( "popularity.desc");
-
+        URL url = MovieService.buildUrl( "popularity.desc");
     }
 
     private void initMovieData(){
