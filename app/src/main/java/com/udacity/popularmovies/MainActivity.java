@@ -4,10 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
-import com.udacity.popularmovies.model.Movie;
-import com.udacity.popularmovies.network.MoviesAPIService;
+import android.util.Log;
 
+import com.udacity.popularmovies.model.Movie;
+import com.udacity.popularmovies.network.MovieService;
+
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,21 +37,49 @@ public class MainActivity extends AppCompatActivity {
         textView.setText(movieTitle);*/
 
         //TODO: Add internet connection check in here or when calling moviedb api or in display movies ?
-        displayMovies();
 
 /*        String key = getString(R.string.movie_db_api_key);
         textView.setText(key);*/
 
+        new movieDbQueryTask().execute();
+
         initMovieData();
 
-        
+    }
+
+    public class movieDbQueryTask extends AsyncTask<URL, Void, Void> {
+
+        @Override
+        protected Void doInBackground(URL... params){
+
+            // Build URL
+            URL url = MovieService.buildUrl( "popularity.desc");
+            String json = "";
+
+            // Get json response from movie db
+            try {
+                json = MovieService.getResponseFromHttpUrl(url);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            displayMovies(json);
+
+            return null;
+        }
+
+
+
 
 
     }
 
-    private void displayMovies(){
 
-        String JSON = MoviesAPIService.getMoviesJSON( "popularity.desc");
+    public void displayMovies(String json){
+        System.out.println(json);
+        Log.d("display moves",json);
+
+        // TODO: Parse JSON data
+        // TODO: Display movies in recycler view
 
     }
 
