@@ -5,14 +5,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.udacity.popularmovies.model.Movie;
 import com.udacity.popularmovies.network.MovieService;
-
-import org.json.JSONObject;
+import com.udacity.popularmovies.utils.JsonUtils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,6 +19,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Movie> movieList = new ArrayList<>();
+    private ArrayList<Movie> movieList2 = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         new movieDbQueryTask().execute();
 
-        initMovieData();
+        //initMovieData();
 
     }
 
@@ -66,11 +66,6 @@ public class MainActivity extends AppCompatActivity {
 
             return null;
         }
-
-
-
-
-
     }
 
 
@@ -78,21 +73,26 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(json);
         Log.d("display moves",json);
 
+        movieList = JsonUtils.parseMovieJson(json);
+
+        System.out.println(movieList);
         // TODO: Parse JSON data
         // TODO: Display movies in recycler view
+
+        initRecyclerView();
 
     }
 
     private void initMovieData(){
-        movieList.add(new Movie ("title 1", "https://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg", "1", "1", "1"));
-        movieList.add(new Movie ("title 2", "https://image.tmdb.org/t/p/w185//z7FCF54Jvzv9Anxyf82QeqFXXOO.jpg", "2", "2", "2"));
-        movieList.add(new Movie ("title 2", "https://image.tmdb.org/t/p/w185/7GsM4mtM0worCtIVeiQt28HieeN.jpg", "2", "2", "2"));
-        movieList.add(new Movie ("title 2", "https://image.tmdb.org/t/p/w185/xBHvZcjRiWyobQ9kxBhO6B2dtRI.jpg", "2", "2", "2"));
-        movieList.add(new Movie ("title 2", "https://image.tmdb.org/t/p/w185/iZf0KyrE25z1sage4SYFLCCrMi9.jpg", "2", "2", "2"));
-        movieList.add(new Movie ("title 2", "https://image.tmdb.org/t/p/w185/y95lQLnuNKdPAzw9F9Ab8kJ80c3.jpg", "2", "2", "2"));
-        movieList.add(new Movie ("title 2", "https://image.tmdb.org/t/p/w185/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg", "2", "2", "2"));
-        movieList.add(new Movie ("title 2", "https://image.tmdb.org/t/p/w185/vqzNJRH4YyquRiWxCCOH0aXggHI.jpg", "2", "2", "2"));
-        movieList.add(new Movie ("title 2", "https://image.tmdb.org/t/p/w185/6ApDtO7xaWAfPqfi2IARXIzj8QS.jpg", "2", "2", "2"));
+        movieList2.add(new Movie ("title 1", "https://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg", "1", "1", "1"));
+        movieList2.add(new Movie ("title 2", "https://image.tmdb.org/t/p/w185//z7FCF54Jvzv9Anxyf82QeqFXXOO.jpg", "2", "2", "2"));
+        movieList2.add(new Movie ("title 2", "https://image.tmdb.org/t/p/w185/7GsM4mtM0worCtIVeiQt28HieeN.jpg", "2", "2", "2"));
+        movieList2.add(new Movie ("title 2", "https://image.tmdb.org/t/p/w185/xBHvZcjRiWyobQ9kxBhO6B2dtRI.jpg", "2", "2", "2"));
+        movieList2.add(new Movie ("title 2", "https://image.tmdb.org/t/p/w185/iZf0KyrE25z1sage4SYFLCCrMi9.jpg", "2", "2", "2"));
+        movieList2.add(new Movie ("title 2", "https://image.tmdb.org/t/p/w185/y95lQLnuNKdPAzw9F9Ab8kJ80c3.jpg", "2", "2", "2"));
+        movieList2.add(new Movie ("title 2", "https://image.tmdb.org/t/p/w185/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg", "2", "2", "2"));
+        movieList2.add(new Movie ("title 2", "https://image.tmdb.org/t/p/w185/vqzNJRH4YyquRiWxCCOH0aXggHI.jpg", "2", "2", "2"));
+        movieList2.add(new Movie ("title 2", "https://image.tmdb.org/t/p/w185/6ApDtO7xaWAfPqfi2IARXIzj8QS.jpg", "2", "2", "2"));
 
 
         initRecyclerView();
@@ -101,7 +101,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void initRecyclerView(){
         RecyclerView recyclerView = findViewById(R.id.recycler_MainActivity);
+        //MoviesViewAdapter adapter = new MoviesViewAdapter(this, movieList2);
         MoviesViewAdapter adapter = new MoviesViewAdapter(this, movieList);
+
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
