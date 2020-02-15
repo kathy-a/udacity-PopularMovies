@@ -55,6 +55,30 @@ public class MovieService {
     }
 
 
+    public static URL buildPosterPathUrl(String posterPath){
+
+        // Create URI for the movie's poster path
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme("https")
+                .authority("image.tmdb.org")
+                .appendPath("t")
+                .appendPath("p")
+                .appendPath("w185")
+                .appendPath(posterPath.substring(1))
+                .build();
+
+        URL url = null;
+
+        try{
+            url = new URL(builder.toString());
+        }catch(MalformedURLException e){
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
+
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 

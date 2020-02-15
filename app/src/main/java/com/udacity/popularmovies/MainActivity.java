@@ -27,23 +27,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // TODO: CLEAN UP UI if needed or not
-        //TextView textView = findViewById(R.id.grid_movie);
-
-/*        Movie movie = new Movie();
-        movie.setOriginalTitle("Harry Potter");
-
-        String movieTitle = movie.getOriginalTitle();
-        textView.setText(movieTitle);*/
-
         //TODO: Add internet connection check in here or when calling moviedb api or in display movies ?
 
-/*        String key = getString(R.string.movie_db_api_key);
-        textView.setText(key);*/
+
+
+
+
+
+
 
         new movieDbQueryTask().execute();
 
-        //initMovieData();
+        initRecyclerView();
+
 
     }
 
@@ -65,7 +61,17 @@ public class MainActivity extends AppCompatActivity {
             displayMovies(json);
 
             return null;
+
         }
+
+
+
+
+
+
+
+
+
     }
 
 
@@ -79,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
         // TODO: Parse JSON data
         // TODO: Display movies in recycler view
 
-        initRecyclerView();
 
     }
 
@@ -103,10 +108,9 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recycler_MainActivity);
         //MoviesViewAdapter adapter = new MoviesViewAdapter(this, movieList2);
         MoviesViewAdapter adapter = new MoviesViewAdapter(this, movieList);
-
-        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
+        recyclerView.setAdapter(adapter);
 
     }
 

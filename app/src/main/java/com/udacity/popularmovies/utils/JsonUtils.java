@@ -13,6 +13,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import static com.udacity.popularmovies.network.MovieService.buildPosterPathUrl;
+
 public class JsonUtils {
 
     public static ArrayList<Movie> parseMovieJson(String json){
@@ -36,7 +38,7 @@ public class JsonUtils {
 
                 // TODO: create method to build the poster path
                 // Create URI for the movie list
-                Uri.Builder builder = new Uri.Builder();
+/*                Uri.Builder builder = new Uri.Builder();
                 builder.scheme("https")
                         .authority("image.tmdb.org")
                         .appendPath("t")
@@ -53,7 +55,9 @@ public class JsonUtils {
                     e.printStackTrace();
                 }
 
-                String currentPoster = url.toString() + posterPath;
+                String currentPoster = url.toString() + posterPath;*/
+
+                String currentPoster = buildPosterPathUrl(posterPath).toString();
 
                 movieList.add(new Movie (currentOriginalTitle, currentPoster, currentPlotSynopsis, currentUserRating, currentReleaseDate));
             }
