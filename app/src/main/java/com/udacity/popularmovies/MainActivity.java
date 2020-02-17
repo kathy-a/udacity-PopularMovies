@@ -19,8 +19,6 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Movie> movieList = new ArrayList<>();
-    private ArrayList<Movie> movieList2 = new ArrayList<>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,27 +27,22 @@ public class MainActivity extends AppCompatActivity {
 
         //TODO: Add internet connection check in here or when calling moviedb api or in display movies ?
 
+        String sortOrder = "popularity.desc";
+        new movieDbQueryTask().execute(sortOrder);
 
-
-
-
-
-
-
-        new movieDbQueryTask().execute();
-
-        initRecyclerView();
 
 
     }
 
-    public class movieDbQueryTask extends AsyncTask<URL, Void, Void> {
+    public class movieDbQueryTask extends AsyncTask<String, Void, String> {
 
         @Override
-        protected Void doInBackground(URL... params){
+        protected String doInBackground(String... sortOrder){
 
             // Build URL
-            URL url = MovieService.buildUrl( "popularity.desc");
+            URL url = MovieService.buildUrl(sortOrder[0]);
+
+            System.out.println(url.toString());
             String json = "";
 
             // Get json response from movie db
@@ -58,22 +51,19 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            displayMovies(json);
 
-            return null;
+            return json;
 
         }
 
-
-
-
-
-
-
+        @Override
+        protected void onPostExecute(String json){
+            displayMovies(json);
+            initRecyclerView();
+        }
 
 
     }
-
 
     public void displayMovies(String json){
         System.out.println(json);
@@ -81,37 +71,15 @@ public class MainActivity extends AppCompatActivity {
 
         movieList = JsonUtils.parseMovieJson(json);
 
-        System.out.println(movieList);
-        // TODO: Parse JSON data
-        // TODO: Display movies in recycler view
-
-
     }
 
-    private void initMovieData(){
-        movieList2.add(new Movie ("title 1", "https://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg", "1", "1", "1"));
-        movieList2.add(new Movie ("title 2", "https://image.tmdb.org/t/p/w185//z7FCF54Jvzv9Anxyf82QeqFXXOO.jpg", "2", "2", "2"));
-        movieList2.add(new Movie ("title 2", "https://image.tmdb.org/t/p/w185/7GsM4mtM0worCtIVeiQt28HieeN.jpg", "2", "2", "2"));
-        movieList2.add(new Movie ("title 2", "https://image.tmdb.org/t/p/w185/xBHvZcjRiWyobQ9kxBhO6B2dtRI.jpg", "2", "2", "2"));
-        movieList2.add(new Movie ("title 2", "https://image.tmdb.org/t/p/w185/iZf0KyrE25z1sage4SYFLCCrMi9.jpg", "2", "2", "2"));
-        movieList2.add(new Movie ("title 2", "https://image.tmdb.org/t/p/w185/y95lQLnuNKdPAzw9F9Ab8kJ80c3.jpg", "2", "2", "2"));
-        movieList2.add(new Movie ("title 2", "https://image.tmdb.org/t/p/w185/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg", "2", "2", "2"));
-        movieList2.add(new Movie ("title 2", "https://image.tmdb.org/t/p/w185/vqzNJRH4YyquRiWxCCOH0aXggHI.jpg", "2", "2", "2"));
-        movieList2.add(new Movie ("title 2", "https://image.tmdb.org/t/p/w185/6ApDtO7xaWAfPqfi2IARXIzj8QS.jpg", "2", "2", "2"));
-
-
-        initRecyclerView();
-    }
 
 
     private void initRecyclerView(){
         RecyclerView recyclerView = findViewById(R.id.recycler_MainActivity);
-        //MoviesViewAdapter adapter = new MoviesViewAdapter(this, movieList2);
         MoviesViewAdapter adapter = new MoviesViewAdapter(this, movieList);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-
         recyclerView.setAdapter(adapter);
-
     }
 
 }
