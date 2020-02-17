@@ -7,6 +7,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.udacity.popularmovies.model.Movie;
 import com.udacity.popularmovies.network.MovieService;
@@ -19,6 +23,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Movie> movieList = new ArrayList<>();
+    private String sortOrder = "popularity.desc";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,11 +32,29 @@ public class MainActivity extends AppCompatActivity {
 
         //TODO: Add internet connection check in here or when calling moviedb api or in display movies ?
 
-        String sortOrder = "popularity.desc";
         new movieDbQueryTask().execute(sortOrder);
+    }
 
+    // Display Menu layout created
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_sort_order, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
+        if (item.getItemId() == R.id.item_most_popular){
+            sortOrder = "popularity.desc";
+        }else if (item.getItemId() == R.id.item_top_rated){
+            sortOrder = "vote_count.desc";
+        }else
+            return super.onOptionsItemSelected(item);
+
+        new movieDbQueryTask().execute(sortOrder);
+        return true;
     }
 
     public class movieDbQueryTask extends AsyncTask<String, Void, String> {
