@@ -36,26 +36,6 @@ public class JsonUtils {
 
                 String posterPath = currentMovieDetails.getString("poster_path");
 
-                // TODO: create method to build the poster path
-                // Create URI for the movie list
-/*                Uri.Builder builder = new Uri.Builder();
-                builder.scheme("https")
-                        .authority("image.tmdb.org")
-                        .appendPath("t")
-                        .appendPath("p")
-                        .appendPath("w185")
-                        //.appendPath(posterPath)
-                        .build();
-
-                URL url = null;
-
-                try{
-                    url = new URL(builder.toString());
-                }catch(MalformedURLException e){
-                    e.printStackTrace();
-                }
-
-                String currentPoster = url.toString() + posterPath;*/
 
                 String currentPoster = buildPosterPathUrl(posterPath).toString();
 
