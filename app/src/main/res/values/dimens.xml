@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_padding_margin">20dp</dimen>
+    <dimen name="activity_header_size">40sp</dimen>
+    <dimen name="activity_image_size">768px</dimen>
+
+</resources>
