@@ -1,6 +1,7 @@
 package com.udacity.popularmovies;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,8 @@ import com.udacity.popularmovies.model.Movie;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import static androidx.core.content.ContextCompat.startActivity;
 
 public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.ViewHolder> {
 
@@ -70,10 +73,23 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.Vi
 
         @Override
         public void onClick(View v) {
-            String movieSelected = movies.get(getAdapterPosition()).getOriginalTitle();
-            Toast.makeText(mContext, movieSelected, Toast.LENGTH_SHORT).show();
-            // TODO: Call details activity and pass the movies
-            // TODO: Need to pass the actual movie class of specific movie
+            int position = getAdapterPosition();
+/*            String movieSelected = movies.get(position).getOriginalTitle();
+            Toast.makeText(mContext, movieSelected, Toast.LENGTH_SHORT).show();*/
+
+            Class destinationActivity = DetailsActivity.class;
+
+            Intent intent = new Intent(mContext, destinationActivity);
+
+            // Pass the movie details to details activity
+            intent.putExtra("movieOriginalTitle", movies.get(position).getOriginalTitle());
+            intent.putExtra("moviePoster", movies.get(position).getPoster());
+            intent.putExtra("moviePlotSynopsis", movies.get(position).getPlotSynopsis());
+            intent.putExtra("movieUserRating", movies.get(position).getUserRating());
+            intent.putExtra("movieReleaseDate", movies.get(position).getReleaseDate());
+
+
+            mContext.startActivity(intent);
         }
     }
 

@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String json){
             displayMovies(json);
             initRecyclerView();
+
         }
     }
 
