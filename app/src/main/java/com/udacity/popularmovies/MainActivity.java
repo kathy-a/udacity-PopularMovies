@@ -92,8 +92,8 @@ public class MainActivity extends AppCompatActivity {
     private void initRecyclerView(){
         RecyclerView recyclerView = findViewById(R.id.recycler_MainActivity);
         MoviesViewAdapter adapter = new MoviesViewAdapter(this, movieList);
-        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerView.setAdapter(adapter);
 
     }
 
