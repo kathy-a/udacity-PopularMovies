@@ -52,7 +52,7 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.Vi
     // Required for RecyclerView
     @Override
     public int getItemCount() {
-        return movies.size();
+        return movies != null? movies.size() : 0;
     }
 
     // Holds widget in memory for each individual entry
