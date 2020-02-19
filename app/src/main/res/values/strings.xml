@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Popular Movies</string>
-    <string name="grid_text">Popular Movies Gridview Placeholder </string>
     <string name="movie_details">Movie Details</string>
-    <string name="movie_title">Movie Title</string>
+    <string name="error_connection">Cannot access themoviedb.org. Please check your internet connection.</string>
+
 
 </resources>
