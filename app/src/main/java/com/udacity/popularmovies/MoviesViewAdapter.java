@@ -74,8 +74,6 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.Vi
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-/*            String movieSelected = movies.get(position).getOriginalTitle();
-            Toast.makeText(mContext, movieSelected, Toast.LENGTH_SHORT).show();*/
 
             Class destinationActivity = DetailsActivity.class;
 

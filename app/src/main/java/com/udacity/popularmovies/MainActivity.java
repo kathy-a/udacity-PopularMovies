@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,7 +35,11 @@ public class MainActivity extends AppCompatActivity {
 
         //TODO: Add internet connection check in here or when calling moviedb api or in display movies ?
 
-        new movieDbQueryTask().execute(sortOrder);
+        if(isOnline()){
+            new movieDbQueryTask().execute(sortOrder);
+        }else
+            errorConnectMessage();
+
     }
 
     // Display Menu layout created
@@ -53,7 +60,11 @@ public class MainActivity extends AppCompatActivity {
         }else
             return super.onOptionsItemSelected(item);
 
-        new movieDbQueryTask().execute(sortOrder);
+        if(isOnline()){
+            new movieDbQueryTask().execute(sortOrder);
+        }else
+            errorConnectMessage();
+
         return true;
     }
 
@@ -97,5 +108,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    public void errorConnectMessage() {
+        Toast.makeText(this, R.string.error_connection, Toast.LENGTH_LONG).show();
+    }
 
 }
