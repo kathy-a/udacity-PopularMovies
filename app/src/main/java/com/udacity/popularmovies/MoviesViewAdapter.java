@@ -1,12 +1,14 @@
 package com.udacity.popularmovies;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,7 +18,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.ViewHolder>{
+import static androidx.core.content.ContextCompat.startActivity;
+
+public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.ViewHolder> {
 
     private static final String TAG = "MoviesViewAdapter";
 
@@ -40,13 +44,11 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.Vi
 
     // Required for RecyclerView. Changes depends on what layouts are
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         Picasso.with(mContext)
                 .load(movies.get(position).getPoster())
                 .into(holder.imageMoviePoster);
 
-
-        // TODO: Add onclick listener
     }
 
     // Required for RecyclerView
@@ -56,18 +58,41 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.Vi
     }
 
     // Holds widget in memory for each individual entry
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView imageMoviePoster;
         RelativeLayout parentLayout;
 
         //Constructor required for Viewholder
-        private ViewHolder(@NonNull View itemView) {
+        public ViewHolder( View itemView) {
             super(itemView);
             imageMoviePoster = itemView.findViewById(R.id.image_movie);
             parentLayout = itemView.findViewById(R.id.parent_layout);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+/*            String movieSelected = movies.get(position).getOriginalTitle();
+            Toast.makeText(mContext, movieSelected, Toast.LENGTH_SHORT).show();*/
+
+            Class destinationActivity = DetailsActivity.class;
+
+            Intent intent = new Intent(mContext, destinationActivity);
+
+            // Pass the movie details to details activity
+            intent.putExtra("movieOriginalTitle", movies.get(position).getOriginalTitle());
+            intent.putExtra("moviePoster", movies.get(position).getPoster());
+            intent.putExtra("moviePlotSynopsis", movies.get(position).getPlotSynopsis());
+            intent.putExtra("movieUserRating", movies.get(position).getUserRating());
+            intent.putExtra("movieReleaseDate", movies.get(position).getReleaseDate());
+
+
+            mContext.startActivity(intent);
         }
     }
+
 
 
 }
