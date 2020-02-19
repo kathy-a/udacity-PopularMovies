@@ -22,8 +22,6 @@ public class DetailsActivity extends AppCompatActivity {
         TextView userRating = findViewById(R.id.text_user_rating);
         TextView moviePlotSynopsis = findViewById(R.id.text_movie_plot_synopsis);
 
-
-
         Intent intent = getIntent();
 
         if(intent.hasExtra("movieOriginalTitle")){
@@ -38,12 +36,6 @@ public class DetailsActivity extends AppCompatActivity {
             userRating.setText(intent.getStringExtra("movieUserRating"));
             moviePlotSynopsis.setText(intent.getStringExtra("moviePlotSynopsis"));
 
-
-
-
         }
-
-
-
     }
 }

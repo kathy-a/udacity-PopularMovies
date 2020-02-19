@@ -1,6 +1,5 @@
 package com.udacity.popularmovies.utils;
 
-import android.net.Uri;
 import android.util.Log;
 
 import com.udacity.popularmovies.model.Movie;
@@ -9,8 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import static com.udacity.popularmovies.network.MovieService.buildPosterPathUrl;
