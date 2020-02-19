@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.udacity.popularmovies.model.Movie;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -17,8 +16,12 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-        TextView movieTitle = findViewById(R.id.movie_title);
+        TextView movieTitle = findViewById(R.id.text_movie_title);
         ImageView moviePoster = findViewById(R.id.image_movie_poster);
+        TextView releaseDate = findViewById(R.id.text_release_date);
+        TextView userRating = findViewById(R.id.text_user_rating);
+        TextView moviePlotSynopsis = findViewById(R.id.text_movie_plot_synopsis);
+
 
 
         Intent intent = getIntent();
@@ -31,10 +34,10 @@ public class DetailsActivity extends AppCompatActivity {
                     .load(intent.getStringExtra("moviePoster"))
                     .into(moviePoster);
 
+            releaseDate.setText(intent.getStringExtra("movieReleaseDate"));
+            userRating.setText(intent.getStringExtra("movieUserRating"));
+            moviePlotSynopsis.setText(intent.getStringExtra("moviePlotSynopsis"));
 
-/*            movieTitle.setText(intent.getStringExtra("moviePlotSynopsis"));
-            movieTitle.setText(intent.getStringExtra("movieUserRating"));
-            movieTitle.setText(intent.getStringExtra("movieReleaseDate"));*/
 
 
 

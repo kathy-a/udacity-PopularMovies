@@ -3,7 +3,10 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="activity_padding_margin">20dp</dimen>
-    <dimen name="activity_header_size">40sp</dimen>
     <dimen name="activity_image_size">768px</dimen>
+    <dimen name="activity_heading_1_size">30sp</dimen>
+    <dimen name="activity_heading_2_size">24sp</dimen>
+    <dimen name="activity_heading_3_size">20sp</dimen>
+    <dimen name="activity_heading_4_size">16sp</dimen>
 
 </resources>
