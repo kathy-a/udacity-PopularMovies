@@ -43,6 +43,8 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         Picasso.with(mContext)
                 .load(movies.get(position).getPoster())
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_foreground)
                 .into(holder.imageMoviePoster);
 
     }

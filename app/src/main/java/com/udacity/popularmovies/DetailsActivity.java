@@ -30,6 +30,8 @@ public class DetailsActivity extends AppCompatActivity {
 
             Picasso.with(this)
                     .load(intent.getStringExtra("moviePoster"))
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_launcher_foreground)
                     .into(moviePoster);
 
             releaseDate.setText(intent.getStringExtra("movieReleaseDate"));
