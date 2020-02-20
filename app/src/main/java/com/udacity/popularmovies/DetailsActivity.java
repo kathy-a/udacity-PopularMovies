@@ -11,6 +11,8 @@ import com.squareup.picasso.Picasso;
 
 public class DetailsActivity extends AppCompatActivity {
 
+    private static final String MOVIE_ORIGINAL_TITLE = "movieOriginalTitle" ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +26,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        if(intent.hasExtra("movieOriginalTitle")){
+        if(intent.hasExtra(MOVIE_ORIGINAL_TITLE)){
 
             movieTitle.setText(intent.getStringExtra("movieOriginalTitle"));
 
