@@ -26,7 +26,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        if(intent.hasExtra(MOVIE_ORIGINAL_TITLE)){
+        if((intent != null) && (intent.hasExtra(MOVIE_ORIGINAL_TITLE))){
 
             movieTitle.setText(intent.getStringExtra("movieOriginalTitle"));
 
