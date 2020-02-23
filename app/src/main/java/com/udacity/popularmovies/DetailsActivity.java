@@ -1,5 +1,6 @@
 package com.udacity.popularmovies;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -17,6 +18,15 @@ public class DetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+
+
+        ActionBar actionBar = this.getSupportActionBar();
+
+        // Set the action bar back button to go one level back
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
 
         TextView movieTitle = findViewById(R.id.text_movie_title);
         ImageView moviePoster = findViewById(R.id.image_movie_poster);
