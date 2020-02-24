@@ -33,8 +33,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //TODO: Add internet connection check in here or when calling moviedb api or in display movies ?
-
+        // Call movieDbQueryTask if there is connectivity. Otherwise, display error toast message
         if(isOnline()){
             new movieDbQueryTask().execute(sortOrder);
         }else
