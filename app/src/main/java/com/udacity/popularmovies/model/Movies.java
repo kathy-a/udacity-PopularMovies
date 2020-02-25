@@ -3,6 +3,7 @@ package com.udacity.popularmovies.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Movies {
@@ -17,7 +18,7 @@ public class Movies {
     private Integer totalPages;
     @SerializedName("results")
     @Expose
-    private List<Result> results = null;
+    private ArrayList<Result> results = null;
 
     public Integer getPage() {
         return page;
@@ -43,11 +44,11 @@ public class Movies {
         this.totalPages = totalPages;
     }
 
-    public List<Result> getResults() {
+    public ArrayList<Result> getResults() {
         return results;
     }
 
-    public void setResults(List<Result> results) {
+    public void setResults(ArrayList<Result> results) {
         this.results = results;
     }
 

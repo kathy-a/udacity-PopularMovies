@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Response", Toast.LENGTH_LONG).show();
                 Toast.makeText(MainActivity.this, response.body().toString(), Toast.LENGTH_LONG).show();
 
-                List<Result> result = response.body().getResults();
+                ArrayList<Result> result = response.body().getResults();
 
                 String originalTitle, poster, plotSynopsis, userRating, releaseDate;
 
