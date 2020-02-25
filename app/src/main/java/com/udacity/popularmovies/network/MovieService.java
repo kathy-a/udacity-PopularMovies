@@ -13,9 +13,38 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class MovieService {
 
-    private static final String APIKEY = App.getAppResources().getString(R.string.movie_db_api_key);
+    private static String APIKEY = App.getAppResources().getString(R.string.movie_db_api_key);
+
+
+
+    private static Retrofit retrofit;
+    private static String BASE_URL ;
+
+
+    public static Retrofit getRetrofitInstance() {
+
+        //BASE_URL = "https://api.themoviedb.org/3/discover/movie?api_key=" + APIKEY;
+
+        BASE_URL = "https://api.themoviedb.org";
+
+
+        if (retrofit == null) {
+            retrofit = new retrofit2.Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return retrofit;
+    }
+
+
+
+
 
     // Create URL for movie db
     public static URL buildUrl(String sortOrder){
