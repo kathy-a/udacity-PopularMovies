@@ -83,19 +83,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public boolean isOnline() {
+    private boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    public void errorConnectMessage() {
+    private void errorConnectMessage() {
         Toast.makeText(this, R.string.error_connection, Toast.LENGTH_LONG).show();
     }
 
     // Create handle for the RetrofitInstance interface
-    public void initRetrofit(String sortOrder){
+    private void initRetrofit(String sortOrder){
 
         TheMovieDBService service = MovieService.getRetrofitInstance().create(TheMovieDBService.class);
 
