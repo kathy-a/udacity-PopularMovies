@@ -1,14 +1,18 @@
 package com.udacity.popularmovies.model;
 
+
+
+
 public class Movie {
+
+
     private String originalTitle;
     private String poster;
     private String plotSynopsis;
     private String userRating;
     private String releaseDate;
 
-    public Movie(){
-    }
+
 
     public Movie(String originalTitle, String poster, String plotSynopsis, String userRating, String releaseDate){
         this.originalTitle = originalTitle;

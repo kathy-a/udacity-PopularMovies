@@ -1,48 +1,32 @@
 package com.udacity.popularmovies.network;
 
 import android.net.Uri;
-import android.util.Log;
 
 import com.udacity.popularmovies.App;
 import com.udacity.popularmovies.R;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Scanner;
+
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MovieService {
 
-    private static final String APIKEY = App.getAppResources().getString(R.string.movie_db_api_key);
+    private static String APIKEY = App.getAppResources().getString(R.string.movie_db_api_key);
+    private static Retrofit retrofit;
+    private static final String BASE_URL = "https://api.themoviedb.org";
 
-    // Create URL for movie db
-    public static URL buildUrl(String sortOrder){
 
-        // Create URI for the movie list
-        Uri.Builder builder = new Uri.Builder();
-        builder.scheme("https")
-                .authority("api.themoviedb.org")
-                .appendPath("3")
-                .appendPath("discover")
-                .appendPath("movie")
-                .appendQueryParameter("api_key", APIKEY)
-                .appendQueryParameter("sort_by", sortOrder)
-                .build();
+    public static Retrofit getRetrofitInstance() {
 
-        URL url = null;
-
-        try{
-            url = new URL(builder.toString());
-        }catch(MalformedURLException e){
-            e.printStackTrace();
+        if (retrofit == null) {
+            retrofit = new retrofit2.Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
         }
-
-        String TAG = "Popular movies.network";
-        Log.v(TAG, "Built URI: " + url);
-
-        return url;
+        return retrofit;
     }
 
 
@@ -69,25 +53,4 @@ public class MovieService {
         return url;
     }
 
-
-    public static String getResponseFromHttpUrl(URL url) throws IOException {
-        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-
-        try {
-            InputStream in = urlConnection.getInputStream();
-
-            Scanner scanner = new Scanner(in);
-            scanner.useDelimiter("\\A");
-            boolean hasInput = scanner.hasNext();
-
-            if (hasInput) {
-                return scanner.next();
-            } else {
-                return null;
-            }
-        } finally {
-            urlConnection.disconnect();
-        }
-
-    }
 }

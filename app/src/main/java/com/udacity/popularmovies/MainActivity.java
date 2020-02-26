@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -15,18 +14,26 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.udacity.popularmovies.model.Movie;
-import com.udacity.popularmovies.network.MovieService;
-import com.udacity.popularmovies.utils.JsonUtils;
+import com.udacity.popularmovies.model.Movies;
+import com.udacity.popularmovies.model.Result;
 
-import java.io.IOException;
-import java.net.URL;
+import com.udacity.popularmovies.network.TheMovieDBService;
+import com.udacity.popularmovies.network.MovieService;
+
+
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.udacity.popularmovies.network.MovieService.buildPosterPathUrl;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<Movie> movieList = new ArrayList<>();
     private String sortOrder = "popularity.desc";
+    private static final String APIKEY = App.getAppResources().getString(R.string.movie_db_api_key);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Call movieDbQueryTask if there is connectivity. Otherwise, display error toast message
         if(isOnline()){
-            new movieDbQueryTask().execute(sortOrder);
+            initRetrofit(sortOrder);
         }else
             errorConnectMessage();
 
@@ -60,46 +67,15 @@ public class MainActivity extends AppCompatActivity {
             return super.onOptionsItemSelected(item);
 
         if(isOnline()){
-            new movieDbQueryTask().execute(sortOrder);
+            initRetrofit(sortOrder);
         }else
             errorConnectMessage();
 
         return true;
     }
 
-    public class movieDbQueryTask extends AsyncTask<String, Void, String> {
 
-        @Override
-        protected String doInBackground(String... sortOrder){
-            // Build URL
-            URL url = MovieService.buildUrl(sortOrder[0]);
-            String json = "";
-
-            // Get json response from movie db
-            try {
-                json = MovieService.getResponseFromHttpUrl(url);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return json;
-        }
-
-        @Override
-        protected void onPostExecute(String json){
-            displayMovies(json);
-            initRecyclerView();
-
-        }
-    }
-
-    public void displayMovies(String json){
-        System.out.println(json);
-        Log.d("display moves",json);
-        movieList = JsonUtils.parseMovieJson(json);
-
-    }
-
-    private void initRecyclerView(){
+    private void initRecyclerView(ArrayList<Result> movieList){
         RecyclerView recyclerView = findViewById(R.id.recycler_MainActivity);
         MoviesViewAdapter adapter = new MoviesViewAdapter(this, movieList);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
@@ -107,15 +83,55 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public boolean isOnline() {
+    private boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    public void errorConnectMessage() {
+    private void errorConnectMessage() {
         Toast.makeText(this, R.string.error_connection, Toast.LENGTH_LONG).show();
+    }
+
+    // Create handle for the RetrofitInstance interface
+    private void initRetrofit(String sortOrder){
+
+        TheMovieDBService service = MovieService.getRetrofitInstance().create(TheMovieDBService.class);
+
+        Call <Movies> call = service.getData(APIKEY, sortOrder);
+
+        call.enqueue(new Callback<Movies>() {
+            @Override
+            public void onResponse(Call<Movies> call, Response<Movies> response) {
+                if(response.isSuccessful()){
+                    Log.d("on Response", "Response Successful");
+
+                    // Set the variable name to movie instead of result for readability
+                    ArrayList<Result> movieList;
+
+                    movieList = response.body().getResults();
+
+                    for(int i =0; i < movieList.size(); i++){
+                        String posterPath = movieList.get(i).getPosterPath();
+                        String currentPoster = buildPosterPathUrl(posterPath).toString();
+                        movieList.get(i).setPosterPath(currentPoster); //Change poster path to use the URL
+                    }
+
+                    initRecyclerView(movieList);
+
+                }else{
+                    Log.d("on Response", "Response Fail");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Movies> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Error getting response", Toast.LENGTH_LONG).show();
+            }
+        });
+
+
     }
 
 }
