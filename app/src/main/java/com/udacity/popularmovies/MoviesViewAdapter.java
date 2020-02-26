@@ -11,8 +11,8 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.udacity.popularmovies.model.Movie;
 import com.squareup.picasso.Picasso;
+import com.udacity.popularmovies.model.Result;
 
 import java.util.ArrayList;
 
@@ -20,11 +20,11 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.Vi
 
     private static final String TAG = "MoviesViewAdapter";
 
-    private ArrayList<Movie> movies;
+    private ArrayList<Result> movies;
     private Context mContext;
 
 
-    public MoviesViewAdapter(Context mContext, ArrayList<Movie> movies) {
+    public MoviesViewAdapter(Context mContext, ArrayList<Result> movies) {
         this.movies = movies;
         this.mContext = mContext;
     }
@@ -42,7 +42,7 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         Picasso.with(mContext)
-                .load(movies.get(position).getPoster())
+                .load(movies.get(position).getPosterPath())
                 .placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(holder.imageMoviePoster);
@@ -79,11 +79,10 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.Vi
 
             // Pass the movie details to details activity
             intent.putExtra("movieOriginalTitle", movies.get(position).getOriginalTitle());
-            intent.putExtra("moviePoster", movies.get(position).getPoster());
-            intent.putExtra("moviePlotSynopsis", movies.get(position).getPlotSynopsis());
-            intent.putExtra("movieUserRating", movies.get(position).getUserRating());
+            intent.putExtra("moviePoster", movies.get(position).getPosterPath());
+            intent.putExtra("moviePlotSynopsis", movies.get(position).getOverview());
+            intent.putExtra("movieUserRating", movies.get(position).getVoteAverage().toString());
             intent.putExtra("movieReleaseDate", movies.get(position).getReleaseDate());
-
 
             mContext.startActivity(intent);
         }
