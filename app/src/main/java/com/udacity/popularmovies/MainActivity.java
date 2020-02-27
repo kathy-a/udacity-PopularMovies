@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // TODO: Check if this is required to be added in asynctask because or ROOM implementation change
         // Call movieDbQueryTask if there is connectivity. Otherwise, display error toast message
         if(isOnline()){
             initRetrofit(sortOrder);
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    // If movie sort order preference is modified, send the request to themoviedb.org and display response
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         }else
             return super.onOptionsItemSelected(item);
 
+        // TODO: Check if this is required to be added in asynctask because or ROOM implementation change
         if(isOnline()){
             initRetrofit(sortOrder);
         }else
@@ -74,15 +77,15 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-
+    // Display movie poster path via recyclerview
     private void initRecyclerView(ArrayList<Result> movieList){
         RecyclerView recyclerView = findViewById(R.id.recycler_MainActivity);
         MoviesViewAdapter adapter = new MoviesViewAdapter(this, movieList);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerView.setAdapter(adapter);
-
     }
 
+    // Check if the phone / device has connectivity.
     private boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -90,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
+    // Toas error message for connectivity issue
     private void errorConnectMessage() {
         Toast.makeText(this, R.string.error_connection, Toast.LENGTH_LONG).show();
     }

@@ -5,6 +5,10 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
+
+/*
+POJO for JSON response from themoviedb.org
+*/
 public class Movies {
     @SerializedName("page")
     @Expose

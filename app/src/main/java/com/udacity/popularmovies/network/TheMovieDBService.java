@@ -7,7 +7,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 
-
+// Interface for Retrofit Implementation
 public interface TheMovieDBService {
 
     @GET("/3/discover/movie")

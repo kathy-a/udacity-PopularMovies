@@ -1,7 +1,7 @@
 package com.udacity.popularmovies.model;
 
 
-
+//TODO: Investigate if this model is needed for Project Part 2 Implementation
 
 public class Movie {
 

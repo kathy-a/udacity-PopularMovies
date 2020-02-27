@@ -5,6 +5,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+/*
+POJO for JSON response from themoviedb.org
+*/
 public class Result {
     @SerializedName("popularity")
     @Expose

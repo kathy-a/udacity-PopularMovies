@@ -16,6 +16,8 @@ import com.udacity.popularmovies.model.Result;
 
 import java.util.ArrayList;
 
+
+// This class is customized recyclerview adapter for movie posters gridview
 public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.ViewHolder> {
 
     private static final String TAG = "MoviesViewAdapter";
@@ -69,6 +71,10 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.Vi
             itemView.setOnClickListener(this);
         }
 
+
+/*
+        Upon clicking any grid view cell, DetailsActivity will be launch & passed with movie details
+*/
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();

@@ -17,7 +17,7 @@ public class MovieService {
     private static Retrofit retrofit;
     private static final String BASE_URL = "https://api.themoviedb.org";
 
-
+    // Retrofit Instance for getting JSON response from themoviedb.org
     public static Retrofit getRetrofitInstance() {
 
         if (retrofit == null) {

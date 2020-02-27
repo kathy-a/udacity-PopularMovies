@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+// This class displays the movie details screen after clicking any poster thumbnail on Movies grid view
 public class DetailsActivity extends AppCompatActivity {
 
     private static final String MOVIE_ORIGINAL_TITLE = "movieOriginalTitle" ;
