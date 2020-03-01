@@ -17,6 +17,8 @@
             android:id="@+id/text_movie_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            tools:text="Movie Title"
+            android:textAllCaps="true"
             android:textSize="@dimen/heading_1_size"
             android:padding="@dimen/activity_padding_margin"
             android:textColor="@color/colorWhite"
@@ -28,30 +30,47 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:layout_marginLeft="@dimen/activity_padding_margin"
+                android:scaleType="fitXY"
+                tools:src="@tools:sample/avatars"
                 android:layout_width="@dimen/image_width"
                 android:layout_height="@dimen/image_height"
                 android:layout_marginTop="@dimen/activity_padding_margin"
                 android:id="@+id/image_movie_poster"/>
 
             <LinearLayout
+                android:layout_marginLeft="@dimen/activity_padding_margin"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/image_height"
                 android:paddingTop="@dimen/activity_padding_margin"
                 android:orientation="vertical" >
 
+
                 <TextView
+                    tools:text="01-20-2020"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/heading_2_size"
-                    android:paddingTop="@dimen/activity_padding_margin"
+                    android:paddingTop="@dimen/activity_extra_padding"
                     android:id="@+id/text_release_date" />
 
                 <TextView
+                    tools:text="10/10"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/heading_3_size"
+                    android:paddingTop="@dimen/activity_thin_padding"
+                    android:paddingBottom="@dimen/activity_thin_padding"
                     android:id="@+id/text_user_rating" />
 
+                <ToggleButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorGray"
+                    android:textOn="UnFavorite"
+                    android:textOff="Mark as Favorite"
+                    android:textSize="@dimen/heading_6_size"
+                    android:backgroundTintMode="screen"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -63,6 +82,22 @@
             android:textSize="@dimen/heading_4_size"
             android:justificationMode="inter_word"
             android:layout_height="wrap_content" />
+
+        <View android:layout_width="match_parent"
+            android:background="@android:color/darker_gray"
+            android:layout_height="1dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_padding_margin"
+            android:textSize="@dimen/heading_2_size"
+            android:justificationMode="inter_word"
+            android:text="@string/trailers"/>
+
+
+
+
 
     </LinearLayout>
 </ScrollView>

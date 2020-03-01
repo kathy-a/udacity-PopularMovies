@@ -2,11 +2,17 @@
 <resources>
 
     <dimen name="activity_padding_margin">20dp</dimen>
+    <dimen name="activity_extra_padding">40dp</dimen>
+    <dimen name="activity_thin_padding">10dp</dimen>
+
     <dimen name="image_height">200dp</dimen>
-    <dimen name="image_width">250dp</dimen>
-    <dimen name="heading_1_size">30sp</dimen>
-    <dimen name="heading_2_size">24sp</dimen>
-    <dimen name="heading_3_size">20sp</dimen>
-    <dimen name="heading_4_size">16sp</dimen>
+    <dimen name="image_width">150dp</dimen>
+    <dimen name="heading_1_size">24sp</dimen>
+    <dimen name="heading_2_size">20sp</dimen>
+    <dimen name="heading_3_size">16sp</dimen>
+    <dimen name="heading_4_size">14sp</dimen>
+    <dimen name="heading_5_size">12sp</dimen>
+    <dimen name="heading_6_size">10sp</dimen>
+
 
 </resources>

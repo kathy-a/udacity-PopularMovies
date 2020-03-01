@@ -47,8 +47,10 @@ public class DetailsActivity extends AppCompatActivity {
                     .error(R.drawable.ic_launcher_foreground)
                     .into(moviePoster);
 
+            String rating = intent.getStringExtra("movieUserRating") + "/10";
+
             releaseDate.setText(intent.getStringExtra("movieReleaseDate"));
-            userRating.setText(intent.getStringExtra("movieUserRating"));
+            userRating.setText(rating);
             moviePlotSynopsis.setText(intent.getStringExtra("moviePlotSynopsis"));
 
         }
