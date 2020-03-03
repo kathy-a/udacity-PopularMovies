@@ -3,6 +3,8 @@ package com.udacity.popularmovies.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 public class TrailerDetails {
     @SerializedName("id")
     @Expose
@@ -28,6 +30,7 @@ public class TrailerDetails {
     @SerializedName("type")
     @Expose
     private String type;
+
 
     public String getId() {
         return id;
@@ -92,5 +95,8 @@ public class TrailerDetails {
     public void setType(String type) {
         this.type = type;
     }
+
+
+
 
 }

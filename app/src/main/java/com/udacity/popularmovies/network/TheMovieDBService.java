@@ -1,9 +1,11 @@
 package com.udacity.popularmovies.network;
 
+import com.udacity.popularmovies.model.MovieTrailer;
 import com.udacity.popularmovies.model.Movies;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 
@@ -15,4 +17,8 @@ public interface TheMovieDBService {
             @Query("api_key") String apiKey,
             @Query("sort_by") String sortOrder);
 
+    @GET("/3/movie/{id}/videos")
+    Call  <MovieTrailer> geTrailer(
+            @Path("id") int id,
+            @Query("api_key") String apiKey);
 }

@@ -5,15 +5,34 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.udacity.popularmovies.model.MovieTrailer;
+import com.udacity.popularmovies.model.Movies;
+import com.udacity.popularmovies.model.TrailerDetails;
+import com.udacity.popularmovies.network.MovieService;
+import com.udacity.popularmovies.network.TheMovieDBService;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 // This class displays the movie details screen after clicking any poster thumbnail on Movies grid view
 public class DetailsActivity extends AppCompatActivity {
 
     private static final String MOVIE_ORIGINAL_TITLE = "movieOriginalTitle" ;
+    private static final String MOVIE_BASE_URL = "https://www.youtube.com/watch?v=" ;
+
+
+    //TODO: Pass the API key instead of calling the resource?
+    private static final String APIKEY = App.getAppResources().getString(R.string.movie_db_api_key);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +47,7 @@ public class DetailsActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-
+        // TODO: REview on create method to decouple intent
         TextView movieTitle = findViewById(R.id.text_movie_title);
         ImageView moviePoster = findViewById(R.id.image_movie_poster);
         TextView releaseDate = findViewById(R.id.text_release_date);
@@ -53,6 +72,56 @@ public class DetailsActivity extends AppCompatActivity {
             userRating.setText(rating);
             moviePlotSynopsis.setText(intent.getStringExtra("moviePlotSynopsis"));
 
+            int movieId = intent.getIntExtra("movieId",0 );
+
+            detailRetrofit(movieId);
+            // TODO: Insert connectivity check
         }
+
+
+
     }
+
+    // TODO: FUTURE: combine handling of retrofit instance in separate class
+    // Create handle for the RetrofitInstance interface
+    private void detailRetrofit(int movieId){
+        TheMovieDBService service2 = MovieService.getRetrofitInstance().create(TheMovieDBService.class);
+
+        //int id = 495764;
+        Call<MovieTrailer> call = service2.geTrailer(movieId, APIKEY);
+
+        call.enqueue(new Callback<MovieTrailer>() {
+            @Override
+            public void onResponse(Call<MovieTrailer> call, Response<MovieTrailer> response) {
+                if(response.isSuccessful()){
+                    Log.d("Trailer onResponse", "Response Successful for movie trailer");
+
+                    ArrayList<TrailerDetails> movieTrailer;
+                    movieTrailer = response.body().getResults();
+
+                    ArrayList<String> videoUrl = new ArrayList<>();
+                    for(int i =0; i < movieTrailer.size(); i++){
+                        String videoKey = movieTrailer.get(i).getKey();
+                        videoUrl.add(MOVIE_BASE_URL + videoKey);
+                    }
+
+                    //TODO: Check how to display the data in what UI
+                    response.body().setUrl(videoUrl);
+                    Log.d("response url", response.body().getUrl().get(0));
+                    Log.d("response url", response.body().getUrl().get(1));
+
+
+                }else{
+                    Log.d("on Response", "Response Fail for movie trailer");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MovieTrailer> call, Throwable t) {
+                Toast.makeText(DetailsActivity.this, "Error getting response for movie trailer", Toast.LENGTH_LONG).show();
+
+            }
+        });
+    }
+
 }

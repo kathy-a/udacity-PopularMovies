@@ -2,6 +2,7 @@ package com.udacity.popularmovies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,11 +90,14 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.Vi
             intent.putExtra("moviePlotSynopsis", movies.get(position).getOverview());
             intent.putExtra("movieUserRating", movies.get(position).getVoteAverage().toString());
             intent.putExtra("movieReleaseDate", movies.get(position).getReleaseDate());
+            intent.putExtra("movieId", movies.get(position).getId());
 
             mContext.startActivity(intent);
         }
     }
 
+    private void detailsRetrofit(){
 
+    }
 
 }
