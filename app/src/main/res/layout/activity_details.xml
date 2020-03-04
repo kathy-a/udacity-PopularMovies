@@ -96,8 +96,18 @@
             android:text="@string/trailers"/>
 
 
+        <RelativeLayout
+            android:id="@+id/trailerParent_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/recycler_DetailActivity" >
+            </androidx.recyclerview.widget.RecyclerView>
 
 
-
+        </RelativeLayout>
     </LinearLayout>
 </ScrollView>
