@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.udacity.popularmovies.model.MovieTrailer;
-import com.udacity.popularmovies.model.Movies;
 import com.udacity.popularmovies.model.TrailerDetails;
 import com.udacity.popularmovies.network.MovieService;
 import com.udacity.popularmovies.network.TheMovieDBService;
@@ -39,7 +38,6 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-
         ActionBar actionBar = this.getSupportActionBar();
 
         // Set the action bar back button to go one level back
@@ -47,17 +45,24 @@ public class DetailsActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        // TODO: REview on create method to decouple intent
+
+        displayMovieDetails();
+
+
+
+    }
+
+
+    private void displayMovieDetails(){
         TextView movieTitle = findViewById(R.id.text_movie_title);
         ImageView moviePoster = findViewById(R.id.image_movie_poster);
         TextView releaseDate = findViewById(R.id.text_release_date);
         TextView userRating = findViewById(R.id.text_user_rating);
         TextView moviePlotSynopsis = findViewById(R.id.text_movie_plot_synopsis);
 
+        // Get content from main activity and display
         Intent intent = getIntent();
-
         if((intent != null) && (intent.hasExtra(MOVIE_ORIGINAL_TITLE))){
-
             movieTitle.setText(intent.getStringExtra("movieOriginalTitle"));
 
             Picasso.with(this)
@@ -81,6 +86,8 @@ public class DetailsActivity extends AppCompatActivity {
 
 
     }
+
+
 
     // TODO: FUTURE: combine handling of retrofit instance in separate class
     // Create handle for the RetrofitInstance interface
