@@ -7,22 +7,18 @@
 
     <ImageView
         android:id="@+id/image_trailer"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"
         android:src="@drawable/ic_play_arrow_green_24dp"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorDimGray"/>
 
     <TextView
         android:id="@+id/text_trailerTitle"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/heading_5_size"
         android:layout_marginLeft="5sp"
-        android:layout_gravity="right"
+        android:layout_gravity="center_horizontal"
         android:singleLine="false"
         tools:text="Trailer Title"/>
 

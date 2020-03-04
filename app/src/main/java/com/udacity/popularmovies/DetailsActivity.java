@@ -2,6 +2,7 @@ package com.udacity.popularmovies;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -155,7 +156,14 @@ public class DetailsActivity extends AppCompatActivity {
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(DetailsActivity.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManager);
 
+        // Add divider to recyclerview
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                horizontalLayoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
+
         recyclerView.setAdapter(adapter);
+
+
     }
 
 }
