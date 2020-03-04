@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
+import com.udacity.popularmovies.model.TrailerDetails;
 
 import java.util.ArrayList;
 
@@ -20,9 +21,9 @@ import java.util.ArrayList;
 public class MovieTrailerAdapter extends RecyclerView.Adapter<MovieTrailerAdapter.ViewHolder> {
 
     private Context mContext;
-    private ArrayList<String> trailer;
+    private ArrayList<TrailerDetails> trailer;
 
-    public MovieTrailerAdapter(Context mContext, ArrayList<String> trailer){
+    public MovieTrailerAdapter(Context mContext, ArrayList<TrailerDetails> trailer){
         this.mContext = mContext;
         this.trailer = trailer;
     }
@@ -40,7 +41,7 @@ public class MovieTrailerAdapter extends RecyclerView.Adapter<MovieTrailerAdapte
     // Required for RecyclerView. Changes depends on what layouts are
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.trailerTitle.setText(trailer.get(position));
+        holder.trailerTitle.setText(trailer.get(position).getName());
 
     }
 

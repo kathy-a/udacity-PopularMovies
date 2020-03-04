@@ -112,7 +112,7 @@ public class DetailsActivity extends AppCompatActivity {
                         videoUrl.add(MOVIE_BASE_URL + videoKey);
 
                         trailerDetails.get(i).setKey(MOVIE_BASE_URL + videoKey);
-                        
+
                     }
 
                     //TODO: Check how to display the data in what UI
@@ -121,7 +121,7 @@ public class DetailsActivity extends AppCompatActivity {
                     Log.d("response url", response.body().getUrl().get(0));
                     Log.d("response url", response.body().getUrl().get(1));*/
 
-                    initTrailerRecyclerView(videoUrl);
+                    initTrailerRecyclerView(trailerDetails);
                     //displayTrailer(videoUrl);
 
                 }else{
@@ -146,9 +146,9 @@ public class DetailsActivity extends AppCompatActivity {
 
     //TODO: adjust the parameter to use trailer object instead
     // Display movie trailer via recyclerview
-    private void initTrailerRecyclerView(ArrayList<String> videoUrl){
+    private void initTrailerRecyclerView(ArrayList<TrailerDetails> trailerDetails){
         RecyclerView recyclerView = findViewById(R.id.recycler_DetailActivity);
-        MovieTrailerAdapter adapter = new MovieTrailerAdapter(this, videoUrl);
+        MovieTrailerAdapter adapter = new MovieTrailerAdapter(this, trailerDetails);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         recyclerView.setAdapter(adapter);
     }
