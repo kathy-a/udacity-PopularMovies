@@ -2,20 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_width="300dp"
-    android:layout_height="100dp">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/image_trailer"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
         android:src="@drawable/ic_play_arrow_green_24dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorDimGray"/>
 
     <TextView
         android:id="@+id/text_trailerTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:justificationMode="inter_word"
         android:layout_marginLeft="5sp"
+        android:layout_gravity="right"
+        android:singleLine="false"
         tools:text="Trailer Title"/>
+
+
 </LinearLayout>

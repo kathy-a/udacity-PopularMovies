@@ -6,5 +6,7 @@
     <color name="colorWhite">#F5F5F5</color>
     <color name="colorHeader">#008577</color>
     <color name="colorGray">#999999</color>
+    <color name="colorDimGray">#696969</color>
+
 
 </resources>

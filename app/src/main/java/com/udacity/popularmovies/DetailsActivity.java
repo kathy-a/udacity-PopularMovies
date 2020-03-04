@@ -3,12 +3,14 @@ package com.udacity.popularmovies;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -149,7 +151,10 @@ public class DetailsActivity extends AppCompatActivity {
     private void initTrailerRecyclerView(ArrayList<TrailerDetails> trailerDetails){
         RecyclerView recyclerView = findViewById(R.id.recycler_DetailActivity);
         MovieTrailerAdapter adapter = new MovieTrailerAdapter(this, trailerDetails);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
+
+        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(DetailsActivity.this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(horizontalLayoutManager);
+
         recyclerView.setAdapter(adapter);
     }
 

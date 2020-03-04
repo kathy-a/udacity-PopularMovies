@@ -107,6 +107,7 @@
                 android:id="@+id/recycler_DetailActivity" >
             </androidx.recyclerview.widget.RecyclerView>
 
+
         </RelativeLayout>
     </LinearLayout>
 </ScrollView>
