@@ -96,8 +96,6 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.Vi
         }
     }
 
-    private void detailsRetrofit(){
 
-    }
 
 }

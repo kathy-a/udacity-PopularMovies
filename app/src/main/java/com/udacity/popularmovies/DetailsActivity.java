@@ -2,6 +2,8 @@ package com.udacity.popularmovies;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -48,8 +50,6 @@ public class DetailsActivity extends AppCompatActivity {
 
         displayMovieDetails();
 
-
-
     }
 
 
@@ -83,8 +83,6 @@ public class DetailsActivity extends AppCompatActivity {
             // TODO: Insert connectivity check
         }
 
-
-
     }
 
 
@@ -103,20 +101,25 @@ public class DetailsActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     Log.d("Trailer onResponse", "Response Successful for movie trailer");
 
-                    ArrayList<TrailerDetails> movieTrailer;
-                    movieTrailer = response.body().getResults();
+                    ArrayList<TrailerDetails> trailerDetails;
+                    trailerDetails = response.body().getResults();
 
+
+                    // Create URL for movie trailers
                     ArrayList<String> videoUrl = new ArrayList<>();
-                    for(int i =0; i < movieTrailer.size(); i++){
-                        String videoKey = movieTrailer.get(i).getKey();
+                    for(int i =0; i < trailerDetails.size(); i++){
+                        String videoKey = trailerDetails.get(i).getKey();
                         videoUrl.add(MOVIE_BASE_URL + videoKey);
                     }
 
                     //TODO: Check how to display the data in what UI
-                    response.body().setUrl(videoUrl);
-                    Log.d("response url", response.body().getUrl().get(0));
-                    Log.d("response url", response.body().getUrl().get(1));
 
+/*                    response.body().setUrl(videoUrl);
+                    Log.d("response url", response.body().getUrl().get(0));
+                    Log.d("response url", response.body().getUrl().get(1));*/
+
+                    initTrailerRecyclerView(videoUrl);
+                    //displayTrailer(videoUrl);
 
                 }else{
                     Log.d("on Response", "Response Fail for movie trailer");
@@ -129,6 +132,22 @@ public class DetailsActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+
+    private void displayTrailer(ArrayList<String> videoUrl){
+        Log.d("display Trailer", videoUrl.get(0) );
+
+
+    }
+
+    //TODO: adjust the parameter to use trailer object instead
+    // Display movie trailer via recyclerview
+    private void initTrailerRecyclerView(ArrayList<String> videoUrl){
+        RecyclerView recyclerView = findViewById(R.id.recycler_DetailActivity);
+        MovieTrailerAdapter adapter = new MovieTrailerAdapter(this, videoUrl);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerView.setAdapter(adapter);
     }
 
 }
