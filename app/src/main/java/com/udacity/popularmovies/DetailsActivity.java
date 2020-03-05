@@ -10,12 +10,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.udacity.popularmovies.model.MovieReview;
 import com.udacity.popularmovies.model.MovieTrailer;
+import com.udacity.popularmovies.model.ReviewDetails;
 import com.udacity.popularmovies.model.TrailerDetails;
 import com.udacity.popularmovies.network.AssertConnectivity;
 import com.udacity.popularmovies.network.MovieService;
@@ -35,6 +36,9 @@ public class DetailsActivity extends AppCompatActivity {
 
     //TODO: Pass the API key instead of calling the resource?
     private static final String APIKEY = App.getAppResources().getString(R.string.movie_db_api_key);
+
+    TheMovieDBService service = MovieService.getRetrofitInstance().create(TheMovieDBService.class);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +85,10 @@ public class DetailsActivity extends AppCompatActivity {
 
             int movieId = intent.getIntExtra("movieId",0 );
 
-            detailRetrofit(movieId);
             // TODO: Insert connectivity check
+            movieTrailerRetrofit(movieId);
+            movieReviewRetrofit(movieId);
+
         }
 
     }
@@ -90,11 +96,10 @@ public class DetailsActivity extends AppCompatActivity {
 
 
     // TODO: FUTURE: combine handling of retrofit instance in separate class
-    // Create handle for the RetrofitInstance interface
-    private void detailRetrofit(int movieId){
-        TheMovieDBService service2 = MovieService.getRetrofitInstance().create(TheMovieDBService.class);
+    // Create handle for the movie trailer RetrofitInstance interface
+    private void movieTrailerRetrofit(int movieId){
 
-        Call<MovieTrailer> call = service2.geTrailer(movieId, APIKEY);
+        Call<MovieTrailer> call = service.getTrailer(movieId, APIKEY);
 
         call.enqueue(new Callback<MovieTrailer>() {
             @Override
@@ -113,6 +118,7 @@ public class DetailsActivity extends AppCompatActivity {
 
                     initTrailerRecyclerView(trailerDetails);
 
+
                 }else{
                     Log.d("on Response", "Response Fail for movie trailer");
                 }
@@ -125,6 +131,53 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    // TODO: FUTURE: combine handling of retrofit instance in separate class
+    // Create handle for the movie review RetrofitInstance interface
+    private void movieReviewRetrofit(int movieId){
+
+        Call<MovieReview> call = service.getReview(movieId, APIKEY);
+
+        call.enqueue(new Callback<MovieReview>() {
+            @Override
+            public void onResponse(Call<MovieReview> call, Response<MovieReview> response) {
+                if(response.isSuccessful()){
+                    Log.d("Review onResponse", "Response Successful for movie review");
+
+                    ArrayList<ReviewDetails> reviewDetails;
+                    reviewDetails = response.body().getResults();
+
+                    ArrayList<String> review= new ArrayList<>();;
+
+                    for(int i =0; i < reviewDetails.size(); i++){
+                        String currentReview = reviewDetails.get(i).getContent();
+                        Log.d("Review onResponse", currentReview);
+                        review.add(currentReview);
+                    }
+
+
+                    // TODO: INITIALIZE RECYCLERVIEW FOR REVIEW
+
+
+
+                }else{
+                    Log.d("Review onResponse", "Response Fail for movie review");
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<MovieReview> call, Throwable t) {
+                Toast.makeText(DetailsActivity.this, "Error getting response for movie review", Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+
+
+    }
+
 
 
 
