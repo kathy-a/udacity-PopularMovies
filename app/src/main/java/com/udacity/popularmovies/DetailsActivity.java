@@ -3,6 +3,7 @@ package com.udacity.popularmovies;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -150,6 +151,8 @@ public class DetailsActivity extends AppCompatActivity {
 
                     ArrayList<String> review= new ArrayList<>();;
 
+
+
                     for(int i =0; i < reviewDetails.size(); i++){
                         String currentReview = reviewDetails.get(i).getContent();
                         Log.d("Review onResponse", currentReview);
@@ -158,7 +161,7 @@ public class DetailsActivity extends AppCompatActivity {
 
 
                     // TODO: INITIALIZE RECYCLERVIEW FOR REVIEW
-
+                    initReviewRecyclerView(reviewDetails);
 
 
                 }else{
@@ -183,7 +186,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     // Display movie trailer via recyclerview
     private void initTrailerRecyclerView(ArrayList<TrailerDetails> trailerDetails){
-        RecyclerView recyclerView = findViewById(R.id.recycler_DetailActivity);
+        RecyclerView recyclerView = findViewById(R.id.recycler_DetailActivity_trailer);
         MovieTrailerAdapter adapter = new MovieTrailerAdapter(this, trailerDetails);
 
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(DetailsActivity.this, LinearLayoutManager.HORIZONTAL, false);
@@ -196,7 +199,15 @@ public class DetailsActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
 
+    }
 
+    // Display movie review via recyclerview
+    private void initReviewRecyclerView(ArrayList<ReviewDetails> reviewDetails){
+        RecyclerView recyclerView = findViewById(R.id.recycler_DetailActivity_review);
+        MovieReviewAdapter adapter = new MovieReviewAdapter(this, reviewDetails);
+
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerView.setAdapter(adapter);
     }
 
 }

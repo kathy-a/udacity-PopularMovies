@@ -97,8 +97,8 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/recycler_DetailActivity" >
+                android:layout_height="wrap_content"
+                android:id="@+id/recycler_DetailActivity_trailer" >
             </androidx.recyclerview.widget.RecyclerView>
 
         </RelativeLayout>
@@ -110,6 +110,20 @@
         <TextView
             style="@style/Heading2"
             android:text="@string/reviews"/>
+
+        <RelativeLayout
+            android:id="@+id/reviewParent_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/recycler_DetailActivity_review" >
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </RelativeLayout>
+
 
     </LinearLayout>
 </ScrollView>
