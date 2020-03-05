@@ -2,6 +2,7 @@ package com.udacity.popularmovies;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.udacity.popularmovies.model.MovieTrailer;
 import com.udacity.popularmovies.model.TrailerDetails;
+import com.udacity.popularmovies.network.AssertConnectivity;
 import com.udacity.popularmovies.network.MovieService;
 import com.udacity.popularmovies.network.TheMovieDBService;
 
@@ -49,6 +51,8 @@ public class DetailsActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        // Set new context to Details Activity
+        new AssertConnectivity(DetailsActivity.this);
 
         displayMovieDetails();
 
@@ -155,7 +159,14 @@ public class DetailsActivity extends AppCompatActivity {
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(DetailsActivity.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManager);
 
+        // Add divider to recyclerview
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                horizontalLayoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
+
         recyclerView.setAdapter(adapter);
+
+
     }
 
 }
