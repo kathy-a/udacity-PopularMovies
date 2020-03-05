@@ -16,7 +16,9 @@
         <item name="android:textSize">@dimen/heading_2_size</item>
         <item name="android:justificationMode">inter_word</item>
         <item name="android:textAppearance">?android:textAppearanceMedium</item>
+<!--
         <item name="android:layout_marginBottom">8dp</item>
+-->
     </style>
 
     android:layout_width="match_parent"

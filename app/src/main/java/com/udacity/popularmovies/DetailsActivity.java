@@ -206,7 +206,8 @@ public class DetailsActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recycler_DetailActivity_review);
         MovieReviewAdapter adapter = new MovieReviewAdapter(this, reviewDetails);
 
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        // recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
 

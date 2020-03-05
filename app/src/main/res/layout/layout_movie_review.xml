@@ -9,20 +9,22 @@
         android:id="@+id/text_reviewAuthor"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/heading_5_size"
+        android:textSize="@dimen/heading_3_size"
         android:layout_marginLeft="5sp"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="left"
         android:singleLine="false"
+        android:textStyle="bold"
         tools:text="Review Author"/>
 
 
     <TextView
         android:id="@+id/text_reviewContent"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/heading_5_size"
         android:layout_marginLeft="5sp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/activity_padding_margin"
         android:singleLine="false"
         tools:text="Review Content"/>
 
