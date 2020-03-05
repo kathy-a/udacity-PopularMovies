@@ -3,7 +3,6 @@ package com.udacity.popularmovies;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,10 +33,8 @@ public class DetailsActivity extends AppCompatActivity {
     private static final String MOVIE_ORIGINAL_TITLE = "movieOriginalTitle" ;
     private static final String MOVIE_BASE_URL = "https://www.youtube.com/watch?v=" ;
 
-
     //TODO: Pass the API key instead of calling the resource?
     private static final String APIKEY = App.getAppResources().getString(R.string.movie_db_api_key);
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +52,6 @@ public class DetailsActivity extends AppCompatActivity {
         new AssertConnectivity(DetailsActivity.this);
 
         displayMovieDetails();
-
     }
 
 
@@ -98,7 +94,6 @@ public class DetailsActivity extends AppCompatActivity {
     private void detailRetrofit(int movieId){
         TheMovieDBService service2 = MovieService.getRetrofitInstance().create(TheMovieDBService.class);
 
-        //int id = 495764;
         Call<MovieTrailer> call = service2.geTrailer(movieId, APIKEY);
 
         call.enqueue(new Callback<MovieTrailer>() {
@@ -110,25 +105,13 @@ public class DetailsActivity extends AppCompatActivity {
                     ArrayList<TrailerDetails> trailerDetails;
                     trailerDetails = response.body().getResults();
 
-
                     // Create URL for movie trailers
-                    ArrayList<String> videoUrl = new ArrayList<>();
                     for(int i =0; i < trailerDetails.size(); i++){
                         String videoKey = trailerDetails.get(i).getKey();
-                        videoUrl.add(MOVIE_BASE_URL + videoKey);
-
                         trailerDetails.get(i).setKey(MOVIE_BASE_URL + videoKey);
-
                     }
 
-                    //TODO: Check how to display the data in what UI
-
-/*                    response.body().setUrl(videoUrl);
-                    Log.d("response url", response.body().getUrl().get(0));
-                    Log.d("response url", response.body().getUrl().get(1));*/
-
                     initTrailerRecyclerView(trailerDetails);
-                    //displayTrailer(videoUrl);
 
                 }else{
                     Log.d("on Response", "Response Fail for movie trailer");
@@ -144,13 +127,7 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
 
-    private void displayTrailer(ArrayList<String> videoUrl){
-        Log.d("display Trailer", videoUrl.get(0) );
 
-
-    }
-
-    //TODO: adjust the parameter to use trailer object instead
     // Display movie trailer via recyclerview
     private void initTrailerRecyclerView(ArrayList<TrailerDetails> trailerDetails){
         RecyclerView recyclerView = findViewById(R.id.recycler_DetailActivity);

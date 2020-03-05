@@ -56,11 +56,6 @@ public class MovieTrailerAdapter extends RecyclerView.Adapter<MovieTrailerAdapte
     public int getItemCount() { return trailer != null? trailer.size() : 0; }
 
 
-
-
-
-
-
     // Holds widget in memory for each individual entry
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
