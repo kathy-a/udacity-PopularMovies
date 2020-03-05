@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.udacity.popularmovies.model.MovieTrailer;
 import com.udacity.popularmovies.model.TrailerDetails;
+import com.udacity.popularmovies.network.AssertConnectivity;
 import com.udacity.popularmovies.network.MovieService;
 import com.udacity.popularmovies.network.TheMovieDBService;
 
@@ -50,6 +51,8 @@ public class DetailsActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        // Set new context to Details Activity
+        new AssertConnectivity(DetailsActivity.this);
 
         displayMovieDetails();
 

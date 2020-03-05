@@ -4,9 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -17,6 +14,7 @@ import android.widget.Toast;
 import com.udacity.popularmovies.model.Movies;
 import com.udacity.popularmovies.model.Result;
 
+import com.udacity.popularmovies.network.AssertConnectivity;
 import com.udacity.popularmovies.network.TheMovieDBService;
 import com.udacity.popularmovies.network.MovieService;
 
@@ -42,10 +40,13 @@ public class MainActivity extends AppCompatActivity {
 
         // TODO: Check if this is required to be added in asynctask because or ROOM implementation change
         // Call movieDbQueryTask if there is connectivity. Otherwise, display error toast message
-        if(isOnline()){
+        new AssertConnectivity(MainActivity.this);
+
+        if(AssertConnectivity.isOnline()){
             initRetrofit(sortOrder);
         }else
-            errorConnectMessage();
+            AssertConnectivity.errorConnectMessage(App.getAppResources().getString(R.string.error_connection_themoviedb));
+
 
     }
 
@@ -69,11 +70,10 @@ public class MainActivity extends AppCompatActivity {
             return super.onOptionsItemSelected(item);
 
         // TODO: Check if this is required to be added in asynctask because or ROOM implementation change
-        if(isOnline()){
+        if(AssertConnectivity.isOnline()){
             initRetrofit(sortOrder);
         }else
-            errorConnectMessage();
-
+            AssertConnectivity.errorConnectMessage(App.getAppResources().getString(R.string.error_connection_themoviedb));
         return true;
     }
 
@@ -85,18 +85,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    // Check if the phone / device has connectivity.
-    private boolean isOnline() {
-        ConnectivityManager cm =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
-    }
 
-    // Toas error message for connectivity issue
-    private void errorConnectMessage() {
-        Toast.makeText(this, R.string.error_connection, Toast.LENGTH_LONG).show();
-    }
 
     // Create handle for the RetrofitInstance interface
     private void initRetrofit(String sortOrder){
