@@ -36,6 +36,8 @@ public class MovieReviewAdapter extends RecyclerView.Adapter<MovieReviewAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.reviewAuthor.setText(review.get(position).getAuthor());
+        holder.reviewContent.setText(review.get(position).getContent());
+
 
     }
 
@@ -48,12 +50,16 @@ public class MovieReviewAdapter extends RecyclerView.Adapter<MovieReviewAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView reviewAuthor;
+        TextView reviewContent;
+
         RelativeLayout parentLayout;
 
         //Constructor required for Viewholder
         public ViewHolder( View itemView) {
             super(itemView);
             reviewAuthor = itemView.findViewById(R.id.text_reviewAuthor);
+            reviewContent = itemView.findViewById(R.id.text_reviewContent);
+
             parentLayout = itemView.findViewById(R.id.reviewParent_layout);
             itemView.setOnClickListener(this);
         }
