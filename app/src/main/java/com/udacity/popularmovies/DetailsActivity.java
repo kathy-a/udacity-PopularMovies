@@ -191,11 +191,10 @@ public class DetailsActivity extends AppCompatActivity {
 
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(DetailsActivity.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManager);
-
         // Add divider to recyclerview
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+/*        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 horizontalLayoutManager.getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.addItemDecoration(dividerItemDecoration);*/
 
         recyclerView.setAdapter(adapter);
 
@@ -205,9 +204,17 @@ public class DetailsActivity extends AppCompatActivity {
     private void initReviewRecyclerView(ArrayList<ReviewDetails> reviewDetails){
         RecyclerView recyclerView = findViewById(R.id.recycler_DetailActivity_review);
         MovieReviewAdapter adapter = new MovieReviewAdapter(this, reviewDetails);
-
-        // recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(DetailsActivity.this, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(verticalLayoutManager);
+        // Add divider to recyclerview
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                verticalLayoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
+
+
+
         recyclerView.setAdapter(adapter);
     }
 

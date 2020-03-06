@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -10,10 +11,14 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
+        android:layout_marginTop="@dimen/activity_thin_padding"
         android:src="@drawable/ic_play_arrow_green_24dp"/>
 
     <TextView
         android:id="@+id/text_trailerTitle"
+        android:paddingLeft="@dimen/activity_padding_margin"
+        android:paddingRight="@dimen/activity_padding_margin"
+        android:paddingBottom="@dimen/activity_padding_margin"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:textSize="@dimen/heading_5_size"

@@ -7,10 +7,13 @@
 
     <TextView
         android:id="@+id/text_reviewAuthor"
+        android:layout_marginLeft="@dimen/activity_padding_margin"
+        android:layout_marginRight="@dimen/activity_padding_margin"
+        android:layout_marginBottom="@dimen/activity_thin_padding"
+        android:layout_marginTop="@dimen/activity_padding_margin"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:textSize="@dimen/heading_3_size"
-        android:layout_marginLeft="5sp"
         android:layout_gravity="left"
         android:singleLine="false"
         android:textStyle="bold"
@@ -22,9 +25,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/heading_5_size"
-        android:layout_marginLeft="5sp"
-        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="@dimen/activity_padding_margin"
+        android:layout_marginRight="@dimen/activity_padding_margin"
         android:layout_marginBottom="@dimen/activity_padding_margin"
+
+        android:justificationMode="inter_word"
         android:singleLine="false"
         tools:text="Review Content"/>
 
