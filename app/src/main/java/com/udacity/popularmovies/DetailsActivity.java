@@ -11,12 +11,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.udacity.popularmovies.model.MovieReview;
 import com.udacity.popularmovies.model.MovieTrailer;
+import com.udacity.popularmovies.model.ReviewDetails;
 import com.udacity.popularmovies.model.TrailerDetails;
 import com.udacity.popularmovies.network.AssertConnectivity;
 import com.udacity.popularmovies.network.MovieService;
@@ -34,9 +35,10 @@ public class DetailsActivity extends AppCompatActivity {
     private static final String MOVIE_ORIGINAL_TITLE = "movieOriginalTitle" ;
     private static final String MOVIE_BASE_URL = "https://www.youtube.com/watch?v=" ;
 
-
     //TODO: Pass the API key instead of calling the resource?
     private static final String APIKEY = App.getAppResources().getString(R.string.movie_db_api_key);
+
+    TheMovieDBService service = MovieService.getRetrofitInstance().create(TheMovieDBService.class);
 
 
     @Override
@@ -55,7 +57,6 @@ public class DetailsActivity extends AppCompatActivity {
         new AssertConnectivity(DetailsActivity.this);
 
         displayMovieDetails();
-
     }
 
 
@@ -85,8 +86,10 @@ public class DetailsActivity extends AppCompatActivity {
 
             int movieId = intent.getIntExtra("movieId",0 );
 
-            detailRetrofit(movieId);
             // TODO: Insert connectivity check
+            movieTrailerRetrofit(movieId);
+            movieReviewRetrofit(movieId);
+
         }
 
     }
@@ -94,12 +97,10 @@ public class DetailsActivity extends AppCompatActivity {
 
 
     // TODO: FUTURE: combine handling of retrofit instance in separate class
-    // Create handle for the RetrofitInstance interface
-    private void detailRetrofit(int movieId){
-        TheMovieDBService service2 = MovieService.getRetrofitInstance().create(TheMovieDBService.class);
+    // Create handle for the movie trailer RetrofitInstance interface
+    private void movieTrailerRetrofit(int movieId){
 
-        //int id = 495764;
-        Call<MovieTrailer> call = service2.geTrailer(movieId, APIKEY);
+        Call<MovieTrailer> call = service.getTrailer(movieId, APIKEY);
 
         call.enqueue(new Callback<MovieTrailer>() {
             @Override
@@ -110,25 +111,14 @@ public class DetailsActivity extends AppCompatActivity {
                     ArrayList<TrailerDetails> trailerDetails;
                     trailerDetails = response.body().getResults();
 
-
                     // Create URL for movie trailers
-                    ArrayList<String> videoUrl = new ArrayList<>();
                     for(int i =0; i < trailerDetails.size(); i++){
                         String videoKey = trailerDetails.get(i).getKey();
-                        videoUrl.add(MOVIE_BASE_URL + videoKey);
-
                         trailerDetails.get(i).setKey(MOVIE_BASE_URL + videoKey);
-
                     }
 
-                    //TODO: Check how to display the data in what UI
-
-/*                    response.body().setUrl(videoUrl);
-                    Log.d("response url", response.body().getUrl().get(0));
-                    Log.d("response url", response.body().getUrl().get(1));*/
-
                     initTrailerRecyclerView(trailerDetails);
-                    //displayTrailer(videoUrl);
+
 
                 }else{
                     Log.d("on Response", "Response Fail for movie trailer");
@@ -144,29 +134,88 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
 
-    private void displayTrailer(ArrayList<String> videoUrl){
-        Log.d("display Trailer", videoUrl.get(0) );
+    // TODO: FUTURE: combine handling of retrofit instance in separate class
+    // Create handle for the movie review RetrofitInstance interface
+    private void movieReviewRetrofit(int movieId){
+
+        Call<MovieReview> call = service.getReview(movieId, APIKEY);
+
+        call.enqueue(new Callback<MovieReview>() {
+            @Override
+            public void onResponse(Call<MovieReview> call, Response<MovieReview> response) {
+                if(response.isSuccessful()){
+                    Log.d("Review onResponse", "Response Successful for movie review");
+
+                    ArrayList<ReviewDetails> reviewDetails;
+                    reviewDetails = response.body().getResults();
+
+                    ArrayList<String> review= new ArrayList<>();;
+
+
+
+                    for(int i =0; i < reviewDetails.size(); i++){
+                        String currentReview = reviewDetails.get(i).getContent();
+                        Log.d("Review onResponse", currentReview);
+                        review.add(currentReview);
+                    }
+
+
+                    // TODO: INITIALIZE RECYCLERVIEW FOR REVIEW
+                    initReviewRecyclerView(reviewDetails);
+
+
+                }else{
+                    Log.d("Review onResponse", "Response Fail for movie review");
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<MovieReview> call, Throwable t) {
+                Toast.makeText(DetailsActivity.this, "Error getting response for movie review", Toast.LENGTH_LONG).show();
+            }
+        });
+
+
 
 
     }
 
-    //TODO: adjust the parameter to use trailer object instead
+
+
+
     // Display movie trailer via recyclerview
     private void initTrailerRecyclerView(ArrayList<TrailerDetails> trailerDetails){
-        RecyclerView recyclerView = findViewById(R.id.recycler_DetailActivity);
+        RecyclerView recyclerView = findViewById(R.id.recycler_DetailActivity_trailer);
         MovieTrailerAdapter adapter = new MovieTrailerAdapter(this, trailerDetails);
 
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(DetailsActivity.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManager);
-
         // Add divider to recyclerview
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+/*        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 horizontalLayoutManager.getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.addItemDecoration(dividerItemDecoration);*/
 
         recyclerView.setAdapter(adapter);
 
+    }
 
+    // Display movie review via recyclerview
+    private void initReviewRecyclerView(ArrayList<ReviewDetails> reviewDetails){
+        RecyclerView recyclerView = findViewById(R.id.recycler_DetailActivity_review);
+        MovieReviewAdapter adapter = new MovieReviewAdapter(this, reviewDetails);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(DetailsActivity.this, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(verticalLayoutManager);
+        // Add divider to recyclerview
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                verticalLayoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
+
+
+
+        recyclerView.setAdapter(adapter);
     }
 
 }

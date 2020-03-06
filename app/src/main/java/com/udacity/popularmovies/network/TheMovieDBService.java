@@ -1,5 +1,6 @@
 package com.udacity.popularmovies.network;
 
+import com.udacity.popularmovies.model.MovieReview;
 import com.udacity.popularmovies.model.MovieTrailer;
 import com.udacity.popularmovies.model.Movies;
 
@@ -18,7 +19,15 @@ public interface TheMovieDBService {
             @Query("sort_by") String sortOrder);
 
     @GET("/3/movie/{id}/videos")
-    Call  <MovieTrailer> geTrailer(
+    Call  <MovieTrailer> getTrailer(
             @Path("id") int id,
             @Query("api_key") String apiKey);
+
+    @GET("/3/movie/{id}/reviews")
+    Call  <MovieReview> getReview(
+            @Path("id") int id,
+            @Query("api_key") String apiKey);
+
+
+
 }
