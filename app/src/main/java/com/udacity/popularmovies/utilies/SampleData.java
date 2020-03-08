@@ -1,12 +1,8 @@
 package com.udacity.popularmovies.utilies;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
 
-import com.udacity.popularmovies.model.Movie;
+import com.udacity.popularmovies.database.MovieEntity;
 
 
 public class SampleData {
@@ -33,11 +29,17 @@ public class SampleData {
     private static final String SAMPLE_DATE_3 = "2030-011-11";
 
 
-    public static ArrayList<Movie> getSampleMovieData() {
-        ArrayList<Movie> movie = new ArrayList<>();
-        movie.add(new Movie(1, SAMPLE_TITLE_1, SAMPLE_POSTER_1, SAMPLE_PLOT_1, SAMPLE_RATING_1, SAMPLE_DATE_1));
-        movie.add(new Movie(2, SAMPLE_TITLE_2, SAMPLE_POSTER_2, SAMPLE_PLOT_2, SAMPLE_RATING_2, SAMPLE_DATE_2));
-        movie.add(new Movie(3, SAMPLE_TITLE_3, SAMPLE_POSTER_3, SAMPLE_PLOT_3, SAMPLE_RATING_3, SAMPLE_DATE_3));
+    public static ArrayList<MovieEntity> getSampleMovieData() {
+        ArrayList<MovieEntity> movie = new ArrayList<>();
+/*
+        movie.add(new MovieEntity(1, SAMPLE_TITLE_1, SAMPLE_POSTER_1, SAMPLE_PLOT_1, SAMPLE_RATING_1, SAMPLE_DATE_1));
+        movie.add(new MovieEntity(2, SAMPLE_TITLE_2, SAMPLE_POSTER_2, SAMPLE_PLOT_2, SAMPLE_RATING_2, SAMPLE_DATE_2));
+        movie.add(new MovieEntity(3, SAMPLE_TITLE_3, SAMPLE_POSTER_3, SAMPLE_PLOT_3, SAMPLE_RATING_3, SAMPLE_DATE_3));
+*/
+
+        movie.add(new MovieEntity( SAMPLE_TITLE_1, SAMPLE_POSTER_1, SAMPLE_PLOT_1, SAMPLE_RATING_1, SAMPLE_DATE_1));
+        movie.add(new MovieEntity( SAMPLE_TITLE_2, SAMPLE_POSTER_2, SAMPLE_PLOT_2, SAMPLE_RATING_2, SAMPLE_DATE_2));
+        movie.add(new MovieEntity( SAMPLE_TITLE_3, SAMPLE_POSTER_3, SAMPLE_PLOT_3, SAMPLE_RATING_3, SAMPLE_DATE_3));
 
 
         return movie;

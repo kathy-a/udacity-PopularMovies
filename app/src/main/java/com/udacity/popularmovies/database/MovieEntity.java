@@ -1,21 +1,28 @@
-package com.udacity.popularmovies.model;
+package com.udacity.popularmovies.database;
 
 
 //TODO: Investigate if can be combine with the POJO - Result.class
 
-public class Movie {
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
-    private int id;
+@Entity(tableName = "Movie")
+public class MovieEntity {
+
+    @PrimaryKey(autoGenerate = true)
+    private int id = 0;
     private String originalTitle;
     private String poster;
     private String plotSynopsis;
     private String userRating;
     private String releaseDate;
 
-    public Movie() {
+    @Ignore
+    public MovieEntity() {
     }
 
-    public Movie(int id, String originalTitle, String poster, String plotSynopsis, String userRating, String releaseDate) {
+    public MovieEntity(int id, String originalTitle, String poster, String plotSynopsis, String userRating, String releaseDate) {
         this.id = id;
         this.originalTitle = originalTitle;
         this.poster = poster;
@@ -24,13 +31,15 @@ public class Movie {
         this.releaseDate = releaseDate;
     }
 
-    public Movie(String originalTitle, String poster, String plotSynopsis, String userRating, String releaseDate){
+    @Ignore
+    public MovieEntity(String originalTitle, String poster, String plotSynopsis, String userRating, String releaseDate){
         this.originalTitle = originalTitle;
         this.poster = poster;
         this.plotSynopsis = plotSynopsis;
         this.userRating = userRating;
         this.releaseDate = releaseDate;
     }
+
 
     public String getOriginalTitle() {
         return originalTitle;
