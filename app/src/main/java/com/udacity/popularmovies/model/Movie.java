@@ -1,18 +1,28 @@
 package com.udacity.popularmovies.model;
 
 
-//TODO: Investigate if this model is needed for Project Part 2 Implementation
+//TODO: Investigate if can be combine with the POJO - Result.class
 
 public class Movie {
 
-
+    private int id;
     private String originalTitle;
     private String poster;
     private String plotSynopsis;
     private String userRating;
     private String releaseDate;
 
+    public Movie() {
+    }
 
+    public Movie(int id, String originalTitle, String poster, String plotSynopsis, String userRating, String releaseDate) {
+        this.id = id;
+        this.originalTitle = originalTitle;
+        this.poster = poster;
+        this.plotSynopsis = plotSynopsis;
+        this.userRating = userRating;
+        this.releaseDate = releaseDate;
+    }
 
     public Movie(String originalTitle, String poster, String plotSynopsis, String userRating, String releaseDate){
         this.originalTitle = originalTitle;
@@ -49,6 +59,26 @@ public class Movie {
     public String getReleaseDate(){ return releaseDate; }
 
     public void setReleaseDate(String releaseDate){ this.releaseDate = releaseDate; }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id=" + id +
+                ", originalTitle='" + originalTitle + '\'' +
+                ", poster='" + poster + '\'' +
+                ", plotSynopsis='" + plotSynopsis + '\'' +
+                ", userRating='" + userRating + '\'' +
+                ", releaseDate='" + releaseDate + '\'' +
+                '}';
+    }
 }
 
 

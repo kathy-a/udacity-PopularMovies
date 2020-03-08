@@ -17,6 +17,8 @@ import com.udacity.popularmovies.model.Result;
 import com.udacity.popularmovies.network.AssertConnectivity;
 import com.udacity.popularmovies.network.TheMovieDBService;
 import com.udacity.popularmovies.network.MovieService;
+import com.udacity.popularmovies.model.Movie; // For Sample data
+import com.udacity.popularmovies.utilies.SampleData;
 
 
 import java.util.ArrayList;
@@ -31,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
 
     private String sortOrder = "popularity.desc";
     private static final String APIKEY = App.getAppResources().getString(R.string.movie_db_api_key);
+
+    // For Sample Data
+    private ArrayList<Movie> movieData = new ArrayList<>();
 
 
     @Override
@@ -48,6 +53,12 @@ public class MainActivity extends AppCompatActivity {
             AssertConnectivity.errorConnectMessage(App.getAppResources().getString(R.string.error_connection_themoviedb));
 
 
+        // For sample data
+        movieData.addAll(SampleData.getSampleMovieData());
+        for (Movie currentMovie :
+                movieData) {
+            Log.d("MOVIE SAMPLE DATA", currentMovie.toString());
+        }
     }
 
     // Display Menu layout created
