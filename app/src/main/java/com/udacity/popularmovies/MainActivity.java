@@ -1,6 +1,8 @@
 package com.udacity.popularmovies;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +23,7 @@ import com.udacity.popularmovies.database.MovieEntity; // For Sample data
 import com.udacity.popularmovies.ui.MoviesViewAdapter;
 import com.udacity.popularmovies.utilies.App;
 import com.udacity.popularmovies.utilies.SampleData;
+import com.udacity.popularmovies.viewmodel.MainViewModel;
 
 
 import java.util.ArrayList;
@@ -39,11 +42,14 @@ public class MainActivity extends AppCompatActivity {
     // For Sample Data
     private ArrayList<MovieEntity> movieData = new ArrayList<>();
 
+    private MainViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        initViewModel();
 
         // TODO: Check if this is required to be added in asynctask because or ROOM implementation change
         // Call movieDbQueryTask if there is connectivity. Otherwise, display error toast message
@@ -56,11 +62,15 @@ public class MainActivity extends AppCompatActivity {
 
 
         // For sample data
-        movieData.addAll(SampleData.getSampleMovieData());
-        for (MovieEntity currentMovie :
-                movieData) {
+        movieData.addAll(viewModel.movieData);
+        for (MovieEntity currentMovie : movieData) {
             Log.d("MOVIE SAMPLE DATA", currentMovie.toString());
         }
+    }
+
+    private void initViewModel() {
+        viewModel = ViewModelProviders.of(this)
+                .get(MainViewModel.class);
     }
 
     // Display Menu layout created
