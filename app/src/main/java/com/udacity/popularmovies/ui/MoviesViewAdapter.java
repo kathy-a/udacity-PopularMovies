@@ -1,8 +1,7 @@
-package com.udacity.popularmovies;
+package com.udacity.popularmovies.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
+import com.udacity.popularmovies.DetailsActivity;
+import com.udacity.popularmovies.R;
 import com.udacity.popularmovies.model.Result;
 
 import java.util.ArrayList;

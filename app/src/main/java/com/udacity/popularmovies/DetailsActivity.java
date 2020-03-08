@@ -3,7 +3,6 @@ package com.udacity.popularmovies;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,6 +21,9 @@ import com.udacity.popularmovies.model.TrailerDetails;
 import com.udacity.popularmovies.network.AssertConnectivity;
 import com.udacity.popularmovies.network.MovieService;
 import com.udacity.popularmovies.network.TheMovieDBService;
+import com.udacity.popularmovies.ui.MovieReviewAdapter;
+import com.udacity.popularmovies.ui.MovieTrailerAdapter;
+import com.udacity.popularmovies.utilies.App;
 
 import java.util.ArrayList;
 

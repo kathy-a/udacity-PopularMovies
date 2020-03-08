@@ -2,7 +2,7 @@ package com.udacity.popularmovies.network;
 
 import android.net.Uri;
 
-import com.udacity.popularmovies.App;
+import com.udacity.popularmovies.utilies.App;
 import com.udacity.popularmovies.R;
 
 import java.net.MalformedURLException;

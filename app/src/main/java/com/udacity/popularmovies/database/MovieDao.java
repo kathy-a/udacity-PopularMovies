@@ -17,7 +17,7 @@ public interface MovieDao {
     void insertMovie(MovieEntity movieEntity);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAll(ArrayList<MovieEntity> movieList);
+    void insertAll(List<MovieEntity> movieList);
 
     @Delete
     void deleteMovie(MovieEntity movieEntity);

@@ -18,6 +18,8 @@ import com.udacity.popularmovies.network.AssertConnectivity;
 import com.udacity.popularmovies.network.TheMovieDBService;
 import com.udacity.popularmovies.network.MovieService;
 import com.udacity.popularmovies.database.MovieEntity; // For Sample data
+import com.udacity.popularmovies.ui.MoviesViewAdapter;
+import com.udacity.popularmovies.utilies.App;
 import com.udacity.popularmovies.utilies.SampleData;
 
 

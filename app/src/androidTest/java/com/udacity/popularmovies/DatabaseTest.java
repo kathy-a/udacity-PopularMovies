@@ -52,16 +52,15 @@ public class DatabaseTest {
         assertEquals(SampleData.getSampleMovieData().size(), count);
     }
 
-/*
-    @Test
+    // TODO: FIX the error on possibly the id
+/*    @Test
     public void compareStrings() {
         dao.insertAll(SampleData.getSampleMovieData());
         int original = SampleData.getSampleMovieData().get(0).getId();
-        MovieEntity fromDb = dao.getMovieById(1);
+        MovieEntity fromDb = dao.getMovieById(0);
         assertEquals(original, fromDb.getId());
-        assertEquals(1, fromDb.getId());
-    }
-*/
+       // assertEquals(1, fromDb.getId());
+    }*/
 
 
 }
