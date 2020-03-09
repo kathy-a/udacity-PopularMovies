@@ -21,6 +21,7 @@ import com.udacity.popularmovies.network.MovieService;
 import com.udacity.popularmovies.database.MovieEntity; // For Sample data
 import com.udacity.popularmovies.ui.MoviesViewAdapter;
 import com.udacity.popularmovies.utilies.App;
+import com.udacity.popularmovies.utilies.SampleData;
 import com.udacity.popularmovies.viewmodel.MainViewModel;
 
 
@@ -46,29 +47,41 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-        initViewModel();
+
+        //TODO: REMOVE comment for init view model
+        // initViewModel();
 
         // TODO: Check if this is required to be added in asynctask because or ROOM implementation change
+        // TODO: remove comment tag once local content is settled
         // Call movieDbQueryTask if there is connectivity. Otherwise, display error toast message
-        new AssertConnectivity(MainActivity.this);
+/*        new AssertConnectivity(MainActivity.this);
 
         if(AssertConnectivity.isOnline()){
             initRetrofit(mSortOrder);
         }else
-            AssertConnectivity.errorConnectMessage(App.getAppResources().getString(R.string.error_connection_themoviedb));
+            AssertConnectivity.errorConnectMessage(App.getAppResources().getString(R.string.error_connection_themoviedb));*/
 
 
         // For sample data
-        movieData.addAll(mViewModel.movieData);
+/*        movieData.addAll(mViewModel.movieData);
         for (MovieEntity currentMovie : movieData) {
             Log.d("MOVIE SAMPLE DATA", currentMovie.toString());
-        }
+        }*/
         // TODO: Remove the adding of sample data in database
         // Add sample data on db
-        addSampleData();
+        //addSampleData();
+
+
+        // TODO: REMOVE HARDCODED SAMPLE DATA
+        ArrayList<MovieEntity> movieList;
+        movieList = SampleData.getSampleMovieData();
+        initLocalRecyclerView(movieList);
+
 
     }
+
+
+
 
     private void addSampleData() {
         mViewModel.addSampleData();
@@ -106,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    // TODO: add 1 method that will check what recyclerview will be passed
     // Display movie poster path via recyclerview
     private void initRecyclerView(ArrayList<Result> movieList){
         RecyclerView recyclerView = findViewById(R.id.recycler_MainActivity);
@@ -114,6 +128,12 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
+    private void initLocalRecyclerView(ArrayList<MovieEntity> movieList){
+        RecyclerView recyclerView = findViewById(R.id.recycler_MainActivity);
+        MoviesViewAdapter adapter = new MoviesViewAdapter(this, movieList, true);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerView.setAdapter(adapter);
+    }
 
 
     // Create handle for the RetrofitInstance interface

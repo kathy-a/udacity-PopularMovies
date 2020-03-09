@@ -2,6 +2,7 @@ package com.udacity.popularmovies.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 import com.udacity.popularmovies.DetailsActivity;
 import com.udacity.popularmovies.R;
+import com.udacity.popularmovies.database.MovieEntity;
 import com.udacity.popularmovies.model.Result;
 
 import java.util.ArrayList;
@@ -24,14 +26,27 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.Vi
 
     private static final String TAG = "MoviesViewAdapter";
 
-    private ArrayList<Result> mMovies;
     private Context mContext;
+    private ArrayList<Result> mMovies;
+    private ArrayList<MovieEntity> mLocalMovies;
+    private boolean isLocal;
+
+
+    public MoviesViewAdapter(Context mContext, ArrayList<MovieEntity> mLocalMovies, boolean isLocal) {
+        this.mContext = mContext;
+        this.mLocalMovies = mLocalMovies;
+        this.isLocal = isLocal;
+    }
 
 
     public MoviesViewAdapter(Context mContext, ArrayList<Result> movies) {
         this.mMovies = movies;
         this.mContext = mContext;
+        // TODO: MAY need to set islocal to false for not hardcoded view
     }
+
+
+
 
     // Required for RecyclerView. Responsible for inflating the view / recycling the viewholder
     @NonNull
@@ -45,8 +60,19 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.Vi
     // Required for RecyclerView. Changes depends on what layouts are
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+
+        String moviePoster;
+
+        if(isLocal){
+            moviePoster = mLocalMovies.get(position).getPoster();
+        }else{
+            moviePoster = mMovies.get(position).getPosterPath();
+        }
+
+        Log.d("Poster", moviePoster);
+
         Picasso.with(mContext)
-                .load(mMovies.get(position).getPosterPath())
+                .load(moviePoster)
                 .placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(holder.imageMoviePoster);
@@ -56,7 +82,13 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.Vi
     // Required for RecyclerView
     @Override
     public int getItemCount() {
-        return mMovies != null? mMovies.size() : 0;
+        if(isLocal){
+            return mLocalMovies != null? mLocalMovies.size() : 0;
+
+        }else{
+            return mMovies != null? mMovies.size() : 0;
+        }
+
     }
 
     // Holds widget in memory for each individual entry
@@ -85,13 +117,34 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.Vi
 
             Intent intent = new Intent(mContext, destinationActivity);
 
+            String originalTitle, poster, plotSynopsis, userRating, releaseDate;
+            int id;
+
+            if(isLocal){
+                originalTitle = mLocalMovies.get(position).getOriginalTitle();
+                poster = mLocalMovies.get(position).getPoster();
+                plotSynopsis = mLocalMovies.get(position).getPlotSynopsis();
+                userRating = mLocalMovies.get(position).getUserRating();
+                releaseDate = mLocalMovies.get(position).getReleaseDate();
+                id = 24428; // May need to consider saving the id in db
+
+            }else{
+                originalTitle = mMovies.get(position).getOriginalTitle();
+                poster = mMovies.get(position).getPosterPath();
+                plotSynopsis = mMovies.get(position).getOverview();
+                userRating = mMovies.get(position).getVoteAverage().toString();
+                releaseDate = mMovies.get(position).getReleaseDate();
+                id = mMovies.get(position).getId();
+            }
+
+
             // Pass the movie details to details activity
-            intent.putExtra("movieOriginalTitle", mMovies.get(position).getOriginalTitle());
-            intent.putExtra("moviePoster", mMovies.get(position).getPosterPath());
-            intent.putExtra("moviePlotSynopsis", mMovies.get(position).getOverview());
-            intent.putExtra("movieUserRating", mMovies.get(position).getVoteAverage().toString());
-            intent.putExtra("movieReleaseDate", mMovies.get(position).getReleaseDate());
-            intent.putExtra("movieId", mMovies.get(position).getId());
+            intent.putExtra("movieOriginalTitle", originalTitle);
+            intent.putExtra("moviePoster", poster);
+            intent.putExtra("moviePlotSynopsis",plotSynopsis);
+            intent.putExtra("movieUserRating", userRating );
+            intent.putExtra("movieReleaseDate", releaseDate);
+            intent.putExtra("movieId", id);
 
             mContext.startActivity(intent);
         }
