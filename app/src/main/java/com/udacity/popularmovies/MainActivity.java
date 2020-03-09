@@ -51,15 +51,7 @@ public class MainActivity extends AppCompatActivity {
         //TODO: REMOVE comment for init view model
         // initViewModel();
 
-        // TODO: Check if this is required to be added in asynctask because or ROOM implementation change
-        // TODO: remove comment tag once local content is settled
-        // Call movieDbQueryTask if there is connectivity. Otherwise, display error toast message
-/*        new AssertConnectivity(MainActivity.this);
 
-        if(AssertConnectivity.isOnline()){
-            initRetrofit(mSortOrder);
-        }else
-            AssertConnectivity.errorConnectMessage(App.getAppResources().getString(R.string.error_connection_themoviedb));*/
 
 
         // For sample data
@@ -71,11 +63,28 @@ public class MainActivity extends AppCompatActivity {
         // Add sample data on db
         //addSampleData();
 
+        // TODO: MOVE THE CONDITION TO SETTINGS. ADDED TEMPORARILY FOR EASY DEBUGGING
+        boolean isFavorite = false;
 
-        // TODO: REMOVE HARDCODED SAMPLE DATA
-        ArrayList<MovieEntity> movieList;
-        movieList = SampleData.getSampleMovieData();
-        initLocalRecyclerView(movieList);
+        if(isFavorite){
+            // TODO: REMOVE HARDCODED SAMPLE DATA
+            ArrayList<MovieEntity> movieList;
+            movieList = SampleData.getSampleMovieData();
+            initLocalRecyclerView(movieList);
+        }else{
+            // TODO: Check if this is required to be added in asynctask because or ROOM implementation change
+            // TODO: remove comment tag once local content is settled
+            // Call movieDbQueryTask if there is connectivity. Otherwise, display error toast message
+            new AssertConnectivity(MainActivity.this);
+
+            if(AssertConnectivity.isOnline()){
+                initRetrofit(mSortOrder);
+            }else
+                AssertConnectivity.errorConnectMessage(App.getAppResources().getString(R.string.error_connection_themoviedb));
+        }
+
+
+
 
 
     }
