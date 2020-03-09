@@ -64,6 +64,14 @@ public class MainActivity extends AppCompatActivity {
         for (MovieEntity currentMovie : movieData) {
             Log.d("MOVIE SAMPLE DATA", currentMovie.toString());
         }
+        // TODO: Remove the adding of sample data in database
+        // Add sample data on db
+        addSampleData();
+
+    }
+
+    private void addSampleData() {
+        mViewModel.addSampleData();
     }
 
     private void initViewModel() {

@@ -20,8 +20,14 @@ public class MainViewModel extends AndroidViewModel {
         super(application);
 
         // Get data from repository instead of declaring in view model
-        mRepository = AppRepository.getInstance();
+        mRepository = AppRepository.getInstance(application.getApplicationContext());
         movieData = mRepository.mMovies;
 
+    }
+
+    // TODO: May need to remove the method once actual movie data is used
+    // Adding sample data in database.
+    public void addSampleData() {
+        mRepository.addSampleData();
     }
 }
