@@ -24,12 +24,12 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.Vi
 
     private static final String TAG = "MoviesViewAdapter";
 
-    private ArrayList<Result> movies;
+    private ArrayList<Result> mMovies;
     private Context mContext;
 
 
     public MoviesViewAdapter(Context mContext, ArrayList<Result> movies) {
-        this.movies = movies;
+        this.mMovies = movies;
         this.mContext = mContext;
     }
 
@@ -46,7 +46,7 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         Picasso.with(mContext)
-                .load(movies.get(position).getPosterPath())
+                .load(mMovies.get(position).getPosterPath())
                 .placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(holder.imageMoviePoster);
@@ -56,7 +56,7 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.Vi
     // Required for RecyclerView
     @Override
     public int getItemCount() {
-        return movies != null? movies.size() : 0;
+        return mMovies != null? mMovies.size() : 0;
     }
 
     // Holds widget in memory for each individual entry
@@ -86,12 +86,12 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.Vi
             Intent intent = new Intent(mContext, destinationActivity);
 
             // Pass the movie details to details activity
-            intent.putExtra("movieOriginalTitle", movies.get(position).getOriginalTitle());
-            intent.putExtra("moviePoster", movies.get(position).getPosterPath());
-            intent.putExtra("moviePlotSynopsis", movies.get(position).getOverview());
-            intent.putExtra("movieUserRating", movies.get(position).getVoteAverage().toString());
-            intent.putExtra("movieReleaseDate", movies.get(position).getReleaseDate());
-            intent.putExtra("movieId", movies.get(position).getId());
+            intent.putExtra("movieOriginalTitle", mMovies.get(position).getOriginalTitle());
+            intent.putExtra("moviePoster", mMovies.get(position).getPosterPath());
+            intent.putExtra("moviePlotSynopsis", mMovies.get(position).getOverview());
+            intent.putExtra("movieUserRating", mMovies.get(position).getVoteAverage().toString());
+            intent.putExtra("movieReleaseDate", mMovies.get(position).getReleaseDate());
+            intent.putExtra("movieId", mMovies.get(position).getId());
 
             mContext.startActivity(intent);
         }

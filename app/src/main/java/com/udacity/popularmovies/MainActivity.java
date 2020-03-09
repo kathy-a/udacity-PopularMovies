@@ -1,7 +1,6 @@
 package com.udacity.popularmovies;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,7 +21,6 @@ import com.udacity.popularmovies.network.MovieService;
 import com.udacity.popularmovies.database.MovieEntity; // For Sample data
 import com.udacity.popularmovies.ui.MoviesViewAdapter;
 import com.udacity.popularmovies.utilies.App;
-import com.udacity.popularmovies.utilies.SampleData;
 import com.udacity.popularmovies.viewmodel.MainViewModel;
 
 
@@ -36,13 +34,13 @@ import static com.udacity.popularmovies.network.MovieService.buildPosterPathUrl;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String sortOrder = "popularity.desc";
-    private static final String APIKEY = App.getAppResources().getString(R.string.movie_db_api_key);
+    private String mSortOrder = "popularity.desc";
+    private static final String API_KEY = App.getAppResources().getString(R.string.movie_db_api_key);
 
     // For Sample Data
     private ArrayList<MovieEntity> movieData = new ArrayList<>();
 
-    private MainViewModel viewModel;
+    private MainViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,20 +54,20 @@ public class MainActivity extends AppCompatActivity {
         new AssertConnectivity(MainActivity.this);
 
         if(AssertConnectivity.isOnline()){
-            initRetrofit(sortOrder);
+            initRetrofit(mSortOrder);
         }else
             AssertConnectivity.errorConnectMessage(App.getAppResources().getString(R.string.error_connection_themoviedb));
 
 
         // For sample data
-        movieData.addAll(viewModel.movieData);
+        movieData.addAll(mViewModel.movieData);
         for (MovieEntity currentMovie : movieData) {
             Log.d("MOVIE SAMPLE DATA", currentMovie.toString());
         }
     }
 
     private void initViewModel() {
-        viewModel = ViewModelProviders.of(this)
+        mViewModel = ViewModelProviders.of(this)
                 .get(MainViewModel.class);
     }
 
@@ -86,15 +84,15 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == R.id.item_most_popular){
-            sortOrder = "popularity.desc";
+            mSortOrder = "popularity.desc";
         }else if (item.getItemId() == R.id.item_top_rated){
-            sortOrder = "vote_count.desc";
+            mSortOrder = "vote_count.desc";
         }else
             return super.onOptionsItemSelected(item);
 
         // TODO: Check if this is required to be added in asynctask because or ROOM implementation change
         if(AssertConnectivity.isOnline()){
-            initRetrofit(sortOrder);
+            initRetrofit(mSortOrder);
         }else
             AssertConnectivity.errorConnectMessage(App.getAppResources().getString(R.string.error_connection_themoviedb));
         return true;
@@ -115,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
         TheMovieDBService service = MovieService.getRetrofitInstance().create(TheMovieDBService.class);
 
-        Call <Movies> call = service.getData(APIKEY, sortOrder);
+        Call <Movies> call = service.getData(API_KEY, sortOrder);
 
         call.enqueue(new Callback<Movies>() {
             @Override

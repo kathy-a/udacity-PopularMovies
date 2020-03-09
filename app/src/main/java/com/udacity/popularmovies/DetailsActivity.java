@@ -38,9 +38,9 @@ public class DetailsActivity extends AppCompatActivity {
     private static final String MOVIE_BASE_URL = "https://www.youtube.com/watch?v=" ;
 
     //TODO: Pass the API key instead of calling the resource?
-    private static final String APIKEY = App.getAppResources().getString(R.string.movie_db_api_key);
+    private static final String API_KEY = App.getAppResources().getString(R.string.movie_db_api_key);
 
-    TheMovieDBService service = MovieService.getRetrofitInstance().create(TheMovieDBService.class);
+    private TheMovieDBService mService = MovieService.getRetrofitInstance().create(TheMovieDBService.class);
 
 
     @Override
@@ -102,7 +102,7 @@ public class DetailsActivity extends AppCompatActivity {
     // Create handle for the movie trailer RetrofitInstance interface
     private void movieTrailerRetrofit(int movieId){
 
-        Call<MovieTrailer> call = service.getTrailer(movieId, APIKEY);
+        Call<MovieTrailer> call = mService.getTrailer(movieId, API_KEY);
 
         call.enqueue(new Callback<MovieTrailer>() {
             @Override
@@ -140,7 +140,7 @@ public class DetailsActivity extends AppCompatActivity {
     // Create handle for the movie review RetrofitInstance interface
     private void movieReviewRetrofit(int movieId){
 
-        Call<MovieReview> call = service.getReview(movieId, APIKEY);
+        Call<MovieReview> call = mService.getReview(movieId, API_KEY);
 
         call.enqueue(new Callback<MovieReview>() {
             @Override

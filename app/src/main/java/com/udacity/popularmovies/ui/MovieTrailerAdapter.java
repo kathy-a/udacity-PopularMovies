@@ -24,11 +24,11 @@ import java.util.ArrayList;
 public class MovieTrailerAdapter extends RecyclerView.Adapter<MovieTrailerAdapter.ViewHolder> {
 
     private Context mContext;
-    private ArrayList<TrailerDetails> trailer;
+    private ArrayList<TrailerDetails> mTrailer;
 
     public MovieTrailerAdapter(Context mContext, ArrayList<TrailerDetails> trailer){
         this.mContext = mContext;
-        this.trailer = trailer;
+        this.mTrailer = trailer;
     }
 
 
@@ -44,12 +44,12 @@ public class MovieTrailerAdapter extends RecyclerView.Adapter<MovieTrailerAdapte
     // Required for RecyclerView. Changes depends on what layouts are
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.trailerTitle.setText(trailer.get(position).getName());
+        holder.trailerTitle.setText(mTrailer.get(position).getName());
 
     }
 
     @Override
-    public int getItemCount() { return trailer != null? trailer.size() : 0; }
+    public int getItemCount() { return mTrailer != null? mTrailer.size() : 0; }
 
 
     // Holds widget in memory for each individual entry
@@ -77,7 +77,7 @@ public class MovieTrailerAdapter extends RecyclerView.Adapter<MovieTrailerAdapte
             if(AssertConnectivity.isOnline()){
                 int position = getAdapterPosition();
                 // Get URL and open the trailer link
-                Uri uri = Uri.parse(trailer.get(position).getKey());
+                Uri uri = Uri.parse(mTrailer.get(position).getKey());
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 mContext.startActivity(intent);
             }else

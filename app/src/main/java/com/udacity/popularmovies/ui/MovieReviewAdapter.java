@@ -20,11 +20,11 @@ import java.util.ArrayList;
 public class MovieReviewAdapter extends RecyclerView.Adapter<MovieReviewAdapter.ViewHolder>{
 
     private Context mContext;
-    private ArrayList<ReviewDetails> review;
+    private ArrayList<ReviewDetails> mReview;
 
     public MovieReviewAdapter(Context mContext, ArrayList<ReviewDetails> review) {
         this.mContext = mContext;
-        this.review = review;
+        this.mReview = review;
     }
 
     @NonNull
@@ -37,14 +37,14 @@ public class MovieReviewAdapter extends RecyclerView.Adapter<MovieReviewAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.reviewAuthor.setText(review.get(position).getAuthor());
-        holder.reviewContent.setText(review.get(position).getContent());
+        holder.reviewAuthor.setText(mReview.get(position).getAuthor());
+        holder.reviewContent.setText(mReview.get(position).getContent());
 
 
     }
 
     @Override
-    public int getItemCount() { return review != null? review.size() : 0; }
+    public int getItemCount() { return mReview != null? mReview.size() : 0; }
 
 
 
