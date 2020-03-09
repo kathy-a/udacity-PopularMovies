@@ -50,20 +50,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //TODO: REMOVE comment for init view model
-        // initViewModel();
 
-
-
-
-        // For sample data
-/*        movieData.addAll(mViewModel.movieData);
-        for (MovieEntity currentMovie : movieData) {
-            Log.d("MOVIE SAMPLE DATA", currentMovie.toString());
-        }*/
-        // TODO: Remove the adding of sample data in database
-        // Add sample data on db
-        //addSampleData();
 
 
 
@@ -95,6 +82,20 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "Adding sample data", Toast.LENGTH_SHORT).show();
+
+                //TODO: REMOVE comment for init view model
+                initViewModel();
+
+
+                // For sample data
+/*                movieData.addAll(mViewModel.movieData);
+                for (MovieEntity currentMovie : movieData) {
+                    Log.d("MOVIE SAMPLE DATA", currentMovie.toString());
+                }*/
+
+
+                addSampleData();
+                // TODO: COMBINE MOVIE LIST (listed in favorite section with sample data)
             }
         });
 
