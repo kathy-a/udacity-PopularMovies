@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.udacity.popularmovies.model.Movies;
@@ -63,8 +65,11 @@ public class MainActivity extends AppCompatActivity {
         // Add sample data on db
         //addSampleData();
 
+
+
+
         // TODO: MOVE THE CONDITION TO SETTINGS. ADDED TEMPORARILY FOR EASY DEBUGGING
-        boolean isFavorite = false;
+        boolean isFavorite = true;
 
         if(isFavorite){
             // TODO: REMOVE HARDCODED SAMPLE DATA
@@ -82,6 +87,16 @@ public class MainActivity extends AppCompatActivity {
             }else
                 AssertConnectivity.errorConnectMessage(App.getAppResources().getString(R.string.error_connection_themoviedb));
         }
+
+
+
+        // TODO: REMOVE SAMPLE DATA
+        final Button button = findViewById(R.id.button_sampleData);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Adding sample data", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
 
