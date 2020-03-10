@@ -40,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
     private String mSortOrder = "popularity.desc";
     private static final String API_KEY = App.getAppResources().getString(R.string.movie_db_api_key);
 
+    private RecyclerView mRecyclerView;
+    private MoviesViewAdapter mAdapter;
+
+
     // For Sample Data
     private ArrayList<MovieEntity> movieData = new ArrayList<>();
 
@@ -56,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // TODO: MOVE THE CONDITION TO SETTINGS. ADDED TEMPORARILY FOR EASY DEBUGGING
-        boolean isFavorite = true;
+        boolean isFavorite = false;
 
         if(isFavorite){
             // TODO: REMOVE HARDCODED SAMPLE DATA
@@ -86,12 +90,6 @@ public class MainActivity extends AppCompatActivity {
                 //TODO: REMOVE comment for init view model
                 initViewModel();
 
-
-                // For sample data
-/*                movieData.addAll(mViewModel.movieData);
-                for (MovieEntity currentMovie : movieData) {
-                    Log.d("MOVIE SAMPLE DATA", currentMovie.toString());
-                }*/
 
 
                 addSampleData();
@@ -147,17 +145,17 @@ public class MainActivity extends AppCompatActivity {
     // TODO: add 1 method that will check what recyclerview will be passed
     // Display movie poster path via recyclerview
     private void initRecyclerView(ArrayList<Result> movieList){
-        RecyclerView recyclerView = findViewById(R.id.recycler_MainActivity);
-        MoviesViewAdapter adapter = new MoviesViewAdapter(this, movieList);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        recyclerView.setAdapter(adapter);
+        mRecyclerView = findViewById(R.id.recycler_MainActivity);
+        mAdapter = new MoviesViewAdapter(this, movieList);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void initLocalRecyclerView(ArrayList<MovieEntity> movieList){
-        RecyclerView recyclerView = findViewById(R.id.recycler_MainActivity);
-        MoviesViewAdapter adapter = new MoviesViewAdapter(this, movieList, true);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        recyclerView.setAdapter(adapter);
+        mRecyclerView = findViewById(R.id.recycler_MainActivity);
+        mAdapter = new MoviesViewAdapter(this, movieList, true);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        mRecyclerView.setAdapter(mAdapter);
     }
 
 
