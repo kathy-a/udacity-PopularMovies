@@ -1,6 +1,8 @@
 package com.udacity.popularmovies;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +30,7 @@ import com.udacity.popularmovies.viewmodel.MainViewModel;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,13 +63,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         // TODO: MOVE THE CONDITION TO SETTINGS. ADDED TEMPORARILY FOR EASY DEBUGGING
-        boolean isFavorite = false;
+        boolean isFavorite = true;
 
         if(isFavorite){
             // TODO: REMOVE HARDCODED SAMPLE DATA
-            ArrayList<MovieEntity> movieList;
+/*            ArrayList<MovieEntity> movieList;
             movieList = SampleData.getSampleMovieData();
-            initLocalRecyclerView(movieList);
+            initLocalRecyclerView(movieList);*/
         }else{
             // TODO: Check if this is required to be added in asynctask because or ROOM implementation change
             // TODO: remove comment tag once local content is settled
@@ -88,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Adding sample data", Toast.LENGTH_SHORT).show();
 
                 //TODO: REMOVE comment for init view model
+                initLocalRecyclerView();
                 initViewModel();
 
 
@@ -111,8 +115,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initViewModel() {
+
+
+
+        final Observer<List<MovieEntity>> movieObserver =
+                new Observer<List<MovieEntity>>() {
+
+                    @Override
+                    public void onChanged(List<MovieEntity> movieEntities) {
+                        movieData.clear();
+                        movieData.addAll(movieEntities);
+                        if(mAdapter == null){
+                            mAdapter = new MoviesViewAdapter(MainActivity.this, movieData, true);
+                            mRecyclerView.setAdapter(mAdapter);
+                        }else{
+                            mAdapter.notifyDataSetChanged();
+                        }
+
+                    }
+                };
+
         mViewModel = ViewModelProviders.of(this)
                 .get(MainViewModel.class);
+
+        mViewModel.movieData.observe(this, movieObserver);
     }
 
     // Display Menu layout created
@@ -151,11 +177,10 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    private void initLocalRecyclerView(ArrayList<MovieEntity> movieList){
+    private void initLocalRecyclerView(){
         mRecyclerView = findViewById(R.id.recycler_MainActivity);
-        mAdapter = new MoviesViewAdapter(this, movieList, true);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        mRecyclerView.setAdapter(mAdapter);
+
     }
 
 

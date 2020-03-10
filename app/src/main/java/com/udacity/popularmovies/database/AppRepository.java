@@ -2,6 +2,8 @@ package com.udacity.popularmovies.database;
 
 import android.content.Context;
 
+import androidx.lifecycle.LiveData;
+
 import com.udacity.popularmovies.utilies.SampleData;
 
 import java.util.List;
@@ -11,7 +13,7 @@ import java.util.concurrent.Executors;
 public class AppRepository {
     private static  AppRepository ourInstance;
 
-    public List<MovieEntity> mMovies;
+    public LiveData<List<MovieEntity>> mMovies;
     private AppDatabase mDb;
 
 /*    All room database operations must be executed in a background thread
@@ -27,8 +29,8 @@ public class AppRepository {
     }
 
     private AppRepository(Context context) {
-        mMovies = SampleData.getSampleMovieData();
         mDb = AppDatabase.getInstance(context);
+        mMovies = getAllMovies();
     }
 
     // TODO: May need to remove once actual movie data is saved to database
@@ -40,5 +42,10 @@ public class AppRepository {
                 mDb.movieDao().insertAll(SampleData.getSampleMovieData());
             }
         });
+    }
+
+    // Get data from DB
+    private LiveData<List<MovieEntity>> getAllMovies(){
+        return mDb.movieDao().getAll();
     }
 }

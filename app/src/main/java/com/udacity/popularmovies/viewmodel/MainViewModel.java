@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
 import com.udacity.popularmovies.database.AppRepository;
 import com.udacity.popularmovies.database.MovieEntity;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class MainViewModel extends AndroidViewModel {
 
-    public List<MovieEntity> movieData;
+    public LiveData<List<MovieEntity>> movieData;
     private AppRepository mRepository;
 
     public MainViewModel(@NonNull Application application) {
