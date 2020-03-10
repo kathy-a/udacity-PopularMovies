@@ -5,6 +5,8 @@
     <string name="error_connection_general">Phone seems offline. Please check your internet connection.</string>
     <string name="most_popular">Most Popular</string>
     <string name="top_rated">Top Rated</string>
+    <string name="favorites">Favorites</string>
+
     <string name="trailers">Trailers</string>
     <string name="reviews">Movie Reviews</string>
 

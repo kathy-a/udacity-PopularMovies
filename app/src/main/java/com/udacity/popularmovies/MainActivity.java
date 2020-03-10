@@ -58,19 +58,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
-
-
-
-        // TODO: MOVE THE CONDITION TO SETTINGS. ADDED TEMPORARILY FOR EASY DEBUGGING
-        boolean isFavorite = true;
-
-        if(isFavorite){
-            // TODO: REMOVE HARDCODED SAMPLE DATA
-/*            ArrayList<MovieEntity> movieList;
-            movieList = SampleData.getSampleMovieData();
-            initLocalRecyclerView(movieList);*/
-        }else{
             // TODO: Check if this is required to be added in asynctask because or ROOM implementation change
             // TODO: remove comment tag once local content is settled
             // Call movieDbQueryTask if there is connectivity. Otherwise, display error toast message
@@ -80,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 initRetrofit(mSortOrder);
             }else
                 AssertConnectivity.errorConnectMessage(App.getAppResources().getString(R.string.error_connection_themoviedb));
-        }
+
 
 
 
@@ -90,9 +77,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "Adding sample data", Toast.LENGTH_SHORT).show();
 
-                //TODO: REMOVE comment for init view model
+/*                //TODO: REMOVE comment for init view model
                 initLocalRecyclerView();
-                initViewModel();
+                initViewModel();*/
 
 
 
@@ -115,8 +102,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initViewModel() {
-
-
 
         final Observer<List<MovieEntity>> movieObserver =
                 new Observer<List<MovieEntity>>() {
@@ -153,18 +138,30 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (item.getItemId() == R.id.item_most_popular){
-            mSortOrder = "popularity.desc";
-        }else if (item.getItemId() == R.id.item_top_rated){
-            mSortOrder = "vote_count.desc";
-        }else
-            return super.onOptionsItemSelected(item);
-
         // TODO: Check if this is required to be added in asynctask because or ROOM implementation change
         if(AssertConnectivity.isOnline()){
-            initRetrofit(mSortOrder);
-        }else
+            if (item.getItemId() == R.id.item_most_popular){
+                mSortOrder = "popularity.desc";
+                initRetrofit(mSortOrder);
+            }else if (item.getItemId() == R.id.item_top_rated){
+                mSortOrder = "vote_count.desc";
+                initRetrofit(mSortOrder);
+            }else if(item.getItemId() == R.id.item_favorites){
+                initLocalRecyclerView();
+                // TODO: MAY NEED TO ADJUST TO UPDATE THE CLOUD DATA TO BE CALLED IN REPOSITORY
+                initLocalRecyclerView();
+                initViewModel();
+                addSampleData();
+            }else
+                return super.onOptionsItemSelected(item);
+
+
+
+        }else {
+            // TODO: UPDATE wifi connection copy
             AssertConnectivity.errorConnectMessage(App.getAppResources().getString(R.string.error_connection_themoviedb));
+        }
+
         return true;
     }
 
@@ -178,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initLocalRecyclerView(){
+        mAdapter = null;
         mRecyclerView = findViewById(R.id.recycler_MainActivity);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
