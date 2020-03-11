@@ -5,22 +5,19 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
 
-
-import com.udacity.popularmovies.R;
-
 public class AssertConnectivity {
 
-    private static Context context;
+    private static Context mContext;
 
     public AssertConnectivity(Context context) {
-        this.context = context;
+        this.mContext = context;
     }
 
 
     // Check if the phone / device has connectivity.
     public static boolean isOnline() {
         ConnectivityManager cm =
-                (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) mContext.getSystemService(mContext.CONNECTIVITY_SERVICE);
 
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
@@ -28,7 +25,7 @@ public class AssertConnectivity {
 
     // Toast error message for connectivity issue
     public static void errorConnectMessage(String message) {
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+        Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
     }
 
 }

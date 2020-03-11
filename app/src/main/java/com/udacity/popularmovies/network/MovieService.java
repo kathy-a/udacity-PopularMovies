@@ -2,7 +2,7 @@ package com.udacity.popularmovies.network;
 
 import android.net.Uri;
 
-import com.udacity.popularmovies.App;
+import com.udacity.popularmovies.utilies.App;
 import com.udacity.popularmovies.R;
 
 import java.net.MalformedURLException;
@@ -14,19 +14,19 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MovieService {
 
     private static String APIKEY = App.getAppResources().getString(R.string.movie_db_api_key);
-    private static Retrofit retrofit;
+    private static Retrofit sRetrofit;
     private static final String BASE_URL = "https://api.themoviedb.org";
 
     // Retrofit Instance for getting JSON response from themoviedb.org
     public static Retrofit getRetrofitInstance() {
 
-        if (retrofit == null) {
-            retrofit = new retrofit2.Retrofit.Builder()
+        if (sRetrofit == null) {
+            sRetrofit = new retrofit2.Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
-        return retrofit;
+        return sRetrofit;
     }
 
 

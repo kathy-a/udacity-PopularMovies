@@ -2,19 +2,23 @@ package com.udacity.popularmovies;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Movie;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.squareup.picasso.Picasso;
+import com.udacity.popularmovies.database.MovieEntity;
 import com.udacity.popularmovies.model.MovieReview;
 import com.udacity.popularmovies.model.MovieTrailer;
 import com.udacity.popularmovies.model.ReviewDetails;
@@ -22,6 +26,11 @@ import com.udacity.popularmovies.model.TrailerDetails;
 import com.udacity.popularmovies.network.AssertConnectivity;
 import com.udacity.popularmovies.network.MovieService;
 import com.udacity.popularmovies.network.TheMovieDBService;
+import com.udacity.popularmovies.ui.MovieReviewAdapter;
+import com.udacity.popularmovies.ui.MovieTrailerAdapter;
+import com.udacity.popularmovies.utilies.App;
+import com.udacity.popularmovies.viewmodel.DetailViewModel;
+import com.udacity.popularmovies.viewmodel.MainViewModel;
 
 import java.util.ArrayList;
 
@@ -35,10 +44,15 @@ public class DetailsActivity extends AppCompatActivity {
     private static final String MOVIE_ORIGINAL_TITLE = "movieOriginalTitle" ;
     private static final String MOVIE_BASE_URL = "https://www.youtube.com/watch?v=" ;
 
-    //TODO: Pass the API key instead of calling the resource?
-    private static final String APIKEY = App.getAppResources().getString(R.string.movie_db_api_key);
+    private static MovieEntity movieSelected = new MovieEntity();
 
-    TheMovieDBService service = MovieService.getRetrofitInstance().create(TheMovieDBService.class);
+
+    //TODO: Pass the API key instead of calling the resource?
+    private static final String API_KEY = App.getAppResources().getString(R.string.movie_db_api_key);
+
+
+    private DetailViewModel mViewModel;
+    private TheMovieDBService mService = MovieService.getRetrofitInstance().create(TheMovieDBService.class);
 
 
     @Override
@@ -56,7 +70,52 @@ public class DetailsActivity extends AppCompatActivity {
         // Set new context to Details Activity
         new AssertConnectivity(DetailsActivity.this);
 
+        setMovieDetails();
         displayMovieDetails();
+
+        checkMovieFavorite();
+    }
+
+    public static MovieEntity getMovieDetails() {
+        return movieSelected;
+    }
+
+
+    private void setMovieDetails(){
+        Intent intent = getIntent();
+        if((intent != null) && (intent.hasExtra(MOVIE_ORIGINAL_TITLE))){
+            movieSelected.setOriginalTitle(intent.getStringExtra("movieOriginalTitle"));
+            movieSelected.setPoster(intent.getStringExtra("moviePoster"));
+            movieSelected.setUserRating(intent.getStringExtra("movieUserRating"));
+            movieSelected.setReleaseDate(intent.getStringExtra("movieReleaseDate"));
+            movieSelected.setPlotSynopsis(intent.getStringExtra("moviePlotSynopsis"));
+        }
+
+    }
+
+
+    private void checkMovieFavorite() {
+        ToggleButton toggle =  findViewById(R.id.toggle_favorite);
+        toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    Toast.makeText(DetailsActivity.this, "Movie marked as favorite", Toast.LENGTH_SHORT).show();
+                    initViewModel();
+                    addMovieData();
+                } else {
+                    Toast.makeText(DetailsActivity.this, "Movie unmarked as favorite", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void initViewModel() {
+        mViewModel = ViewModelProviders.of(this)
+                .get(DetailViewModel.class);
+    }
+
+    private void addMovieData() {
+        mViewModel.addMovieData();
     }
 
 
@@ -86,9 +145,13 @@ public class DetailsActivity extends AppCompatActivity {
 
             int movieId = intent.getIntExtra("movieId",0 );
 
+            // TODO: REMOVE DUPLICATE CALL ABOVE ONCE EVERYTHING IS WORKING for setmoviedetails. use movieSelected
+
+
             // TODO: Insert connectivity check
             movieTrailerRetrofit(movieId);
             movieReviewRetrofit(movieId);
+
 
         }
 
@@ -100,7 +163,7 @@ public class DetailsActivity extends AppCompatActivity {
     // Create handle for the movie trailer RetrofitInstance interface
     private void movieTrailerRetrofit(int movieId){
 
-        Call<MovieTrailer> call = service.getTrailer(movieId, APIKEY);
+        Call<MovieTrailer> call = mService.getTrailer(movieId, API_KEY);
 
         call.enqueue(new Callback<MovieTrailer>() {
             @Override
@@ -138,7 +201,7 @@ public class DetailsActivity extends AppCompatActivity {
     // Create handle for the movie review RetrofitInstance interface
     private void movieReviewRetrofit(int movieId){
 
-        Call<MovieReview> call = service.getReview(movieId, APIKEY);
+        Call<MovieReview> call = mService.getReview(movieId, API_KEY);
 
         call.enqueue(new Callback<MovieReview>() {
             @Override
@@ -151,8 +214,6 @@ public class DetailsActivity extends AppCompatActivity {
 
                     ArrayList<String> review= new ArrayList<>();;
 
-
-
                     for(int i =0; i < reviewDetails.size(); i++){
                         String currentReview = reviewDetails.get(i).getContent();
                         Log.d("Review onResponse", currentReview);
@@ -162,7 +223,6 @@ public class DetailsActivity extends AppCompatActivity {
 
                     // TODO: INITIALIZE RECYCLERVIEW FOR REVIEW
                     initReviewRecyclerView(reviewDetails);
-
 
                 }else{
                     Log.d("Review onResponse", "Response Fail for movie review");
@@ -191,11 +251,6 @@ public class DetailsActivity extends AppCompatActivity {
 
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(DetailsActivity.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManager);
-        // Add divider to recyclerview
-/*        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-                horizontalLayoutManager.getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);*/
-
         recyclerView.setAdapter(adapter);
 
     }
@@ -212,8 +267,6 @@ public class DetailsActivity extends AppCompatActivity {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 verticalLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
-
-
 
         recyclerView.setAdapter(adapter);
     }

@@ -1,6 +1,9 @@
 package com.udacity.popularmovies;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -9,6 +12,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.udacity.popularmovies.model.Movies;
@@ -17,9 +22,15 @@ import com.udacity.popularmovies.model.Result;
 import com.udacity.popularmovies.network.AssertConnectivity;
 import com.udacity.popularmovies.network.TheMovieDBService;
 import com.udacity.popularmovies.network.MovieService;
+import com.udacity.popularmovies.database.MovieEntity; // For Sample data
+import com.udacity.popularmovies.ui.MoviesViewAdapter;
+import com.udacity.popularmovies.utilies.App;
+import com.udacity.popularmovies.utilies.SampleData;
+import com.udacity.popularmovies.viewmodel.MainViewModel;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,25 +40,64 @@ import static com.udacity.popularmovies.network.MovieService.buildPosterPathUrl;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String sortOrder = "popularity.desc";
-    private static final String APIKEY = App.getAppResources().getString(R.string.movie_db_api_key);
+    private String mSortOrder = "popularity.desc";
+    private static final String API_KEY = App.getAppResources().getString(R.string.movie_db_api_key);
 
+    private RecyclerView mRecyclerView;
+    private MoviesViewAdapter mAdapter;
+
+    private ArrayList<MovieEntity> movieData = new ArrayList<>();
+
+    private MainViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // TODO: Check if this is required to be added in asynctask because or ROOM implementation change
-        // Call movieDbQueryTask if there is connectivity. Otherwise, display error toast message
-        new AssertConnectivity(MainActivity.this);
 
-        if(AssertConnectivity.isOnline()){
-            initRetrofit(sortOrder);
-        }else
-            AssertConnectivity.errorConnectMessage(App.getAppResources().getString(R.string.error_connection_themoviedb));
+            // TODO: Check if this is required to be added in asynctask because or ROOM implementation change
+            // TODO: remove comment tag once local content is settled
+            // Call movieDbQueryTask if there is connectivity. Otherwise, display error toast message
+            new AssertConnectivity(MainActivity.this);
+
+            if(AssertConnectivity.isOnline()){
+                initRetrofit(mSortOrder);
+            }else
+                AssertConnectivity.errorConnectMessage(App.getAppResources().getString(R.string.error_connection_themoviedb));
+
+    }
+
+    // TODO: Remove sample data before submission.
+    private void addSampleData() {
+        mViewModel.addSampleData();
+    }
 
 
+
+
+    private void initViewModel() {
+        final Observer<List<MovieEntity>> movieObserver =
+                new Observer<List<MovieEntity>>() {
+
+                    @Override
+                    public void onChanged(List<MovieEntity> movieEntities) {
+                        movieData.clear();
+                        movieData.addAll(movieEntities);
+                        if(mAdapter == null){
+                            mAdapter = new MoviesViewAdapter(MainActivity.this, movieData, true);
+                            mRecyclerView.setAdapter(mAdapter);
+                        }else{
+                            mAdapter.notifyDataSetChanged();
+                        }
+
+                    }
+                };
+
+        mViewModel = ViewModelProviders.of(this)
+                .get(MainViewModel.class);
+
+        mViewModel.movieData.observe(this, movieObserver);
     }
 
     // Display Menu layout created
@@ -62,29 +112,43 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (item.getItemId() == R.id.item_most_popular){
-            sortOrder = "popularity.desc";
-        }else if (item.getItemId() == R.id.item_top_rated){
-            sortOrder = "vote_count.desc";
-        }else
-            return super.onOptionsItemSelected(item);
 
-        // TODO: Check if this is required to be added in asynctask because or ROOM implementation change
+        if (item.getItemId() == R.id.item_most_popular){
+            mSortOrder = "popularity.desc";
+        }else if (item.getItemId() == R.id.item_top_rated){
+            mSortOrder = "vote_count.desc";
+        }
+
         if(AssertConnectivity.isOnline()){
-            initRetrofit(sortOrder);
-        }else
+            if(item.getItemId() == R.id.item_favorites){
+                // TODO: MAY NEED TO ADJUST TO UPDATE THE CLOUD DATA TO BE CALLED IN REPOSITORY
+                initLocalRecyclerView();
+                initViewModel();
+            }else
+                initRetrofit(mSortOrder);
+        }else{
             AssertConnectivity.errorConnectMessage(App.getAppResources().getString(R.string.error_connection_themoviedb));
+            initLocalRecyclerView();
+            initViewModel();
+        }
         return true;
     }
 
+    // TODO: add 1 method that will check what recyclerview will be passed
     // Display movie poster path via recyclerview
     private void initRecyclerView(ArrayList<Result> movieList){
-        RecyclerView recyclerView = findViewById(R.id.recycler_MainActivity);
-        MoviesViewAdapter adapter = new MoviesViewAdapter(this, movieList);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        recyclerView.setAdapter(adapter);
+        mRecyclerView = findViewById(R.id.recycler_MainActivity);
+        mAdapter = new MoviesViewAdapter(this, movieList);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        mRecyclerView.setAdapter(mAdapter);
     }
 
+    private void initLocalRecyclerView(){
+        mAdapter = null;
+        mRecyclerView = findViewById(R.id.recycler_MainActivity);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+
+    }
 
 
     // Create handle for the RetrofitInstance interface
@@ -92,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
 
         TheMovieDBService service = MovieService.getRetrofitInstance().create(TheMovieDBService.class);
 
-        Call <Movies> call = service.getData(APIKEY, sortOrder);
+        Call <Movies> call = service.getData(API_KEY, sortOrder);
 
         call.enqueue(new Callback<Movies>() {
             @Override
