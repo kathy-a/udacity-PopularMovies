@@ -47,14 +47,11 @@ public class DetailsActivity extends AppCompatActivity {
     private static MovieEntity movieSelected = new MovieEntity();
 
 
-
     //TODO: Pass the API key instead of calling the resource?
     private static final String API_KEY = App.getAppResources().getString(R.string.movie_db_api_key);
 
 
     private DetailViewModel mViewModel;
-
-
     private TheMovieDBService mService = MovieService.getRetrofitInstance().create(TheMovieDBService.class);
 
 
@@ -119,17 +116,10 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void addMovieData() {
         mViewModel.addMovieData();
-
     }
 
 
-
-
-
-
     private void displayMovieDetails(){
-
-
         TextView movieTitle = findViewById(R.id.text_movie_title);
         ImageView moviePoster = findViewById(R.id.image_movie_poster);
         TextView releaseDate = findViewById(R.id.text_release_date);
@@ -155,12 +145,7 @@ public class DetailsActivity extends AppCompatActivity {
 
             int movieId = intent.getIntExtra("movieId",0 );
 
-            // TODO: REMOVE DUPLICATE CALL ABOVE ONCE EVERYTHING IS WORKING
-
-
-
-
-
+            // TODO: REMOVE DUPLICATE CALL ABOVE ONCE EVERYTHING IS WORKING for setmoviedetails. use movieSelected
 
 
             // TODO: Insert connectivity check
@@ -229,8 +214,6 @@ public class DetailsActivity extends AppCompatActivity {
 
                     ArrayList<String> review= new ArrayList<>();;
 
-
-
                     for(int i =0; i < reviewDetails.size(); i++){
                         String currentReview = reviewDetails.get(i).getContent();
                         Log.d("Review onResponse", currentReview);
@@ -240,7 +223,6 @@ public class DetailsActivity extends AppCompatActivity {
 
                     // TODO: INITIALIZE RECYCLERVIEW FOR REVIEW
                     initReviewRecyclerView(reviewDetails);
-
 
                 }else{
                     Log.d("Review onResponse", "Response Fail for movie review");
@@ -285,8 +267,6 @@ public class DetailsActivity extends AppCompatActivity {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 verticalLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
-
-
 
         recyclerView.setAdapter(adapter);
     }

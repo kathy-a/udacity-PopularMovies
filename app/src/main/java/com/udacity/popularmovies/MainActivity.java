@@ -46,8 +46,6 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private MoviesViewAdapter mAdapter;
 
-
-    // For Sample Data
     private ArrayList<MovieEntity> movieData = new ArrayList<>();
 
     private MainViewModel mViewModel;
@@ -68,35 +66,9 @@ public class MainActivity extends AppCompatActivity {
             }else
                 AssertConnectivity.errorConnectMessage(App.getAppResources().getString(R.string.error_connection_themoviedb));
 
-
-
-
-        // TODO: REMOVE SAMPLE DATA
-        final Button button = findViewById(R.id.button_sampleData);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Adding sample data", Toast.LENGTH_SHORT).show();
-
-/*                //TODO: REMOVE comment for init view model
-                initLocalRecyclerView();
-                initViewModel();*/
-
-
-
-               // addSampleData();
-                // TODO: COMBINE MOVIE LIST (listed in favorite section with sample data)
-            }
-        });
-
-
-
-
-
     }
 
-
-
-
+    // TODO: Remove sample data before submission.
     private void addSampleData() {
         mViewModel.addSampleData();
     }
@@ -105,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void initViewModel() {
-
         final Observer<List<MovieEntity>> movieObserver =
                 new Observer<List<MovieEntity>>() {
 
@@ -146,10 +117,8 @@ public class MainActivity extends AppCompatActivity {
             mSortOrder = "popularity.desc";
         }else if (item.getItemId() == R.id.item_top_rated){
             mSortOrder = "vote_count.desc";
-        }//else
-           // return super.onOptionsItemSelected(item);
+        }
 
-        // Check connectivity
         if(AssertConnectivity.isOnline()){
             if(item.getItemId() == R.id.item_favorites){
                 // TODO: MAY NEED TO ADJUST TO UPDATE THE CLOUD DATA TO BE CALLED IN REPOSITORY
@@ -162,8 +131,6 @@ public class MainActivity extends AppCompatActivity {
             initLocalRecyclerView();
             initViewModel();
         }
-
-
         return true;
     }
 

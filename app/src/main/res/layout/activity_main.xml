@@ -6,11 +6,6 @@
     android:id="@+id/parent_layout"
     tools:context=".MainActivity">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="ADD SAMPLE DATA"
-        android:id="@+id/button_sampleData" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
