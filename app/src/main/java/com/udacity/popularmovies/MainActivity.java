@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                addSampleData();
+               // addSampleData();
                 // TODO: COMBINE MOVIE LIST (listed in favorite section with sample data)
             }
         });
@@ -100,6 +100,9 @@ public class MainActivity extends AppCompatActivity {
     private void addSampleData() {
         mViewModel.addSampleData();
     }
+
+
+
 
     private void initViewModel() {
 
@@ -138,29 +141,28 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        // TODO: Check if this is required to be added in asynctask because or ROOM implementation change
+
+        if (item.getItemId() == R.id.item_most_popular){
+            mSortOrder = "popularity.desc";
+        }else if (item.getItemId() == R.id.item_top_rated){
+            mSortOrder = "vote_count.desc";
+        }//else
+           // return super.onOptionsItemSelected(item);
+
+        // Check connectivity
         if(AssertConnectivity.isOnline()){
-            if (item.getItemId() == R.id.item_most_popular){
-                mSortOrder = "popularity.desc";
-                initRetrofit(mSortOrder);
-            }else if (item.getItemId() == R.id.item_top_rated){
-                mSortOrder = "vote_count.desc";
-                initRetrofit(mSortOrder);
-            }else if(item.getItemId() == R.id.item_favorites){
-                initLocalRecyclerView();
+            if(item.getItemId() == R.id.item_favorites){
                 // TODO: MAY NEED TO ADJUST TO UPDATE THE CLOUD DATA TO BE CALLED IN REPOSITORY
                 initLocalRecyclerView();
                 initViewModel();
-                addSampleData();
             }else
-                return super.onOptionsItemSelected(item);
-
-
-
-        }else {
-            // TODO: UPDATE wifi connection copy
+                initRetrofit(mSortOrder);
+        }else{
             AssertConnectivity.errorConnectMessage(App.getAppResources().getString(R.string.error_connection_themoviedb));
+            initLocalRecyclerView();
+            initViewModel();
         }
+
 
         return true;
     }
