@@ -1,7 +1,9 @@
 package com.udacity.popularmovies;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -70,6 +72,7 @@ public class DetailsActivity extends AppCompatActivity {
         // Set new context to Details Activity
         new AssertConnectivity(DetailsActivity.this);
 
+        initViewModel();
         setMovieDetails();
         displayMovieDetails();
 
@@ -113,7 +116,22 @@ public class DetailsActivity extends AppCompatActivity {
     private void initViewModel() {
         mViewModel = ViewModelProviders.of(this)
                 .get(DetailViewModel.class);
+
+        // TODO: maybe add the checking of extra's here e.g. lynda 5.2
+
+        // TODO: CHECK LOGIC
+        mViewModel.mLiveMovie.observe(this, new Observer<MovieEntity>() {
+            @Override
+            public void onChanged(MovieEntity movieEntity) {
+                if (movieEntity != null) {
+                    Toast.makeText(DetailsActivity.this, "movie entity null", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        mViewModel.loadMovie(movieSelected.getId());
+
     }
+
 
     private void addMovieData() {
         mViewModel.addMovieData();

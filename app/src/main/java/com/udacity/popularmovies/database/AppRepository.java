@@ -68,4 +68,9 @@ public class AppRepository {
             }
         });
     }
+
+    public MovieEntity getMovieById(int movieId) {
+        return mDb.movieDao().getMovieById(movieId);
+
+    }
 }
