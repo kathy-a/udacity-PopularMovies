@@ -89,6 +89,7 @@ public class DetailsActivity extends AppCompatActivity {
             movieSelected.setUserRating(intent.getStringExtra("movieUserRating"));
             movieSelected.setReleaseDate(intent.getStringExtra("movieReleaseDate"));
             movieSelected.setPlotSynopsis(intent.getStringExtra("moviePlotSynopsis"));
+            movieSelected.setId(intent.getIntExtra("movieId",0 ));
         }
 
     }
