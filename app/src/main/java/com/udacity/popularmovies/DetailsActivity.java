@@ -49,6 +49,7 @@ public class DetailsActivity extends AppCompatActivity {
     private static MovieEntity movieSelected = new MovieEntity();
 
 
+
     //TODO: Pass the API key instead of calling the resource?
     private static final String API_KEY = App.getAppResources().getString(R.string.movie_db_api_key);
 
@@ -62,6 +63,7 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
+
         ActionBar actionBar = this.getSupportActionBar();
 
         // Set the action bar back button to go one level back
@@ -71,9 +73,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         // Set new context to Details Activity
         new AssertConnectivity(DetailsActivity.this);
-
         initViewModel();
-        setMovieDetails();
         displayMovieDetails();
 
         checkMovieFavorite();
@@ -99,15 +99,26 @@ public class DetailsActivity extends AppCompatActivity {
 
 
     private void checkMovieFavorite() {
+
+
+
+
         ToggleButton toggle =  findViewById(R.id.toggle_favorite);
         toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                initViewModel();
+
+
                 if (isChecked) {
                     Toast.makeText(DetailsActivity.this, "Movie marked as favorite", Toast.LENGTH_SHORT).show();
-                    initViewModel();
                     addMovieData();
                 } else {
                     Toast.makeText(DetailsActivity.this, "Movie unmarked as favorite", Toast.LENGTH_SHORT).show();
+                    //mViewModel.deleteMovie();
+                    mViewModel.deleteMovie(movieSelected);
+
+
                 }
             }
         });
@@ -117,18 +128,41 @@ public class DetailsActivity extends AppCompatActivity {
         mViewModel = ViewModelProviders.of(this)
                 .get(DetailViewModel.class);
 
+        setMovieDetails();
+
+
+         mViewModel.loadMovie(movieSelected.getId());
+
+
+
+/*        MovieEntity movie = mViewModel.mLiveMovie.getValue();
+
+        if (movie == null){
+            Toast.makeText(DetailsActivity.this, "movie entity null", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(DetailsActivity.this, "movie entity exist", Toast.LENGTH_SHORT).show();
+        }*/
+
+
+
         // TODO: maybe add the checking of extra's here e.g. lynda 5.2
 
         // TODO: CHECK LOGIC
-        mViewModel.mLiveMovie.observe(this, new Observer<MovieEntity>() {
+/*        mViewModel.mLiveMovie.observe(this, new Observer<MovieEntity>() {
+
             @Override
             public void onChanged(MovieEntity movieEntity) {
                 if (movieEntity != null) {
                     Toast.makeText(DetailsActivity.this, "movie entity null", Toast.LENGTH_SHORT).show();
                 }
             }
-        });
-        mViewModel.loadMovie(movieSelected.getId());
+        });*/
+
+
+
+       // String title = mViewModel.mLiveMovie.getValue().getOriginalTitle();
+       // Toast.makeText(DetailsActivity.this, title, Toast.LENGTH_LONG).show();
+
 
     }
 
