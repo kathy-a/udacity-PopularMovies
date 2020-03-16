@@ -39,23 +39,11 @@ public class AppRepository {
         mMovies = getAllMovies();
     }
 
-    // TODO: May need to remove once actual movie data is saved to database
-    // Check if can be re-used for actual data
-    public void addSampleData() {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                mDb.movieDao().insertAll(SampleData.getSampleMovieData());
-            }
-        });
-    }
 
     // Get data from DB
     private LiveData<List<MovieEntity>> getAllMovies(){
         return mDb.movieDao().getAll();
     }
-
-
 
     public void addMovieData() {
 

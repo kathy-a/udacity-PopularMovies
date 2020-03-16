@@ -68,13 +68,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // TODO: Remove sample data before submission.
-    private void addSampleData() {
-        mViewModel.addSampleData();
-    }
-
-
-
 
     private void initViewModel() {
         final Observer<List<MovieEntity>> movieObserver =

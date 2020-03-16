@@ -48,19 +48,21 @@ public class DatabaseTest {
     public void createAndRetrieveMovie() {
         dao.insertAll(SampleData.getSampleMovieData());
         int count = dao.getCount();
+        Log.d(TAG, "createAndRetrieveNotes: " + SampleData.getSampleMovieData());
         Log.d(TAG, "createAndRetrieveNotes: count=" + count);
+        Log.d(TAG, "createAndRetrieveNotes: count=" + SampleData.getSampleMovieData().size());
+
         assertEquals(SampleData.getSampleMovieData().size(), count);
     }
 
-    // TODO: FIX the error on possibly the id
-/*    @Test
+    @Test
     public void compareStrings() {
         dao.insertAll(SampleData.getSampleMovieData());
         int original = SampleData.getSampleMovieData().get(0).getId();
         MovieEntity fromDb = dao.getMovieById(0);
         assertEquals(original, fromDb.getId());
-       // assertEquals(1, fromDb.getId());
-    }*/
+
+    }
 
 
 }

@@ -26,9 +26,5 @@ public class MainViewModel extends AndroidViewModel {
 
     }
 
-    // TODO: May need to remove the method once actual movie data is used
-    // Adding sample data in database.
-    public void addSampleData() {
-        mRepository.addSampleData();
-    }
+
 }

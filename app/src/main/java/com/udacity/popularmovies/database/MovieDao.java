@@ -26,7 +26,7 @@ public interface MovieDao {
     MovieEntity getMovieById(int id);
 
     @Query("SELECT * FROM Movie")
-    LiveData<List<MovieEntity>> getAll(); // TODO: CHECK IF USING LIST INSTEAD OF ARRAY AFFECT OTHER IMPLEMENTATION. IF YES, USE A CONVERTER
+    LiveData<List<MovieEntity>> getAll();
 
     @Query("DELETE FROM Movie")
     int deleteAll();

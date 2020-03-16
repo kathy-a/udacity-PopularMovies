@@ -1,8 +1,5 @@
 package com.udacity.popularmovies.database;
 
-
-//TODO: Investigate if can be combine with the POJO - Result.class
-
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;

@@ -46,8 +46,6 @@ public class DetailsActivity extends AppCompatActivity {
 
     private static MovieEntity movieSelected = new MovieEntity();
 
-
-    //TODO: Pass the API key instead of calling the resource?
     private static final String API_KEY = App.getAppResources().getString(R.string.movie_db_api_key);
 
 
@@ -269,8 +267,6 @@ public class DetailsActivity extends AppCompatActivity {
                         review.add(currentReview);
                     }
 
-
-                    // TODO: INITIALIZE RECYCLERVIEW FOR REVIEW
                     initReviewRecyclerView(reviewDetails);
 
                 }else{
