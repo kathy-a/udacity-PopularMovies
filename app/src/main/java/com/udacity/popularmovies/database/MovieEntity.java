@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "Movie")
 public class MovieEntity {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey//(autoGenerate = true)
     private int id = 0;
     private String originalTitle;
     private String poster;

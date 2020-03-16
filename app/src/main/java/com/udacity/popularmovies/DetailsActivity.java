@@ -2,15 +2,16 @@ package com.udacity.popularmovies;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.Movie;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,7 +31,6 @@ import com.udacity.popularmovies.ui.MovieReviewAdapter;
 import com.udacity.popularmovies.ui.MovieTrailerAdapter;
 import com.udacity.popularmovies.utilies.App;
 import com.udacity.popularmovies.viewmodel.DetailViewModel;
-import com.udacity.popularmovies.viewmodel.MainViewModel;
 
 import java.util.ArrayList;
 
@@ -53,6 +53,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     private DetailViewModel mViewModel;
     private TheMovieDBService mService = MovieService.getRetrofitInstance().create(TheMovieDBService.class);
+    private ToggleButton toggle;
 
 
     @Override
@@ -70,10 +71,12 @@ public class DetailsActivity extends AppCompatActivity {
         // Set new context to Details Activity
         new AssertConnectivity(DetailsActivity.this);
 
-        setMovieDetails();
-        displayMovieDetails();
+        toggle =  findViewById(R.id.toggle_favorite);
 
         checkMovieFavorite();
+        initViewModel();
+        displayMovieDetails();
+
     }
 
     public static MovieEntity getMovieDetails() {
@@ -89,30 +92,60 @@ public class DetailsActivity extends AppCompatActivity {
             movieSelected.setUserRating(intent.getStringExtra("movieUserRating"));
             movieSelected.setReleaseDate(intent.getStringExtra("movieReleaseDate"));
             movieSelected.setPlotSynopsis(intent.getStringExtra("moviePlotSynopsis"));
+            movieSelected.setId(intent.getIntExtra("movieId",0 ));
         }
 
     }
 
 
+/*
+    Check if favorite button is toggled to be favorite or not
+*/
     private void checkMovieFavorite() {
-        ToggleButton toggle =  findViewById(R.id.toggle_favorite);
         toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
                 if (isChecked) {
-                    Toast.makeText(DetailsActivity.this, "Movie marked as favorite", Toast.LENGTH_SHORT).show();
-                    initViewModel();
                     addMovieData();
+
                 } else {
-                    Toast.makeText(DetailsActivity.this, "Movie unmarked as favorite", Toast.LENGTH_SHORT).show();
+                    deleteMovieData();
+
                 }
             }
         });
     }
 
+    private void deleteMovieData() {
+        mViewModel.deleteMovie(movieSelected);
+    }
+
     private void initViewModel() {
         mViewModel = ViewModelProviders.of(this)
                 .get(DetailViewModel.class);
+
+        setMovieDetails();
+
+
+         mViewModel.loadMovie(movieSelected.getId());
+
+
+         mViewModel.mLiveMovie.observe(this, new Observer<MovieEntity>() {
+             @Override
+             public void onChanged(MovieEntity movieEntity) {
+                 // Change the favorite toggle button state depending if movie is found in database or not
+                 if (movieEntity != null){
+                     Log.d("initViewModel", "movie found");
+                    toggle.setChecked(true);
+                 }else{
+                     toggle.setChecked(false);
+                 }
+             }
+         });
+
+
     }
+
 
     private void addMovieData() {
         mViewModel.addMovieData();
@@ -126,34 +159,50 @@ public class DetailsActivity extends AppCompatActivity {
         TextView userRating = findViewById(R.id.text_user_rating);
         TextView moviePlotSynopsis = findViewById(R.id.text_movie_plot_synopsis);
 
-        // Get content from main activity and display
-        Intent intent = getIntent();
-        if((intent != null) && (intent.hasExtra(MOVIE_ORIGINAL_TITLE))){
-            movieTitle.setText(intent.getStringExtra("movieOriginalTitle"));
+        // Display the movies in the different views
+        movieTitle.setText(movieSelected.getOriginalTitle());
 
-            Picasso.with(this)
-                    .load(intent.getStringExtra("moviePoster"))
-                    .placeholder(R.drawable.ic_launcher_background)
-                    .error(R.drawable.ic_launcher_foreground)
-                    .into(moviePoster);
+        Picasso.with(this)
+                .load(movieSelected.getPoster())
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_foreground)
+                .into(moviePoster);
 
-            String rating = intent.getStringExtra("movieUserRating") + "/10";
+        String rating = movieSelected.getUserRating() + "/10";
+        userRating.setText(rating);
 
-            releaseDate.setText(intent.getStringExtra("movieReleaseDate"));
-            userRating.setText(rating);
-            moviePlotSynopsis.setText(intent.getStringExtra("moviePlotSynopsis"));
-
-            int movieId = intent.getIntExtra("movieId",0 );
-
-            // TODO: REMOVE DUPLICATE CALL ABOVE ONCE EVERYTHING IS WORKING for setmoviedetails. use movieSelected
+        releaseDate.setText(movieSelected.getReleaseDate());
+        moviePlotSynopsis.setText(movieSelected.getPlotSynopsis());
 
 
-            // TODO: Insert connectivity check
-            movieTrailerRetrofit(movieId);
-            movieReviewRetrofit(movieId);
+        // Get the trailer and review views and set status depending on connectivity
+        TextView trailerHeader = findViewById(R.id.text_trailerHeader);
+        View trailerDivider = findViewById(R.id.view_trailerDivider);
+        TextView reviewHeader = findViewById(R.id.view_reviewHeader);
+        View reviewDivider = findViewById(R.id.view_reviewDivider);
 
+
+        if (AssertConnectivity.isOnline()){
+            trailerHeader.setVisibility(View.VISIBLE);
+            trailerDivider.setVisibility(View.VISIBLE);
+            reviewHeader.setVisibility(View.VISIBLE);
+            reviewDivider.setVisibility(View.VISIBLE);
+
+            movieTrailerRetrofit(movieSelected.getId());
+            movieReviewRetrofit(movieSelected.getId());
+
+        }else{
+            trailerHeader.setVisibility(View.GONE);
+            trailerDivider.setVisibility(View.GONE);
+            reviewHeader.setVisibility(View.GONE);
+            reviewDivider.setVisibility(View.GONE);
 
         }
+
+
+
+
+
 
     }
 

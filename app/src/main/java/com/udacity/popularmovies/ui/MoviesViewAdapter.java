@@ -127,7 +127,7 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.Vi
                 plotSynopsis = mLocalMovies.get(position).getPlotSynopsis();
                 userRating = mLocalMovies.get(position).getUserRating();
                 releaseDate = mLocalMovies.get(position).getReleaseDate();
-                id = 24428; // May need to consider saving the id in db
+                id = mLocalMovies.get(position).getId();
 
             }else{
                 originalTitle = mMovies.get(position).getOriginalTitle();

@@ -17,6 +17,8 @@ import com.udacity.popularmovies.DetailsActivity;
 public class AppRepository {
     private static  AppRepository ourInstance;
 
+
+
     public LiveData<List<MovieEntity>> mMovies;
     private AppDatabase mDb;
 
@@ -65,6 +67,20 @@ public class AppRepository {
                 mDb.movieDao().insertMovie(movie);
 
 
+            }
+        });
+    }
+
+    public MovieEntity getMovieById(int movieId) {
+        return mDb.movieDao().getMovieById(movieId);
+
+    }
+
+    public void deleteMovie(final MovieEntity movie) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.movieDao().deleteMovie(movie);
             }
         });
     }
