@@ -50,12 +50,15 @@ public class DetailsActivity extends AppCompatActivity {
 
 
 
+
+
     //TODO: Pass the API key instead of calling the resource?
     private static final String API_KEY = App.getAppResources().getString(R.string.movie_db_api_key);
 
 
     private DetailViewModel mViewModel;
     private TheMovieDBService mService = MovieService.getRetrofitInstance().create(TheMovieDBService.class);
+    ToggleButton toggle;
 
 
     @Override
@@ -73,10 +76,14 @@ public class DetailsActivity extends AppCompatActivity {
 
         // Set new context to Details Activity
         new AssertConnectivity(DetailsActivity.this);
+
+        toggle =  findViewById(R.id.toggle_favorite);
+        checkMovieFavorite();
+
         initViewModel();
+
         displayMovieDetails();
 
-        checkMovieFavorite();
     }
 
     public static MovieEntity getMovieDetails() {
@@ -100,22 +107,16 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void checkMovieFavorite() {
 
-
-
-
-        ToggleButton toggle =  findViewById(R.id.toggle_favorite);
         toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                initViewModel();
-
 
                 if (isChecked) {
-                    Toast.makeText(DetailsActivity.this, "Movie marked as favorite", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(DetailsActivity.this, "Movie marked as favorite", Toast.LENGTH_SHORT).show();
                     addMovieData();
+
                 } else {
-                    Toast.makeText(DetailsActivity.this, "Movie unmarked as favorite", Toast.LENGTH_SHORT).show();
-                    //mViewModel.deleteMovie();
+                    // Toast.makeText(DetailsActivity.this, "Movie unmarked as favorite", Toast.LENGTH_SHORT).show();
                     mViewModel.deleteMovie(movieSelected);
 
 
@@ -134,34 +135,19 @@ public class DetailsActivity extends AppCompatActivity {
          mViewModel.loadMovie(movieSelected.getId());
 
 
-
-/*        MovieEntity movie = mViewModel.mLiveMovie.getValue();
-
-        if (movie == null){
-            Toast.makeText(DetailsActivity.this, "movie entity null", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(DetailsActivity.this, "movie entity exist", Toast.LENGTH_SHORT).show();
-        }*/
-
-
-
-        // TODO: maybe add the checking of extra's here e.g. lynda 5.2
-
-        // TODO: CHECK LOGIC
-/*        mViewModel.mLiveMovie.observe(this, new Observer<MovieEntity>() {
-
-            @Override
-            public void onChanged(MovieEntity movieEntity) {
-                if (movieEntity != null) {
-                    Toast.makeText(DetailsActivity.this, "movie entity null", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });*/
-
-
-
-       // String title = mViewModel.mLiveMovie.getValue().getOriginalTitle();
-       // Toast.makeText(DetailsActivity.this, title, Toast.LENGTH_LONG).show();
+         mViewModel.mLiveMovie.observe(this, new Observer<MovieEntity>() {
+             @Override
+             public void onChanged(MovieEntity movieEntity) {
+                 // Change the favorite toggle button state depending if movie is found in database or not
+                 if (movieEntity != null){
+                     Log.d("initViewModel", "movie found");
+                     //Toast.makeText(DetailsActivity.this, "movie found", Toast.LENGTH_LONG).show();
+                    toggle.setChecked(true);
+                 }else{
+                     toggle.setChecked(false);
+                 }
+             }
+         });
 
 
     }
