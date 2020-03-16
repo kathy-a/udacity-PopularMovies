@@ -43,7 +43,6 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.Vi
         this.mMovies = movies;
         this.mContext = mContext;
         this.isLocal = false;
-        // TODO: MAY need to set islocal to false for not hardcoded view
     }
 
 

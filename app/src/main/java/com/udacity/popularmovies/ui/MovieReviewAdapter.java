@@ -49,7 +49,7 @@ public class MovieReviewAdapter extends RecyclerView.Adapter<MovieReviewAdapter.
 
 
     // Holds widget in memory for each individual entry
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder  {
 
         TextView reviewAuthor;
         TextView reviewContent;
@@ -63,31 +63,8 @@ public class MovieReviewAdapter extends RecyclerView.Adapter<MovieReviewAdapter.
             reviewContent = itemView.findViewById(R.id.text_reviewContent);
 
             parentLayout = itemView.findViewById(R.id.reviewParent_layout);
-            itemView.setOnClickListener(this);
         }
 
-
-        // TODO: CHECK IF SHOULD BE ADDED
-        @Override
-        public void onClick(View v) {
-
-            // TODO: IMPLEMENT ON CLICK of movie trailer and add comment for the method usage
-            // Add error handling in case there is no internet
-
-            if(AssertConnectivity.isOnline()){
-                int position = getAdapterPosition();
-/*                // Get URL and open the trailer link
-                Uri uri = Uri.parse(trailer.get(position).getKey());
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                mContext.startActivity(intent);*/
-            }else
-                AssertConnectivity.errorConnectMessage(App.getAppResources().getString(R.string.error_connection_general));
-
-
-
-
-
-        }
     }
 
 

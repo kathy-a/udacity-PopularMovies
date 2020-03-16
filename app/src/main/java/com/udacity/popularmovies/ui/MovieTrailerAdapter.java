@@ -20,7 +20,7 @@ import com.udacity.popularmovies.network.AssertConnectivity;
 
 import java.util.ArrayList;
 
-// TODO: SEARCH IF MULTIPLE RECYCLERVIEW IS NORMAL IMPLEMENTATION
+// TODO: FUTURE SEARCH IF MULTIPLE RECYCLERVIEW IS NORMAL IMPLEMENTATION
 public class MovieTrailerAdapter extends RecyclerView.Adapter<MovieTrailerAdapter.ViewHolder> {
 
     private Context mContext;
@@ -71,9 +71,7 @@ public class MovieTrailerAdapter extends RecyclerView.Adapter<MovieTrailerAdapte
         @Override
         public void onClick(View v) {
 
-            // TODO: IMPLEMENT ON CLICK of movie trailer and add comment for the method usage
             // Add error handling in case there is no internet
-
             if(AssertConnectivity.isOnline()){
                 int position = getAdapterPosition();
                 // Get URL and open the trailer link

@@ -55,9 +55,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-            // TODO: Check if this is required to be added in asynctask because or ROOM implementation change
-            // TODO: remove comment tag once local content is settled
             // Call movieDbQueryTask if there is connectivity. Otherwise, display error toast message
             new AssertConnectivity(MainActivity.this);
 
@@ -105,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-
         if (item.getItemId() == R.id.item_most_popular){
             mSortOrder = "popularity.desc";
         }else if (item.getItemId() == R.id.item_top_rated){
@@ -114,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(AssertConnectivity.isOnline()){
             if(item.getItemId() == R.id.item_favorites){
-                // TODO: MAY NEED TO ADJUST TO UPDATE THE CLOUD DATA TO BE CALLED IN REPOSITORY
+                // TODO: FUTURE: MAY NEED TO ADJUST TO UPDATE THE CLOUD DATA TO BE CALLED IN REPOSITORY
                 initLocalRecyclerView();
                 initViewModel();
             }else
@@ -127,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    // TODO: add 1 method that will check what recyclerview will be passed
     // Display movie poster path via recyclerview
     private void initRecyclerView(ArrayList<Result> movieList){
         mRecyclerView = findViewById(R.id.recycler_MainActivity);
