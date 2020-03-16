@@ -61,7 +61,6 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-
         ActionBar actionBar = this.getSupportActionBar();
 
         // Set the action bar back button to go one level back
@@ -73,10 +72,9 @@ public class DetailsActivity extends AppCompatActivity {
         new AssertConnectivity(DetailsActivity.this);
 
         toggle =  findViewById(R.id.toggle_favorite);
+
         checkMovieFavorite();
-
         initViewModel();
-
         displayMovieDetails();
 
     }
@@ -138,7 +136,6 @@ public class DetailsActivity extends AppCompatActivity {
                  // Change the favorite toggle button state depending if movie is found in database or not
                  if (movieEntity != null){
                      Log.d("initViewModel", "movie found");
-                     //Toast.makeText(DetailsActivity.this, "movie found", Toast.LENGTH_LONG).show();
                     toggle.setChecked(true);
                  }else{
                      toggle.setChecked(false);
