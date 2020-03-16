@@ -128,7 +128,7 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.Vi
                 userRating = mLocalMovies.get(position).getUserRating();
                 releaseDate = mLocalMovies.get(position).getReleaseDate();
                 id = mLocalMovies.get(position).getId();
-                
+
             }else{
                 originalTitle = mMovies.get(position).getOriginalTitle();
                 poster = mMovies.get(position).getPosterPath();
