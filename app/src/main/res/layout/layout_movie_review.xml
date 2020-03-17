@@ -14,7 +14,7 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:textSize="@dimen/heading_3_size"
-        android:layout_gravity="left"
+        android:layout_gravity="start"
         android:singleLine="false"
         android:textStyle="bold"
         tools:text="Review Author"/>
@@ -31,7 +31,8 @@
 
         android:justificationMode="inter_word"
         android:singleLine="false"
-        tools:text="Review Content"/>
+        tools:text="Review Content"
+        tools:ignore="UnusedAttribute" />
 
 
 </LinearLayout>
