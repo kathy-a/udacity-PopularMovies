@@ -5,6 +5,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
 
+/**
+ * Handles the connectivity check of the app
+ */
 public class AssertConnectivity {
 
     private static Context mContext;

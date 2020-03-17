@@ -179,7 +179,6 @@ public class DetailsActivity extends AppCompatActivity {
         TextView reviewHeader = findViewById(R.id.view_reviewHeader);
         View reviewDivider = findViewById(R.id.view_reviewDivider);
 
-
         if (AssertConnectivity.isOnline()){
             trailerHeader.setVisibility(View.VISIBLE);
             trailerDivider.setVisibility(View.VISIBLE);

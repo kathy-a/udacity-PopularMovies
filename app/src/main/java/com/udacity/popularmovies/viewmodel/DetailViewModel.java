@@ -3,16 +3,11 @@ package com.udacity.popularmovies.viewmodel;
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.udacity.popularmovies.DetailsActivity;
-import com.udacity.popularmovies.R;
 import com.udacity.popularmovies.database.AppRepository;
 import com.udacity.popularmovies.database.MovieEntity;
 
@@ -22,9 +17,6 @@ import java.util.concurrent.Executors;
 public class DetailViewModel extends AndroidViewModel {
 
     private AppRepository mRepository;
-
-    private Context mContext;
-
 
     private Executor executor = Executors.newSingleThreadExecutor();
     public MutableLiveData<MovieEntity> mLiveMovie =
@@ -52,7 +44,6 @@ public class DetailViewModel extends AndroidViewModel {
             @Override
             public void run() {
                 MovieEntity movie = mRepository.getMovieById(movieId);
-                //mLiveMovie.postValue(movie);
 
                 // Check if movie exist in database
                 if (movie == null){
@@ -61,7 +52,6 @@ public class DetailViewModel extends AndroidViewModel {
                     Log.d("load movie runnable", "movie found");
                     mLiveMovie.postValue(movie);
                 }
-
             }
         });
     }
@@ -70,9 +60,6 @@ public class DetailViewModel extends AndroidViewModel {
        // mRepository.deleteMovie(mLiveMovie.getValue());
         mRepository.deleteMovie(movie);
         mLiveMovie.postValue(null);
-
-
-
 
     }
 }

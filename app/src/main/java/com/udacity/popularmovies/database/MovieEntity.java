@@ -4,10 +4,14 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+/**
+ *  This class includes the database tables for room
+ */
+
 @Entity(tableName = "Movie")
 public class MovieEntity {
 
-    @PrimaryKey//(autoGenerate = true)
+    @PrimaryKey
     private int id = 0;
     private String originalTitle;
     private String poster;

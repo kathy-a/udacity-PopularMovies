@@ -11,8 +11,8 @@ import java.net.URL;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MovieService {
 
+public class MovieService {
     private static String APIKEY = App.getAppResources().getString(R.string.movie_db_api_key);
     private static Retrofit sRetrofit;
     private static final String BASE_URL = "https://api.themoviedb.org";
