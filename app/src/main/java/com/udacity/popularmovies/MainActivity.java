@@ -1,6 +1,5 @@
 package com.udacity.popularmovies;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -12,8 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
+
 import android.widget.Toast;
 
 import com.udacity.popularmovies.model.Movies;
@@ -37,11 +35,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.udacity.popularmovies.network.MovieService.buildPosterPathUrl;
+import static com.udacity.popularmovies.utilies.Constant.API_KEY;
 
 public class MainActivity extends AppCompatActivity {
 
     private String mSortOrder = "popularity.desc";
-    private static final String API_KEY = App.getAppResources().getString(R.string.movie_db_api_key);
 
     private RecyclerView mRecyclerView;
     private MoviesViewAdapter mAdapter;
