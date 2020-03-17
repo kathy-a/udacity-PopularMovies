@@ -160,7 +160,7 @@ public class DetailsActivity extends AppCompatActivity {
         // Display the movies in the different views
         movieTitle.setText(movieSelected.getOriginalTitle());
 
-        Picasso.with(this)
+        Picasso.get()
                 .load(movieSelected.getPoster())
                 .placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.ic_launcher_foreground)
@@ -259,7 +259,7 @@ public class DetailsActivity extends AppCompatActivity {
                     ArrayList<ReviewDetails> reviewDetails;
                     reviewDetails = response.body().getResults();
 
-                    ArrayList<String> review= new ArrayList<>();;
+                    ArrayList<String> review= new ArrayList<>();
 
                     for(int i =0; i < reviewDetails.size(); i++){
                         String currentReview = reviewDetails.get(i).getContent();

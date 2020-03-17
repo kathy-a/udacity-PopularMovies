@@ -71,7 +71,7 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.Vi
 
         Log.d("Poster", moviePoster);
 
-        Picasso.with(mContext)
+        Picasso.get()
                 .load(moviePoster)
                 .placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.ic_launcher_foreground)

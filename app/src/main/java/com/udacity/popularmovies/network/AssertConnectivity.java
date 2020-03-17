@@ -10,14 +10,14 @@ public class AssertConnectivity {
     private static Context mContext;
 
     public AssertConnectivity(Context context) {
-        this.mContext = context;
+        mContext = context;
     }
 
 
     // Check if the phone / device has connectivity.
     public static boolean isOnline() {
         ConnectivityManager cm =
-                (ConnectivityManager) mContext.getSystemService(mContext.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
