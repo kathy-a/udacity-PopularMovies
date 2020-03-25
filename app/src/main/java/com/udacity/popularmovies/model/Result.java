@@ -2,13 +2,15 @@ package com.udacity.popularmovies.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 
 import java.util.List;
 
 /*
 POJO for JSON response from themoviedb.org
 */
-public class Result {
+@SuppressWarnings("serial")
+public class Result implements Serializable{
     @SerializedName("popularity")
     @Expose
     private Double popularity;

@@ -117,35 +117,28 @@ public class MoviesViewAdapter extends RecyclerView.Adapter<MoviesViewAdapter.Vi
 
             Intent intent = new Intent(mContext, destinationActivity);
 
-            String originalTitle, poster, plotSynopsis, userRating, releaseDate;
-            int id;
+            MovieEntity movieSelected = new MovieEntity();
 
             if(isLocal){
-                originalTitle = mLocalMovies.get(position).getOriginalTitle();
-                poster = mLocalMovies.get(position).getPoster();
-                plotSynopsis = mLocalMovies.get(position).getPlotSynopsis();
-                userRating = mLocalMovies.get(position).getUserRating();
-                releaseDate = mLocalMovies.get(position).getReleaseDate();
-                id = mLocalMovies.get(position).getId();
+                movieSelected.setOriginalTitle(mLocalMovies.get(position).getOriginalTitle());
+                movieSelected.setPoster(mLocalMovies.get(position).getPoster());
+                movieSelected.setPlotSynopsis(mLocalMovies.get(position).getPlotSynopsis());
+                movieSelected.setUserRating(mLocalMovies.get(position).getUserRating());
+                movieSelected.setReleaseDate(mLocalMovies.get(position).getReleaseDate());
+                movieSelected.setId(mLocalMovies.get(position).getId());
 
             }else{
-                originalTitle = mMovies.get(position).getOriginalTitle();
-                poster = mMovies.get(position).getPosterPath();
-                plotSynopsis = mMovies.get(position).getOverview();
-                userRating = mMovies.get(position).getVoteAverage().toString();
-                releaseDate = mMovies.get(position).getReleaseDate();
-                id = mMovies.get(position).getId();
+                movieSelected.setOriginalTitle(mMovies.get(position).getOriginalTitle());
+                movieSelected.setPoster(mMovies.get(position).getPosterPath());
+                movieSelected.setPlotSynopsis(mMovies.get(position).getOverview());
+                movieSelected.setUserRating(mMovies.get(position).getVoteAverage().toString());
+                movieSelected.setReleaseDate(mMovies.get(position).getReleaseDate());
+                movieSelected.setId(mMovies.get(position).getId());
+
             }
 
-
             // Pass the movie details to details activity
-            intent.putExtra("movieOriginalTitle", originalTitle);
-            intent.putExtra("moviePoster", poster);
-            intent.putExtra("moviePlotSynopsis",plotSynopsis);
-            intent.putExtra("movieUserRating", userRating );
-            intent.putExtra("movieReleaseDate", releaseDate);
-            intent.putExtra("movieId", id);
-
+            intent.putExtra("movies", movieSelected);
             mContext.startActivity(intent);
         }
     }

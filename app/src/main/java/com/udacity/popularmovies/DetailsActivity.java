@@ -22,6 +22,7 @@ import com.squareup.picasso.Picasso;
 import com.udacity.popularmovies.database.MovieEntity;
 import com.udacity.popularmovies.model.MovieReview;
 import com.udacity.popularmovies.model.MovieTrailer;
+import com.udacity.popularmovies.model.Result;
 import com.udacity.popularmovies.model.ReviewDetails;
 import com.udacity.popularmovies.model.TrailerDetails;
 import com.udacity.popularmovies.network.AssertConnectivity;
@@ -46,6 +47,7 @@ public class DetailsActivity extends AppCompatActivity {
     private static final String API_KEY = App.getAppResources().getString(R.string.movie_db_api_key);
     public static final String MOVIE_BASE_URL = "https://www.youtube.com/watch?v=" ;
     private static final String MOVIE_ORIGINAL_TITLE = "movieOriginalTitle" ;
+    private static final String TAG = "DetailsActivity";
 
 
     private DetailViewModel mViewModel;
@@ -83,14 +85,13 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void setMovieDetails(){
         Intent intent = getIntent();
-        if((intent != null) && (intent.hasExtra(MOVIE_ORIGINAL_TITLE))){
-            movieSelected.setOriginalTitle(intent.getStringExtra("movieOriginalTitle"));
-            movieSelected.setPoster(intent.getStringExtra("moviePoster"));
-            movieSelected.setUserRating(intent.getStringExtra("movieUserRating"));
-            movieSelected.setReleaseDate(intent.getStringExtra("movieReleaseDate"));
-            movieSelected.setPlotSynopsis(intent.getStringExtra("moviePlotSynopsis"));
-            movieSelected.setId(intent.getIntExtra("movieId",0 ));
+
+        if(intent != null){
+            movieSelected = (MovieEntity) intent.getSerializableExtra("movies");
+        }else{
+            Log.d(TAG, "Intent null");
         }
+        
 
     }
 

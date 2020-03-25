@@ -4,12 +4,14 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 /**
  *  This class includes the database tables for room
  */
 
 @Entity(tableName = "Movie")
-public class MovieEntity {
+public class MovieEntity implements Serializable {
 
     @PrimaryKey
     private int id = 0;
