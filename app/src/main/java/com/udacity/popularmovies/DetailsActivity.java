@@ -2,6 +2,7 @@ package com.udacity.popularmovies;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -20,6 +21,7 @@ import android.widget.ToggleButton;
 
 import com.squareup.picasso.Picasso;
 import com.udacity.popularmovies.database.MovieEntity;
+import com.udacity.popularmovies.databinding.ActivityDetailsBinding;
 import com.udacity.popularmovies.model.MovieReview;
 import com.udacity.popularmovies.model.MovieTrailer;
 import com.udacity.popularmovies.model.Result;
@@ -46,9 +48,10 @@ public class DetailsActivity extends AppCompatActivity {
     private static MovieEntity movieSelected = new MovieEntity();
     private static final String API_KEY = App.getAppResources().getString(R.string.movie_db_api_key);
     public static final String MOVIE_BASE_URL = "https://www.youtube.com/watch?v=" ;
-    private static final String MOVIE_ORIGINAL_TITLE = "movieOriginalTitle" ;
     private static final String TAG = "DetailsActivity";
 
+    // data binding
+    ActivityDetailsBinding mBinding;
 
     private DetailViewModel mViewModel;
     private TheMovieDBService mService = MovieService.getRetrofitInstance().create(TheMovieDBService.class);
@@ -58,7 +61,7 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_details);
 
         ActionBar actionBar = this.getSupportActionBar();
 
@@ -88,6 +91,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         if(intent != null){
             movieSelected = (MovieEntity) intent.getSerializableExtra("movies");
+
         }else{
             Log.d(TAG, "Intent null");
         }
@@ -146,14 +150,10 @@ public class DetailsActivity extends AppCompatActivity {
 
 
     private void displayMovieDetails(){
-        TextView movieTitle = findViewById(R.id.text_movie_title);
         ImageView moviePoster = findViewById(R.id.image_movie_poster);
-        TextView releaseDate = findViewById(R.id.text_release_date);
-        TextView userRating = findViewById(R.id.text_user_rating);
-        TextView moviePlotSynopsis = findViewById(R.id.text_movie_plot_synopsis);
 
         // Display the movies in the different views
-        movieTitle.setText(movieSelected.getOriginalTitle());
+        mBinding.setMovie(movieSelected);
 
         Picasso.get()
                 .load(movieSelected.getPoster())
@@ -161,33 +161,11 @@ public class DetailsActivity extends AppCompatActivity {
                 .error(R.drawable.ic_launcher_foreground)
                 .into(moviePoster);
 
-        String rating = movieSelected.getUserRating() + "/10";
-        userRating.setText(rating);
 
-        releaseDate.setText(movieSelected.getReleaseDate());
-        moviePlotSynopsis.setText(movieSelected.getPlotSynopsis());
-
-
-        // Get the trailer and review views and set status depending on connectivity
-        TextView trailerHeader = findViewById(R.id.text_trailerHeader);
-        View trailerDivider = findViewById(R.id.view_trailerDivider);
-        TextView reviewHeader = findViewById(R.id.view_reviewHeader);
-        View reviewDivider = findViewById(R.id.view_reviewDivider);
-
+        // Get the trailer and review views if there is connectivity
         if (AssertConnectivity.isOnline()){
-            trailerHeader.setVisibility(View.VISIBLE);
-            trailerDivider.setVisibility(View.VISIBLE);
-            reviewHeader.setVisibility(View.VISIBLE);
-            reviewDivider.setVisibility(View.VISIBLE);
-
             movieTrailerRetrofit(movieSelected.getId());
             movieReviewRetrofit(movieSelected.getId());
-
-        }else{
-            trailerHeader.setVisibility(View.GONE);
-            trailerDivider.setVisibility(View.GONE);
-            reviewHeader.setVisibility(View.GONE);
-            reviewDivider.setVisibility(View.GONE);
 
         }
     }
