@@ -38,14 +38,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.udacity.popularmovies.utilies.Constant.API_KEY;
-import static com.udacity.popularmovies.utilies.Constant.MOVIE_BASE_URL;
-import static com.udacity.popularmovies.utilies.Constant.MOVIE_ORIGINAL_TITLE;
 
 // This class displays the movie details screen after clicking any poster thumbnail on Movies grid view
 public class DetailsActivity extends AppCompatActivity {
 
     private static MovieEntity movieSelected = new MovieEntity();
+    private static final String API_KEY = App.getAppResources().getString(R.string.movie_db_api_key);
+    public static final String MOVIE_BASE_URL = "https://www.youtube.com/watch?v=" ;
+    private static final String MOVIE_ORIGINAL_TITLE = "movieOriginalTitle" ;
+
 
     private DetailViewModel mViewModel;
     private TheMovieDBService mService = MovieService.getRetrofitInstance().create(TheMovieDBService.class);

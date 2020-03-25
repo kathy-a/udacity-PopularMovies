@@ -35,11 +35,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.udacity.popularmovies.network.MovieService.buildPosterPathUrl;
-import static com.udacity.popularmovies.utilies.Constant.API_KEY;
 
 public class MainActivity extends AppCompatActivity {
 
     private String mSortOrder = "popularity.desc";
+    private static final String API_KEY = App.getAppResources().getString(R.string.movie_db_api_key);
+
 
     private RecyclerView mRecyclerView;
     private MoviesViewAdapter mAdapter;
