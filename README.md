@@ -14,7 +14,7 @@ Movie details such as original title, plot synopsis, user rating, release date, 
 ## Requirements
 Stable release versions of all libraries, Gradle, and Android Studio.
 
-## API KEY INSTRUCTIONS:
+## API KEY Instructions(required rubric):
 1. Create "configuration.xml" resource file under values directory
 2. Add string name "movie_db_api_key" and add the moviedb api key value
 
