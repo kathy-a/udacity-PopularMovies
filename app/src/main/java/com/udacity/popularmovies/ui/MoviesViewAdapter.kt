@@ -43,8 +43,7 @@ class MoviesViewAdapter : RecyclerView.Adapter<MoviesViewAdapter.ViewHolder> {
 
     // Required for RecyclerView. Changes depends on what layouts are
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val moviePoster: String?
-        moviePoster = if (isLocal) {
+        val moviePoster: String? = if (isLocal) {
             mLocalMovies!![position].poster
         } else {
             mMovies!![position].posterPath

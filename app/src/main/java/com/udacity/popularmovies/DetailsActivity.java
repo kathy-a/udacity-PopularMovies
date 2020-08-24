@@ -223,17 +223,21 @@ public class DetailsActivity extends AppCompatActivity {
                     Log.d("Review onResponse", "Response Successful for movie review");
 
                     ArrayList<ReviewDetails> reviewDetails;
-                    reviewDetails = response.body().getResults();
+                    reviewDetails = response.body().results;
 
-                    ArrayList<String> review= new ArrayList<>();
+                    if(reviewDetails != null){
+                        ArrayList<String> review= new ArrayList<>();
 
-                    for(int i =0; i < reviewDetails.size(); i++){
-                        String currentReview = reviewDetails.get(i).getContent();
-                        Log.d("Review onResponse", currentReview);
-                        review.add(currentReview);
+                        for(int i =0; i < reviewDetails.size(); i++){
+                            String currentReview = reviewDetails.get(i).content;
+                            Log.d("Review onResponse", currentReview);
+                            review.add(currentReview);
+                        }
+
+                        initReviewRecyclerView(reviewDetails);
+
                     }
 
-                    initReviewRecyclerView(reviewDetails);
 
                 }else{
                     Log.d("Review onResponse", "Response Fail for movie review");
