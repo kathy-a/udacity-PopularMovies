@@ -154,12 +154,12 @@ public class MainActivity extends AppCompatActivity {
                     // Set the variable name to movie instead of result for readability
                     ArrayList<Result> movieList;
 
-                    movieList = response.body().getResults();
+                    movieList = response.body().results;
 
                     for(int i =0; i < movieList.size(); i++){
-                        String posterPath = movieList.get(i).getPosterPath();
+                        String posterPath = movieList.get(i).posterPath;
                         String currentPoster = buildPosterPathUrl(posterPath).toString();
-                        movieList.get(i).setPosterPath(currentPoster); //Change poster path to use the URL
+                        movieList.get(i).posterPath = currentPoster; //Change poster path to use the URL
                     }
 
                     initRecyclerView(movieList);
