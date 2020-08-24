@@ -185,12 +185,12 @@ public class DetailsActivity extends AppCompatActivity {
                     Log.d("Trailer onResponse", "Response Successful for movie trailer");
 
                     ArrayList<TrailerDetails> trailerDetails;
-                    trailerDetails = response.body().getResults();
+                    trailerDetails = response.body().results;
 
                     // Create URL for movie trailers
                     for(int i =0; i < trailerDetails.size(); i++){
-                        String videoKey = trailerDetails.get(i).getKey();
-                        trailerDetails.get(i).setKey(MOVIE_BASE_URL + videoKey);
+                        String videoKey = trailerDetails.get(i).key;
+                        trailerDetails.get(i).key = MOVIE_BASE_URL + videoKey;
                     }
 
                     initTrailerRecyclerView(trailerDetails);
