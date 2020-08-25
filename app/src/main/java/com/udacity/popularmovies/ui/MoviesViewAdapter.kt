@@ -54,6 +54,7 @@ class MoviesViewAdapter : RecyclerView.Adapter<MoviesViewAdapter.ViewHolder> {
                 .placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(holder.imageMoviePoster)
+
     }
 
     // Required for RecyclerView

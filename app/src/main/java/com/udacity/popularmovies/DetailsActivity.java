@@ -164,8 +164,8 @@ public class DetailsActivity extends AppCompatActivity {
 
         // Get the trailer and review views if there is connectivity
         if (AssertConnectivity.isOnline()){
-            movieTrailerRetrofit(movieSelected.getId());
-            movieReviewRetrofit(movieSelected.getId());
+/*            movieTrailerRetrofit(movieSelected.getId());
+            movieReviewRetrofit(movieSelected.getId());*/
 
         }
     }
@@ -174,6 +174,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     // TODO: FUTURE: combine handling of retrofit instance in separate class
     // Create handle for the movie trailer RetrofitInstance interface
+/*
     private void movieTrailerRetrofit(int movieId){
 
         Call<MovieTrailer> call = mService.getTrailer(movieId, API_KEY);
@@ -208,10 +209,12 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
     }
+*/
 
 
     // TODO: FUTURE: combine handling of retrofit instance in separate class
     // Create handle for the movie review RetrofitInstance interface
+/*
     private void movieReviewRetrofit(int movieId){
 
         Call<MovieReview> call = mService.getReview(movieId, API_KEY);
@@ -252,6 +255,7 @@ public class DetailsActivity extends AppCompatActivity {
         });
 
     }
+*/
 
 
 
