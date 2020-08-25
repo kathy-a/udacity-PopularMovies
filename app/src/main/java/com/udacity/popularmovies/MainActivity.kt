@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        mRecyclerView = findViewById(R.id.recycler_MainActivity)
 
         initViewModel()
 
@@ -77,7 +78,7 @@ class MainActivity : AppCompatActivity() {
                 movieList[i].posterPath = currentPoster
             }
 
-              mViewModel?.movieData?.postValue(movieList)
+              mViewModel?.initialMovieData?.postValue(movieList)
 
         }
 
@@ -88,7 +89,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViewModel() {
 
-/*        val movieObserver: Observer<List<MovieEntity?>?> = Observer {
+
+        mViewModel = ViewModelProviders.of(this)
+                .get(MainViewModel::class.java)
+
+
+        // ADD LISTENER TO LIVE DATA
+        mViewModel?.initialMovieData?.observe(this, Observer {
+            val name = it.get(1).originalTitle
+            initRecyclerView(it as ArrayList<Result>)
+
+            Log.d(TAG, "onCreate: $name")
+        })
+
+
+        var movieObserver: Observer<List<MovieEntity?>?> = Observer {
             movieData.clear()
             movieData.addAll(it)
             if (mAdapter == null) {
@@ -97,22 +112,10 @@ class MainActivity : AppCompatActivity() {
             } else {
                 mAdapter!!.notifyDataSetChanged()
             }
-        }*/
-        mViewModel = ViewModelProviders.of(this)
-                .get(MainViewModel::class.java)
+        }
 
 
-        // ADD LISTENER TO LIVE DATA
-        mViewModel?.movieData?.observe(this, Observer {
-            val name = it.get(1).originalTitle
-            initRecyclerView(it as ArrayList<Result>)
-
-            Log.d(TAG, "onCreate: $name")
-        })
-
-/*
-        mViewModel!!.movieData.observe(this, movieObserver)
-*/
+        mViewModel!!.localMovieData.observe(this, movieObserver)
 
 
 
@@ -150,7 +153,6 @@ class MainActivity : AppCompatActivity() {
 
     // Display movie poster path via recyclerview
     private fun initRecyclerView(movieList: ArrayList<Result>) {
-        mRecyclerView = findViewById(R.id.recycler_MainActivity)
         mAdapter = MoviesViewAdapter(this, movieList)
         if (mAdapter != null) mRecyclerView?.setAdapter(mAdapter)
     }
@@ -161,36 +163,7 @@ class MainActivity : AppCompatActivity() {
         mRecyclerView.setLayoutManager(GridLayoutManager(this, 2))
     }*/
 
-    // Create handle for the RetrofitInstance interface
-/*
-    private fun initRetrofit(sortOrder: String) {
-        val service = retrofitInstance!!.create(TheMovieDBService::class.java)
-        val call = service.getData(API_KEY, sortOrder)
-        call!!.enqueue(object : Callback<Movies> {
-            override fun onResponse(call: Call<Movies>, response: Response<Movies>) {
-                if (response.isSuccessful) {
-                    Log.d("on Response", "Response Successful")
 
-                    // Set the variable name to movie instead of result for readability
-                    val movieList: ArrayList<Result>
-                    movieList = response.body()!!.results
-                    for (i in movieList.indices) {
-                        val posterPath = movieList[i].posterPath
-                        val currentPoster = buildPosterPathUrl(posterPath).toString()
-                        movieList[i].posterPath = currentPoster //Change poster path to use the URL
-                    }
-                    initRecyclerView(movieList)
-                } else {
-                    Log.d("on Response", "Response Fail")
-                }
-            }
-
-            override fun onFailure(call: Call<Movies>, t: Throwable) {
-                Toast.makeText(this@MainActivity, "Error getting response", Toast.LENGTH_LONG).show()
-            }
-        })
-    }
-*/
 
     companion object {
         private val API_KEY = App.getAppResources().getString(R.string.movie_db_api_key)
