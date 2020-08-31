@@ -1,5 +1,6 @@
 package com.udacity.popularmovies
 
+import android.app.PendingIntent.getActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -7,10 +8,14 @@ import android.view.MenuItem
 import androidx.annotation.WorkerThread
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.udacity.popularmovies.database.MovieEntity
+import com.udacity.popularmovies.model.Result
 import com.udacity.popularmovies.network.AssertConnectivity
+import com.udacity.popularmovies.network.MovieService.buildPosterPathUrl
 import com.udacity.popularmovies.network.MovieService.retrofitInstance
 import com.udacity.popularmovies.network.TheMovieDBService
 import com.udacity.popularmovies.ui.MoviesViewAdapter
@@ -20,8 +25,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
-import com.udacity.popularmovies.model.Result
-import com.udacity.popularmovies.network.MovieService.buildPosterPathUrl
 
 
 // For Sample data
@@ -29,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     private var mSortOrder = "popularity.desc"
     lateinit var mRecyclerView: RecyclerView
     private var mAdapter: MoviesViewAdapter? = null
-    private val movieData = ArrayList<MovieEntity>()
+    private var movieData = ArrayList<MovieEntity>()
     private var mViewModel: MainViewModel? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +40,17 @@ class MainActivity : AppCompatActivity() {
 
         mRecyclerView = findViewById(R.id.recycler_MainActivity)
 
-        initViewModel()
+        mViewModel = ViewModelProviders.of(this)
+                .get(MainViewModel::class.java)
+
+        // ADD LISTENER TO LIVE DATA
+        mViewModel?.initialMovieData?.observe(this, Observer {
+            val name = it.get(1).originalTitle
+            initRecyclerView(it as ArrayList<Result>)
+
+            Log.d(TAG, "onCreate: $name")
+        })
+
 
 
 
@@ -56,6 +69,7 @@ class MainActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             callWebService()
 
+            // TODO: REMOVE TEST ONLY
 
 
         }
@@ -70,14 +84,14 @@ class MainActivity : AppCompatActivity() {
         val service = retrofitInstance!!.create(TheMovieDBService::class.java)
         val movieList: ArrayList<Result>? = service.getData(API_KEY, sortOrder)?.results
 
-
+        // SAVE MOVIE LIST IN INITIAL MOVIE DATA IF THERE'S RESPONSE FOR THE LIST
         if (movieList != null) {
+            //ADD THE FULL MOVIE ULR POSTER PATH
             for (i in 0 until movieList.size){
                 var posterPath: String = movieList[i].posterPath
                 var currentPoster: String = buildPosterPathUrl(posterPath).toString()
                 movieList[i].posterPath = currentPoster
             }
-
               mViewModel?.initialMovieData?.postValue(movieList)
 
         }
@@ -90,30 +104,25 @@ class MainActivity : AppCompatActivity() {
     private fun initViewModel() {
 
 
-        mViewModel = ViewModelProviders.of(this)
-                .get(MainViewModel::class.java)
 
-
-        // ADD LISTENER TO LIVE DATA
-        mViewModel?.initialMovieData?.observe(this, Observer {
-            val name = it.get(1).originalTitle
-            initRecyclerView(it as ArrayList<Result>)
-
-            Log.d(TAG, "onCreate: $name")
-        })
-
-
+        // LISTENER TO LOCAL DATA
         var movieObserver: Observer<List<MovieEntity?>?> = Observer {
-            movieData.clear()
-            movieData.addAll(it)
+           // movieData.clear()
+            //movieData = it as ArrayList<MovieEntity>
+            //movieData.addAll(it)
             if (mAdapter == null) {
-                mAdapter = MoviesViewAdapter(this@MainActivity, movieData, true)
+                mAdapter = MoviesViewAdapter(this@MainActivity, it as ArrayList<MovieEntity>?, true)
                 mRecyclerView?.adapter = mAdapter
             } else {
                 mAdapter!!.notifyDataSetChanged()
             }
+
+
+
         }
 
+
+        mViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         mViewModel!!.localMovieData.observe(this, movieObserver)
 
@@ -140,12 +149,14 @@ class MainActivity : AppCompatActivity() {
         if (AssertConnectivity.isOnline()) {
             if (item.itemId == R.id.item_favorites) {
                 // TODO: FUTURE: MAY NEED TO ADJUST TO UPDATE THE CLOUD DATA TO BE CALLED IN REPOSITORY
-                //initLocalRecyclerView()
+                initLocalRecyclerView()
                 initViewModel()
-            } else Log.d("PLACEHOLDER ONLY", "onOptionsItemSelected: ")//initRetrofit(mSortOrder)
+            } else{
+                CoroutineScope(Dispatchers.IO).launch { callWebService() }
+            }
         } else {
             AssertConnectivity.errorConnectMessage(App.getAppResources().getString(R.string.error_connection_themoviedb))
-           // initLocalRecyclerView()
+            initLocalRecyclerView()
             initViewModel()
         }
         return true
@@ -157,11 +168,11 @@ class MainActivity : AppCompatActivity() {
         if (mAdapter != null) mRecyclerView?.setAdapter(mAdapter)
     }
 
-/*    private fun initLocalRecyclerView() {
+    private fun initLocalRecyclerView() {
         mAdapter = null
-        mRecyclerView = findViewById(R.id.recycler_MainActivity)
-        mRecyclerView.setLayoutManager(GridLayoutManager(this, 2))
-    }*/
+        mRecyclerView.layoutManager = GridLayoutManager(this, 2)
+
+    }
 
 
 
@@ -171,6 +182,4 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-private fun <E> Collection<E>.addAll(elements: List<E?>?) {
 
-}

@@ -1,6 +1,7 @@
 package com.udacity.popularmovies.database;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -15,6 +16,7 @@ public class AppRepository {
 
     public LiveData<List<MovieEntity>> mMovies;
     private AppDatabase mDb;
+    private static final String TAG = "AppRepository";
 
 /*    All room database operations must be executed in a background thread
     One executor use for all db so that it has a queue if there are multiple db request*/
@@ -31,6 +33,7 @@ public class AppRepository {
     private AppRepository(Context context) {
         mDb = AppDatabase.getInstance(context);
         mMovies = getAllMovies();
+        Log.d(TAG, "AppRepository: local data " + mMovies.getValue());
     }
 
 
