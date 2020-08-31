@@ -15,7 +15,7 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
     private val executor: Executor = Executors.newSingleThreadExecutor()
     var mLiveMovie = MutableLiveData<MovieEntity?>()
     fun addMovieData() {
-        mRepository!!.addMovieData()
+        mRepository?.addMovieData()
     }
 
     fun loadMovie(movieId: Int) {

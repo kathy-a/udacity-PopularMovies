@@ -28,7 +28,6 @@ import java.util.*
 
 // This class displays the movie details screen after clicking any poster thumbnail on Movies grid view
 class DetailsActivity : AppCompatActivity() {
-    lateinit var movieDetails: MovieEntity
 
     // data binding
     var mBinding: ActivityDetailsBinding? = null
@@ -64,9 +63,9 @@ class DetailsActivity : AppCompatActivity() {
     Check if favorite button is toggled to be favorite or not
 */
     private fun checkMovieFavorite() {
-        toggle!!.setOnCheckedChangeListener { buttonView, isChecked ->
+        toggle?.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                //addMovieData()
+                addMovieData()
             } else {
                 deleteMovieData()
             }
@@ -95,7 +94,7 @@ class DetailsActivity : AppCompatActivity() {
     }
 
     private fun addMovieData() {
-        mViewModel!!.addMovieData()
+        mViewModel?.addMovieData()
     }
 
     private fun displayMovieDetails() {
@@ -223,8 +222,7 @@ class DetailsActivity : AppCompatActivity() {
     }
 
     companion object {
-        var movieDetails = MovieEntity()
-            private set
+        lateinit var movieDetails: MovieEntity
         private val API_KEY = App.getAppResources().getString(R.string.movie_db_api_key)
         const val MOVIE_BASE_URL = "https://www.youtube.com/watch?v="
         private const val TAG = "DetailsActivity"
