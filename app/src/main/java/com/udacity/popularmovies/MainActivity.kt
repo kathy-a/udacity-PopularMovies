@@ -27,9 +27,8 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 
-// For Sample data
 class MainActivity : AppCompatActivity() {
-    private var mSortOrder = "popularity.desc"
+    var mSortOrder = "popularity.desc"
     lateinit var mRecyclerView: RecyclerView
     private var mAdapter: MoviesViewAdapter? = null
     private var movieData = ArrayList<MovieEntity>()
@@ -45,44 +44,24 @@ class MainActivity : AppCompatActivity() {
 
         // ADD LISTENER TO LIVE DATA
         mViewModel?.initialMovieData?.observe(this, Observer {
-            val name = it.get(1).originalTitle
             initRecyclerView(it as ArrayList<Result>)
-
-            Log.d(TAG, "onCreate: $name")
         })
 
-
-
-
-
-
-
-        // Call movieDbQueryTask if there is connectivity. Otherwise, display error toast message
         AssertConnectivity(this@MainActivity)
-        if (AssertConnectivity.isOnline()) {
-            //initRetrofit(mSortOrder)
-        } else AssertConnectivity.errorConnectMessage(App.getAppResources().getString(R.string.error_connection_themoviedb))
-    }
-
-
-    init {
-        CoroutineScope(Dispatchers.IO).launch {
-            callWebService()
-
-            // TODO: REMOVE TEST ONLY
-
+        if (AssertConnectivity.isOnline())
+            CoroutineScope(Dispatchers.IO).launch { callWebService() }
+        else {
+            AssertConnectivity.errorConnectMessage(App.getAppResources().getString(R.string.error_connection_themoviedb))
 
         }
+
     }
+
 
     @WorkerThread
     suspend fun callWebService() {
-        // TODO: ADD NETWORK CHECK IF NOT DONE YET
-
-        // TODO: CLEAN UP AND CHECK LOGIC WHERE TO PUT THE SORT ORDER
-        val sortOrder = "popularity.desc"
         val service = retrofitInstance!!.create(TheMovieDBService::class.java)
-        val movieList: ArrayList<Result>? = service.getData(API_KEY, sortOrder)?.results
+        val movieList: ArrayList<Result>? = service.getData(API_KEY, mSortOrder)?.results
 
         // SAVE MOVIE LIST IN INITIAL MOVIE DATA IF THERE'S RESPONSE FOR THE LIST
         if (movieList != null) {
@@ -92,44 +71,24 @@ class MainActivity : AppCompatActivity() {
                 var currentPoster: String = buildPosterPathUrl(posterPath).toString()
                 movieList[i].posterPath = currentPoster
             }
-              mViewModel?.initialMovieData?.postValue(movieList)
-
+            mViewModel?.initialMovieData?.postValue(movieList)
         }
-
-
-
     }
 
 
     private fun initViewModel() {
-
-
-
         // LISTENER TO LOCAL DATA
         var movieObserver: Observer<List<MovieEntity?>?> = Observer {
-           // movieData.clear()
-            //movieData = it as ArrayList<MovieEntity>
-            //movieData.addAll(it)
             if (mAdapter == null) {
                 mAdapter = MoviesViewAdapter(this@MainActivity, it as ArrayList<MovieEntity>?, true)
                 mRecyclerView?.adapter = mAdapter
             } else {
                 mAdapter!!.notifyDataSetChanged()
             }
-
-
-
         }
 
-
         mViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-
         mViewModel!!.localMovieData.observe(this, movieObserver)
-
-
-
-
-
     }
 
     // Display Menu layout created
@@ -146,19 +105,17 @@ class MainActivity : AppCompatActivity() {
         } else if (item.itemId == R.id.item_top_rated) {
             mSortOrder = "vote_count.desc"
         }
-        if (AssertConnectivity.isOnline()) {
-            if (item.itemId == R.id.item_favorites) {
-                // TODO: FUTURE: MAY NEED TO ADJUST TO UPDATE THE CLOUD DATA TO BE CALLED IN REPOSITORY
-                initLocalRecyclerView()
-                initViewModel()
-            } else{
-                CoroutineScope(Dispatchers.IO).launch { callWebService() }
-            }
-        } else {
-            AssertConnectivity.errorConnectMessage(App.getAppResources().getString(R.string.error_connection_themoviedb))
+
+        if (item.itemId == R.id.item_favorites) {
             initLocalRecyclerView()
             initViewModel()
+        }else{
+            if (AssertConnectivity.isOnline())
+                CoroutineScope(Dispatchers.IO).launch { callWebService() }
+            else
+                AssertConnectivity.errorConnectMessage(App.getAppResources().getString(R.string.error_connection_themoviedb))
         }
+
         return true
     }
 
@@ -171,7 +128,6 @@ class MainActivity : AppCompatActivity() {
     private fun initLocalRecyclerView() {
         mAdapter = null
         mRecyclerView.layoutManager = GridLayoutManager(this, 2)
-
     }
 
 
