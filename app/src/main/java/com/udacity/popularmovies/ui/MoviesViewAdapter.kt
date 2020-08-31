@@ -48,7 +48,7 @@ class MoviesViewAdapter : RecyclerView.Adapter<MoviesViewAdapter.ViewHolder> {
         } else {
             mMovies!![position].posterPath
         }
-        Log.d("Poster", moviePoster)
+        //Log.d("Poster", moviePoster)
         Picasso.get()
                 .load(moviePoster)
                 .placeholder(R.drawable.ic_launcher_background)

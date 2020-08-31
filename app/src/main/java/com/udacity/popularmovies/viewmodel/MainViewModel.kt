@@ -10,15 +10,18 @@ import com.udacity.popularmovies.database.MovieEntity
 import com.udacity.popularmovies.model.Result
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
-     var localMovieData:  LiveData<List<MovieEntity>>
+     lateinit var localMovieData:  LiveData<List<MovieEntity>>
 
     var initialMovieData = MutableLiveData<List<Result>>()
 
-    private val mRepository: AppRepository = AppRepository.getInstance(application.applicationContext)
+    private val mRepository: AppRepository? = AppRepository.getInstance(application.applicationContext)
 
     init {
-        localMovieData = mRepository.mMovies
-        Log.d(TAG, "Repository movies: ${localMovieData.value}")
+        if (mRepository != null) {
+            localMovieData = mRepository.mMovies
+            Log.d(TAG, "Repository movies: ${localMovieData.value}")
+
+        }
     }
 
     companion object {
