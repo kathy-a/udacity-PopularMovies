@@ -2,8 +2,9 @@ package com.udacity.popularmovies.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-class TrailerDetails {
+class TrailerDetails : Serializable {
 
     @SerializedName("id")
     @Expose

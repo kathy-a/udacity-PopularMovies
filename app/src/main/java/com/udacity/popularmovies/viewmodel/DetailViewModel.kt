@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import com.udacity.popularmovies.database.AppRepository
 import com.udacity.popularmovies.database.AppRepository.Companion.getInstance
 import com.udacity.popularmovies.database.MovieEntity
+import com.udacity.popularmovies.model.Result
+import com.udacity.popularmovies.model.TrailerDetails
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
@@ -14,6 +16,10 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
     private val mRepository: AppRepository?
     private val executor: Executor = Executors.newSingleThreadExecutor()
     var mLiveMovie = MutableLiveData<MovieEntity?>()
+    var mLiveTrailer = MutableLiveData<List<TrailerDetails>>()
+
+
+
     fun addMovieData() {
         mRepository?.addMovieData()
     }

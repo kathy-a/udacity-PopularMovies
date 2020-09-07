@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
 import android.widget.ToggleButton
+import androidx.annotation.WorkerThread
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +16,8 @@ import com.squareup.picasso.Picasso
 import com.udacity.popularmovies.DetailsActivity
 import com.udacity.popularmovies.database.MovieEntity
 import com.udacity.popularmovies.databinding.ActivityDetailsBinding
+import com.udacity.popularmovies.model.MovieTrailer
+import com.udacity.popularmovies.model.Result
 import com.udacity.popularmovies.model.ReviewDetails
 import com.udacity.popularmovies.model.TrailerDetails
 import com.udacity.popularmovies.network.AssertConnectivity
@@ -24,6 +27,10 @@ import com.udacity.popularmovies.ui.MovieReviewAdapter
 import com.udacity.popularmovies.ui.MovieTrailerAdapter
 import com.udacity.popularmovies.utilies.App
 import com.udacity.popularmovies.viewmodel.DetailViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Call
 import java.util.*
 
 // This class displays the movie details screen after clicking any poster thumbnail on Movies grid view
@@ -32,8 +39,9 @@ class DetailsActivity : AppCompatActivity() {
     // data binding
     var mBinding: ActivityDetailsBinding? = null
     private var mViewModel: DetailViewModel? = null
-    private val mService = retrofitInstance!!.create(TheMovieDBService::class.java)
+    val mService: TheMovieDBService? = retrofitInstance?.create(TheMovieDBService::class.java)
     private var toggle: ToggleButton? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_details)
@@ -48,6 +56,11 @@ class DetailsActivity : AppCompatActivity() {
         checkMovieFavorite()
         initViewModel()
         displayMovieDetails()
+
+
+
+
+
     }
 
     private fun setMovieDetails() {
@@ -81,7 +94,6 @@ class DetailsActivity : AppCompatActivity() {
                 .get(DetailViewModel::class.java)
         setMovieDetails()
 
-        //TODO: CHECK HOW TO HANDLE PROPERLY
         mViewModel?.loadMovie(movieDetails.id)
         mViewModel?.mLiveMovie?.observe(this, { movieEntity -> // Change the favorite toggle button state depending if movie is found in database or not
             if (movieEntity != null) {
@@ -111,49 +123,42 @@ class DetailsActivity : AppCompatActivity() {
 
         // Get the trailer and review views if there is connectivity
         if (AssertConnectivity.isOnline()) {
+            CoroutineScope(Dispatchers.IO).launch { 
+                callWebMovieTrailer(movieDetails.id)
+            }
+
 /*            movieTrailerRetrofit(movieSelected.getId());
             movieReviewRetrofit(movieSelected.getId());*/
         }
+
+
+        // ADD LISTENER TO TRAILER LIVE DATA & set Trailer UI. Listed here for easier view
+        mViewModel?.mLiveTrailer?.observe(this, androidx.lifecycle.Observer {
+            initTrailerRecyclerView(it as ArrayList<TrailerDetails>)
+        })
+
     }
 
-    // TODO: FUTURE: combine handling of retrofit instance in separate class
-    // Create handle for the movie trailer RetrofitInstance interface
-    /*
-    private void movieTrailerRetrofit(int movieId){
+    /**
+     * HANDLE MOVIE TRAILER RetrofitInstance interface & set the URL
+     */
+    @WorkerThread
+    suspend fun callWebMovieTrailer(movieId: Int) {
+        val trailerList: ArrayList<TrailerDetails>? = mService?.getTrailer(movieId, API_KEY)?.results
 
-        Call<MovieTrailer> call = mService.getTrailer(movieId, API_KEY);
-
-        call.enqueue(new Callback<MovieTrailer>() {
-            @Override
-            public void onResponse(Call<MovieTrailer> call, Response<MovieTrailer> response) {
-                if(response.isSuccessful()){
-                    Log.d("Trailer onResponse", "Response Successful for movie trailer");
-
-                    ArrayList<TrailerDetails> trailerDetails;
-                    trailerDetails = response.body().results;
-
-                    // Create URL for movie trailers
-                    for(int i =0; i < trailerDetails.size(); i++){
-                        String videoKey = trailerDetails.get(i).key;
-                        trailerDetails.get(i).key = MOVIE_BASE_URL + videoKey;
-                    }
-
-                    initTrailerRecyclerView(trailerDetails);
-
-
-                }else{
-                    Log.d("on Response", "Response Fail for movie trailer");
-                }
+        trailerList?.let {
+            for (i in 0 until it.size){
+                Log.d(TAG, "callWebMovieTrailer: ${it[i].name}")
+                val videoKey = it[i].key
+                it[i].key = MOVIE_BASE_URL + videoKey;
             }
+            mViewModel?.mLiveTrailer?.postValue(it)
+        }
 
-            @Override
-            public void onFailure(Call<MovieTrailer> call, Throwable t) {
-                Toast.makeText(DetailsActivity.this, "Error getting response for movie trailer", Toast.LENGTH_LONG).show();
-
-            }
-        });
     }
-*/
+
+
+
     // TODO: FUTURE: combine handling of retrofit instance in separate class
     // Create handle for the movie review RetrofitInstance interface
     /*

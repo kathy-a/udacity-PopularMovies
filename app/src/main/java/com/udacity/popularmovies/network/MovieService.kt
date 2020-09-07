@@ -11,10 +11,11 @@ import java.net.URL
 object MovieService {
     private val APIKEY = App.getAppResources().getString(R.string.movie_db_api_key)
     private var sRetrofit: Retrofit? = null
+
     private const val BASE_URL = "https://api.themoviedb.org"
 
     // Retrofit Instance for getting JSON response from themoviedb.org
-    @JvmStatic
+   // @JvmStatic
     val retrofitInstance: Retrofit?
         get() {
             if (sRetrofit == null) {

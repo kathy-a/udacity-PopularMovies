@@ -14,13 +14,12 @@ interface TheMovieDBService {
     suspend fun getData(
             @Query("api_key") apiKey: String?,
             @Query("sort_by") sortOrder: String?): Movies?
-            //@Query("sort_by") sortOrder: String?): Call<Movies?>?
 
 
     @GET("/3/movie/{id}/videos")
     suspend fun getTrailer(
             @Path("id") id: Int,
-            @Query("api_key") apiKey: String?): Call<MovieTrailer?>?
+            @Query("api_key") apiKey: String?): MovieTrailer?
 
     @GET("/3/movie/{id}/reviews")
     suspend fun getReview(
