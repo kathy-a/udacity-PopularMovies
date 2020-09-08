@@ -24,5 +24,5 @@ interface TheMovieDBService {
     @GET("/3/movie/{id}/reviews")
     suspend fun getReview(
             @Path("id") id: Int,
-            @Query("api_key") apiKey: String?): Call<MovieReview?>?
+            @Query("api_key") apiKey: String?): MovieReview?
 }

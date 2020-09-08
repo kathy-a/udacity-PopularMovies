@@ -58,9 +58,6 @@ class DetailsActivity : AppCompatActivity() {
         displayMovieDetails()
 
 
-
-
-
     }
 
     private fun setMovieDetails() {
@@ -72,9 +69,9 @@ class DetailsActivity : AppCompatActivity() {
         }
     }
 
-    /*
-    Check if favorite button is toggled to be favorite or not
-*/
+    /**
+     * Check if favorite button is toggled to be favorite or not
+     */
     private fun checkMovieFavorite() {
         toggle?.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
@@ -125,16 +122,19 @@ class DetailsActivity : AppCompatActivity() {
         if (AssertConnectivity.isOnline()) {
             CoroutineScope(Dispatchers.IO).launch { 
                 callWebMovieTrailer(movieDetails.id)
+                callWebMovieReview(movieDetails.id)
             }
 
-/*            movieTrailerRetrofit(movieSelected.getId());
-            movieReviewRetrofit(movieSelected.getId());*/
         }
 
 
         // ADD LISTENER TO TRAILER LIVE DATA & set Trailer UI. Listed here for easier view
         mViewModel?.mLiveTrailer?.observe(this, androidx.lifecycle.Observer {
             initTrailerRecyclerView(it as ArrayList<TrailerDetails>)
+        })
+        // ADD LISTENER TO REVIEW LIVE DATA & set REVIEW UI.
+        mViewModel?.mLiveReview?.observe(this, androidx.lifecycle.Observer {
+            initReviewRecyclerView(it as ArrayList<ReviewDetails>)
         })
 
     }
@@ -157,52 +157,17 @@ class DetailsActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * HANDLE MOVIE REVIEW RetrofitInstance interface & set the URL
+     */
+    @WorkerThread
+    suspend fun callWebMovieReview(movieId: Int) {
+        val reviewList: ArrayList<ReviewDetails>? = mService?.getReview(movieId, API_KEY)?.results
+        reviewList?.let{ mViewModel?.mLiveReview?.postValue(it) }
 
+    } 
+    
 
-    // TODO: FUTURE: combine handling of retrofit instance in separate class
-    // Create handle for the movie review RetrofitInstance interface
-    /*
-    private void movieReviewRetrofit(int movieId){
-
-        Call<MovieReview> call = mService.getReview(movieId, API_KEY);
-
-        call.enqueue(new Callback<MovieReview>() {
-            @Override
-            public void onResponse(Call<MovieReview> call, Response<MovieReview> response) {
-                if(response.isSuccessful()){
-                    Log.d("Review onResponse", "Response Successful for movie review");
-
-                    ArrayList<ReviewDetails> reviewDetails;
-                    reviewDetails = response.body().results;
-
-                    if(reviewDetails != null){
-                        ArrayList<String> review= new ArrayList<>();
-
-                        for(int i =0; i < reviewDetails.size(); i++){
-                            String currentReview = reviewDetails.get(i).content;
-                            Log.d("Review onResponse", currentReview);
-                            review.add(currentReview);
-                        }
-
-                        initReviewRecyclerView(reviewDetails);
-
-                    }
-
-
-                }else{
-                    Log.d("Review onResponse", "Response Fail for movie review");
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<MovieReview> call, Throwable t) {
-                Toast.makeText(DetailsActivity.this, "Error getting response for movie review", Toast.LENGTH_LONG).show();
-            }
-        });
-
-    }
-*/
     // Display movie trailer via recyclerview
     private fun initTrailerRecyclerView(trailerDetails: ArrayList<TrailerDetails>) {
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_DetailActivity_trailer)
