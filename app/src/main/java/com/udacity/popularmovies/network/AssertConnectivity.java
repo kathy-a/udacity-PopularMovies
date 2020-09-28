@@ -26,6 +26,7 @@ public class AssertConnectivity {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
+
     // Toast error message for connectivity issue
     public static void errorConnectMessage(String message) {
         Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();

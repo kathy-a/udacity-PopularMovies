@@ -101,13 +101,13 @@
                 android:layout_width="match_parent"
                 android:background="@android:color/darker_gray"
                 android:id="@+id/view_trailerDivider"
-                android:visibility="@{AssertConnectivity.online ? View.VISIBLE : View.GONE}"
+                android:visibility="@{AssertConnectivity.isOnline ? View.VISIBLE : View.GONE}"
                 android:layout_height="1dp" />
 
             <TextView
                 style="@style/Heading2"
                 android:id="@+id/text_trailerHeader"
-                android:visibility="@{AssertConnectivity.online ? View.VISIBLE : View.GONE}"
+                android:visibility="@{AssertConnectivity.isOnline ? View.VISIBLE : View.GONE}"
                 android:text="@string/trailers"/>
 
             <RelativeLayout
@@ -127,13 +127,13 @@
                 android:layout_width="match_parent"
                 android:background="@android:color/darker_gray"
                 android:id="@+id/view_reviewDivider"
-                android:visibility="@{AssertConnectivity.online ? View.VISIBLE : View.GONE}"
+                android:visibility="@{AssertConnectivity.isOnline ? View.VISIBLE : View.GONE}"
                 android:layout_height="1dp" />
 
             <TextView
                 style="@style/Heading2"
                 android:id="@+id/view_reviewHeader"
-                android:visibility="@{AssertConnectivity.online ? View.VISIBLE : View.GONE}"
+                android:visibility="@{AssertConnectivity.isOnline ? View.VISIBLE : View.GONE}"
                 android:text="@string/reviews"/>
 
             <RelativeLayout
